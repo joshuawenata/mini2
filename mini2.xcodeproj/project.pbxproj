@@ -18,6 +18,7 @@
 		A660D2952C0ECB6500D3A74F /* mini2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A660D2942C0ECB6500D3A74F /* mini2Tests.swift */; };
 		A660D29F2C0ECB6500D3A74F /* mini2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A660D29E2C0ECB6500D3A74F /* mini2UITests.swift */; };
 		A660D2A12C0ECB6500D3A74F /* mini2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A660D2A02C0ECB6500D3A74F /* mini2UITestsLaunchTests.swift */; };
+		A660D2C52C13202200D3A74F /* JollyLodger.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A660D2C42C13202200D3A74F /* JollyLodger.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,8 @@
 		A660D29A2C0ECB6500D3A74F /* mini2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = mini2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A660D29E2C0ECB6500D3A74F /* mini2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mini2UITests.swift; sourceTree = "<group>"; };
 		A660D2A02C0ECB6500D3A74F /* mini2UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mini2UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A660D2C42C13202200D3A74F /* JollyLodger.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = JollyLodger.ttf; sourceTree = "<group>"; };
+		A660D2C62C13203400D3A74F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,7 @@
 		2B3598E72C11CD8D00EDBA3C /* view */ = {
 			isa = PBXGroup;
 			children = (
+				2B3598E22C11C37900EDBA3C /* component */,
 				A660D2852C0ECB6400D3A74F /* ContentView.swift */,
 				2B3598E32C11C39F00EDBA3C /* OnboardingView.swift */,
 				2B3598E52C11C47600EDBA3C /* InGameView.swift */,
@@ -128,9 +132,11 @@
 		A660D2822C0ECB6400D3A74F /* mini2 */ = {
 			isa = PBXGroup;
 			children = (
+				A660D2C62C13203400D3A74F /* Info.plist */,
+				A660D2C32C13201500D3A74F /* Font */,
+				A660D2C02C131F7D00D3A74F /* helper */,
 				A660D2832C0ECB6400D3A74F /* mini2App.swift */,
 				2B3598E72C11CD8D00EDBA3C /* view */,
-				2B3598E22C11C37900EDBA3C /* component */,
 				2B3598DB2C11BFE600EDBA3C /* scene */,
 				A660D2872C0ECB6500D3A74F /* Assets.xcassets */,
 				A660D2892C0ECB6500D3A74F /* Preview Content */,
@@ -161,6 +167,21 @@
 				A660D2A02C0ECB6500D3A74F /* mini2UITestsLaunchTests.swift */,
 			);
 			path = mini2UITests;
+			sourceTree = "<group>";
+		};
+		A660D2C02C131F7D00D3A74F /* helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = helper;
+			sourceTree = "<group>";
+		};
+		A660D2C32C13201500D3A74F /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				A660D2C42C13202200D3A74F /* JollyLodger.ttf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,6 +289,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A660D28B2C0ECB6500D3A74F /* Preview Assets.xcassets in Resources */,
+				A660D2C52C13202200D3A74F /* JollyLodger.ttf in Resources */,
 				A660D2882C0ECB6500D3A74F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,6 +487,7 @@
 				DEVELOPMENT_TEAM = N2K3R4X37B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = mini2/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -494,6 +517,7 @@
 				DEVELOPMENT_TEAM = N2K3R4X37B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = mini2/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
