@@ -12,19 +12,25 @@ struct OnboardingView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Game Title")
-                    .font(.system(size: 50))
+                
+                Text("Fall of Aethel")
+                    .font(.custom("JollyLodger", size: 100))
                     .padding()
+                
                 VStack(alignment: .leading) {
+                    
                     Text("What is your name, adventurer?")
-                        .font(.title)
+                        .font(.custom("JollyLodger", size: 40))
+                    
                     TextField("Enter your name", text: .constant(""))
                         .padding()
                         .background(Color.white)
                         .border(Color.black)
                         .frame(width: 400)
+                    
                 }
                 .padding()
+                
                 Button(action: {
                     presentGameScene()
                 }) {
@@ -35,6 +41,7 @@ struct OnboardingView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
+                
             }
             .padding()
         }
