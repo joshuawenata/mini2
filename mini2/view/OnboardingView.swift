@@ -14,19 +14,29 @@ struct OnboardingView: View {
             VStack {
                 
                 Text("Fall of Aethel")
-                    .font(.custom("JollyLodger", size: 100))
+                    .font(.custom("JollyLodger", size: 80))
                     .padding()
+                    .frame(height: 50
+                    )
+                    .padding(.top, 50)
+                    .padding(.bottom, 20)
                 
                 VStack(alignment: .leading) {
                     
                     Text("What is your name, adventurer?")
                         .font(.custom("JollyLodger", size: 40))
+                        .frame(height: 50);
                     
-                    TextField("Enter your name", text: .constant(""))
-                        .padding()
-                        .background(Color.white)
-                        .border(Color.black)
-                        .frame(width: 400)
+                    ZStack {
+                        Image("textbox")
+                            .resizable()
+                            .frame(width: 500, height: 80)
+                            .scaledToFit()
+                        
+                        TextField("Enter your name", text: .constant(""))
+                            .padding()
+                            .frame(width: 400)
+                    }
                     
                 }
                 .padding()
@@ -34,12 +44,9 @@ struct OnboardingView: View {
                 Button(action: {
                     presentGameScene()
                 }) {
-                    Text("Start")
-                        .padding()
-                        .frame(width: 200)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                    Image("startbutton")
+                        .resizable()
+                        .frame(width: 250, height: 70)
                 }
                 
             }
