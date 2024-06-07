@@ -9,12 +9,10 @@ import SpriteKit
 
 class GameScene: SKScene {
     var appleNode: SKSpriteNode?
-    let jSizePlusSpriteNode = SKSpriteNode(imageNamed: "plus")
-    let jSizeMinusSpriteNode = SKSpriteNode(imageNamed: "minus")
+//    let jSizePlusSpriteNode = SKSpriteNode(imageNamed: "plus")
+//    let jSizeMinusSpriteNode = SKSpriteNode(imageNamed: "minus")
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
-    let joystickStickColorBtn = SKLabelNode(text: "Sticks random color")
-    let joystickSubstrateColorBtn = SKLabelNode(text: "Substrates random color")
     
     let moveJoystick = 🕹(withDiameter: 100)
     let rotateJoystick = TLAnalogJoystick(withDiameter: 100)
@@ -94,52 +92,52 @@ class GameScene: SKScene {
         }
         
         //MARK: Handlers end
-        let selfHeight = frame.height
-        let btnsOffset: CGFloat = 10
-        let btnsOffsetHalf = btnsOffset / 2
-        let joystickSizeLabel = SKLabelNode(text: "Joysticks Size:")
-        joystickSizeLabel.fontSize = 20
-        joystickSizeLabel.fontColor = UIColor.black
-        joystickSizeLabel.horizontalAlignmentMode = .left
-        joystickSizeLabel.verticalAlignmentMode = .top
-        joystickSizeLabel.position = CGPoint(x: btnsOffset, y: selfHeight - btnsOffset)
-        addChild(joystickSizeLabel)
+//        let selfHeight = frame.height
+//        let btnsOffset: CGFloat = 10
+//        let btnsOffsetHalf = btnsOffset / 2
+//        let joystickSizeLabel = SKLabelNode(text: "Joysticks Size:")
+//        joystickSizeLabel.fontSize = 20
+//        joystickSizeLabel.fontColor = UIColor.black
+//        joystickSizeLabel.horizontalAlignmentMode = .left
+//        joystickSizeLabel.verticalAlignmentMode = .top
+//        joystickSizeLabel.position = CGPoint(x: btnsOffset, y: selfHeight - btnsOffset)
+//        addChild(joystickSizeLabel)
         
-        joystickStickColorBtn.fontColor = UIColor.black
-        joystickStickColorBtn.fontSize = 20
-        joystickStickColorBtn.verticalAlignmentMode = .top
-        joystickStickColorBtn.horizontalAlignmentMode = .left
-        joystickStickColorBtn.position = CGPoint(x: btnsOffset, y: selfHeight - 40)
-        addChild(joystickStickColorBtn)
+//        joystickStickColorBtn.fontColor = UIColor.black
+//        joystickStickColorBtn.fontSize = 20
+//        joystickStickColorBtn.verticalAlignmentMode = .top
+//        joystickStickColorBtn.horizontalAlignmentMode = .left
+//        joystickStickColorBtn.position = CGPoint(x: btnsOffset, y: selfHeight - 40)
+//        addChild(joystickStickColorBtn)
+//        
+//        joystickSubstrateColorBtn.fontColor = UIColor.black
+//        joystickSubstrateColorBtn.fontSize = 20
+//        joystickSubstrateColorBtn.verticalAlignmentMode = .top
+//        joystickSubstrateColorBtn.horizontalAlignmentMode = .left
+//        joystickSubstrateColorBtn.position = CGPoint(x: btnsOffset, y: selfHeight - 65)
+//        addChild(joystickSubstrateColorBtn)
         
-        joystickSubstrateColorBtn.fontColor = UIColor.black
-        joystickSubstrateColorBtn.fontSize = 20
-        joystickSubstrateColorBtn.verticalAlignmentMode = .top
-        joystickSubstrateColorBtn.horizontalAlignmentMode = .left
-        joystickSubstrateColorBtn.position = CGPoint(x: btnsOffset, y: selfHeight - 65)
-        addChild(joystickSubstrateColorBtn)
+//        jSizeMinusSpriteNode.anchorPoint = CGPoint(x: 0, y: 0.5)
+//        jSizeMinusSpriteNode.position = CGPoint(x: joystickSizeLabel.frame.maxX + btnsOffset, y: joystickSizeLabel.frame.midY)
+//        addChild(jSizeMinusSpriteNode)
+//        
+//        jSizePlusSpriteNode.anchorPoint = CGPoint(x: 0, y: 0.5)
+//        jSizePlusSpriteNode.position = CGPoint(x: jSizeMinusSpriteNode.frame.maxX + btnsOffset, y: joystickSizeLabel.frame.midY)
+//        addChild(jSizePlusSpriteNode)
         
-        jSizeMinusSpriteNode.anchorPoint = CGPoint(x: 0, y: 0.5)
-        jSizeMinusSpriteNode.position = CGPoint(x: joystickSizeLabel.frame.maxX + btnsOffset, y: joystickSizeLabel.frame.midY)
-        addChild(jSizeMinusSpriteNode)
-        
-        jSizePlusSpriteNode.anchorPoint = CGPoint(x: 0, y: 0.5)
-        jSizePlusSpriteNode.position = CGPoint(x: jSizeMinusSpriteNode.frame.maxX + btnsOffset, y: joystickSizeLabel.frame.midY)
-        addChild(jSizePlusSpriteNode)
-        
-        let startLabelY = CGFloat(40)
-        
-        setJoystickStickImageBtn.fontColor = UIColor.black
-        setJoystickStickImageBtn.fontSize = 20
-        setJoystickStickImageBtn.verticalAlignmentMode = .bottom
-        setJoystickStickImageBtn.position = CGPoint(x: frame.midX, y: startLabelY - btnsOffsetHalf)
-        addChild(setJoystickStickImageBtn)
-        
-        setJoystickSubstrateImageBtn.fontColor  = UIColor.black
-        setJoystickSubstrateImageBtn.fontSize = 20
-        setJoystickStickImageBtn.verticalAlignmentMode = .top
-        setJoystickSubstrateImageBtn.position = CGPoint(x: frame.midX, y: startLabelY + btnsOffsetHalf)
-        addChild(setJoystickSubstrateImageBtn)
+//        let startLabelY = CGFloat(40)
+//        
+//        setJoystickStickImageBtn.fontColor = UIColor.black
+//        setJoystickStickImageBtn.fontSize = 20
+//        setJoystickStickImageBtn.verticalAlignmentMode = .bottom
+//        setJoystickStickImageBtn.position = CGPoint(x: frame.midX, y: startLabelY - btnsOffsetHalf)
+//        addChild(setJoystickStickImageBtn)
+//        
+//        setJoystickSubstrateImageBtn.fontColor  = UIColor.black
+//        setJoystickSubstrateImageBtn.fontSize = 20
+//        setJoystickStickImageBtn.verticalAlignmentMode = .top
+//        setJoystickSubstrateImageBtn.position = CGPoint(x: frame.midX, y: startLabelY + btnsOffsetHalf)
+//        addChild(setJoystickSubstrateImageBtn)
         joystickStickImageEnabled = true
         joystickSubstrateImageEnabled = true
 
@@ -169,45 +167,45 @@ class GameScene: SKScene {
             let node = atPoint(touch.location(in: self))
             
             switch node {
-            case jSizePlusSpriteNode:
-                moveJoystick.diameter += 10
-                rotateJoystick.diameter += 10
-            case jSizeMinusSpriteNode:
-                moveJoystick.diameter -= 10
-                rotateJoystick.diameter -= 10
+//            case jSizePlusSpriteNode:
+//                moveJoystick.diameter += 10
+//                rotateJoystick.diameter += 10
+//            case jSizeMinusSpriteNode:
+//                moveJoystick.diameter -= 10
+//                rotateJoystick.diameter -= 10
             case setJoystickStickImageBtn:
                 joystickStickImageEnabled = !joystickStickImageEnabled
             case setJoystickSubstrateImageBtn:
                 joystickSubstrateImageEnabled = !joystickSubstrateImageEnabled
-            case joystickStickColorBtn:
-                setRandomStickColor()
-            case joystickSubstrateColorBtn:
-                setRandomSubstrateColor()
+//            case joystickStickColorBtn:
+//                setRandomStickColor()
+//            case joystickSubstrateColorBtn:
+//                setRandomSubstrateColor()
             default:
                 addApple(touch.location(in: self))
             }
         }
     }
     
-    func setRandomStickColor() {
-        let randomColor = UIColor.random()
-        moveJoystick.handleColor = randomColor
-        rotateJoystick.handleColor = randomColor
-    }
-    
-    func setRandomSubstrateColor() {
-        let randomColor = UIColor.random()
-        moveJoystick.baseColor = randomColor
-        rotateJoystick.baseColor = randomColor
-    }
+//    func setRandomStickColor() {
+//        let randomColor = UIColor.random()
+//        moveJoystick.handleColor = randomColor
+//        rotateJoystick.handleColor = randomColor
+//    }
+//    
+//    func setRandomSubstrateColor() {
+//        let randomColor = UIColor.random()
+//        moveJoystick.baseColor = randomColor
+//        rotateJoystick.baseColor = randomColor
+//    }
     
     override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
     }
 }
 
-extension UIColor {
-    static func random() -> UIColor {
-        return UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1)
-    }
-}
+//extension UIColor {
+//    static func random() -> UIColor {
+//        return UIColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1)
+//    }
+//}
