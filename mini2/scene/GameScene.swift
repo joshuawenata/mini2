@@ -1,7 +1,7 @@
 import SpriteKit
 
 class GameScene: SKScene {
-    var appleNode: SKSpriteNode?
+    var characterNode: SKSpriteNode?
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
     
@@ -27,7 +27,7 @@ class GameScene: SKScene {
     }
 
     let cameraNode = SKCameraNode()
-
+    
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
@@ -50,70 +50,76 @@ class GameScene: SKScene {
         addChild(rotateJoystickHiddenArea)
         
         moveJoystick.on(.begin) { [unowned self] _ in
-            let actions = [
-                SKAction.scale(to: 0.5, duration: 0.5),
-                SKAction.scale(to: 1, duration: 0.5)
-            ]
-
-            self.appleNode?.run(SKAction.sequence(actions))
+            self.startWalkingAnimation()
         }
         
         moveJoystick.on(.move) { [unowned self] joystick in
-            guard let appleNode = self.appleNode else {
+            guard let characterNode = self.characterNode else {
                 return
             }
             
-            let pVelocity = joystick.velocity;
+            let pVelocity = joystick.velocity
             let speed = CGFloat(0.12)
             
-            appleNode.position = CGPoint(x: appleNode.position.x + (pVelocity.x * speed), y: appleNode.position.y + (pVelocity.y * speed))
+            characterNode.position = CGPoint(x: characterNode.position.x + (pVelocity.x * speed), y: characterNode.position.y + (pVelocity.y * speed))
         }
         
         moveJoystick.on(.end) { [unowned self] _ in
-            let actions = [
-                SKAction.scale(to: 1.5, duration: 0.5),
-                SKAction.scale(to: 1, duration: 0.5)
-            ]
-
-            self.appleNode?.run(SKAction.sequence(actions))
+            self.stopWalkingAnimation()
         }
         
         rotateJoystick.on(.move) { [unowned self] joystick in
-            guard let appleNode = self.appleNode else {
+            guard let characterNode = self.characterNode else {
                 return
             }
 
-            appleNode.zRotation = joystick.angular
+            characterNode.zRotation = joystick.angular
         }
         
         rotateJoystick.on(.end) { [unowned self] _ in
-            self.appleNode?.run(SKAction.rotate(byAngle: 3.6, duration: 0.5))
+            self.characterNode?.run(SKAction.rotate(byAngle: 3.6, duration: 0.5))
         }
 
         joystickStickImageEnabled = true
         joystickSubstrateImageEnabled = true
 
-        addApple(CGPoint(x: frame.midX, y: frame.midY))
+        addcharacter(CGPoint(x: frame.midX, y: frame.midY))
 
         view.isMultipleTouchEnabled = true
         
-        // Setup camera
         addChild(cameraNode)
         camera = cameraNode
     }
     
-    func addApple(_ position: CGPoint) {
-        guard let appleImage = UIImage(named: "apple") else {
+    func addcharacter(_ position: CGPoint) {
+        guard let characterImage = UIImage(named: "charaIdle") else {
             return
         }
         
-        let texture = SKTexture(image: appleImage)
-        let apple = SKSpriteNode(texture: texture)
-        apple.physicsBody = SKPhysicsBody(texture: texture, size: apple.size)
-        apple.physicsBody!.affectedByGravity = false
-        apple.position = position
-        addChild(apple)
-        appleNode = apple
+        let texture = SKTexture(image: characterImage)
+        let character = SKSpriteNode(texture: texture)
+        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
+        character.physicsBody!.affectedByGravity = false
+        character.position = position
+        character.setScale(0.3)
+        addChild(character)
+        characterNode = character
+    }
+    
+    func startWalkingAnimation() {
+        guard let characterNode = characterNode else { return }
+        
+        let walkTextures = [SKTexture(imageNamed: "charaIdle"), SKTexture(imageNamed: "charaWalk")]
+        let walkAnimation = SKAction.animate(with: walkTextures, timePerFrame: 0.2, resize: false, restore: true)
+        let repeatWalk = SKAction.repeatForever(walkAnimation)
+        characterNode.run(repeatWalk, withKey: "walk")
+    }
+    
+    func stopWalkingAnimation() {
+        guard let characterNode = characterNode else { return }
+        
+        characterNode.removeAction(forKey: "walk")
+        characterNode.texture = SKTexture(imageNamed: "charaIdle")
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -126,13 +132,13 @@ class GameScene: SKScene {
             case setJoystickSubstrateImageBtn:
                 joystickSubstrateImageEnabled = !joystickSubstrateImageEnabled
             default:
-                addApple(touch.location(in: self))
+                addcharacter(touch.location(in: self))
             }
         }
     }
     
     override func update(_ currentTime: TimeInterval) {
-        guard let appleNode = appleNode else { return }
-        cameraNode.position = appleNode.position
+        guard let characterNode = characterNode else { return }
+        cameraNode.position = characterNode.position
     }
 }
