@@ -6,7 +6,28 @@ class GameScene: SKScene {
     let moveJoystick = 🕹(withDiameter: 100)
     let rotateJoystick = TLAnalogJoystick(withDiameter: 100)
     
+    let setJoystickStickImageBtn = SKLabelNode()
+    let setJoystickSubstrateImageBtn = SKLabelNode()
+    
     let cameraNode = SKCameraNode()
+    
+    var joystickStickImageEnabled = true {
+        didSet {
+            let image = joystickStickImageEnabled ? UIImage(named: "jStick") : nil
+            moveJoystick.handleImage = image
+            rotateJoystick.handleImage = image
+            setJoystickStickImageBtn.text = "\(joystickStickImageEnabled ? "Remove" : "Set") stick image"
+        }
+    }
+    
+    var joystickSubstrateImageEnabled = true {
+        didSet {
+            let image = joystickSubstrateImageEnabled ? UIImage(named: "jSubstrate") : nil
+            moveJoystick.baseImage = image
+            rotateJoystick.baseImage = image
+            setJoystickSubstrateImageBtn.text = "\(joystickSubstrateImageEnabled ? "Remove" : "Set") substrate image"
+        }
+    }
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
@@ -22,18 +43,12 @@ class GameScene: SKScene {
         addChild(cameraNode)
         camera = cameraNode
         
-        // Calculate half-width of the frame
-        let halfWidth = frame.width / 2
-        
-        // Add move joystick on the left side relative to camera
         cameraNode.addChild(moveJoystick)
         moveJoystick.position = CGPoint(x: -300, y: -100)
         
-        // Add rotate joystick on the right side relative to camera
         cameraNode.addChild(rotateJoystick)
         rotateJoystick.position = CGPoint(x: 300, y: -100)
         
-        // Configure joysticks
         configureJoysticks()
     }
     
@@ -50,20 +65,16 @@ class GameScene: SKScene {
             let pVelocity = joystick.velocity
             let speed = CGFloat(0.12)
             
-            // Calculate movement vector
             let dx = pVelocity.x * speed
             let dy = pVelocity.y * speed
             
-            // Apply movement to character's position
             characterNode.position.x += dx
             characterNode.position.y += dy
             
-            // Update character rotation based on rotate joystick if it's tracking
             if self.rotateJoystick.tracking {
                 characterNode.zRotation = self.rotateJoystick.angular - CGFloat.pi / 2
             }
             
-            // Adjust camera position to follow character
             self.cameraNode.position = characterNode.position
         }
         
@@ -76,12 +87,18 @@ class GameScene: SKScene {
                 return
             }
             
-            // Update character rotation based on rotate joystick
             characterNode.zRotation = joystick.angular
-            
-            // Adjust camera position to follow character
             self.cameraNode.position = characterNode.position
         }
+        
+        rotateJoystick.on(.end) { [unowned self] _ in
+            self.characterNode?.zRotation = 0
+        }
+        
+        joystickStickImageEnabled = true
+        joystickSubstrateImageEnabled = true
+        
+        view?.isMultipleTouchEnabled = true
     }
     
     func addCharacter(_ position: CGPoint) {
@@ -98,7 +115,6 @@ class GameScene: SKScene {
         addChild(character)
         characterNode = character
         
-        // Start idle animation
         startIdleAnimation()
     }
     
@@ -119,7 +135,6 @@ class GameScene: SKScene {
         let repeatWalk = SKAction.repeatForever(walkAnimation)
         characterNode.run(repeatWalk, withKey: "walk")
         
-        // Remove idle animation if it's running
         characterNode.removeAction(forKey: "idle")
     }
     
@@ -131,15 +146,16 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            let location = touch.location(in: self)
+        if let touch = touches.first {
+            let node = atPoint(touch.location(in: self))
             
-            if moveJoystick.contains(location) {
-                moveJoystick.touchesBegan(touches, with: event)
-            }
-            
-            if rotateJoystick.contains(location) {
-                rotateJoystick.touchesBegan(touches, with: event)
+            switch node {
+            case setJoystickStickImageBtn:
+                joystickStickImageEnabled = !joystickStickImageEnabled
+            case setJoystickSubstrateImageBtn:
+                joystickSubstrateImageEnabled = !joystickSubstrateImageEnabled
+            default:
+                joystickStickImageEnabled = !joystickStickImageEnabled
             }
         }
     }
@@ -150,9 +166,7 @@ class GameScene: SKScene {
             
             if moveJoystick.contains(location) {
                 moveJoystick.touchesMoved(touches, with: event)
-            }
-            
-            if rotateJoystick.contains(location) {
+            } else if rotateJoystick.contains(location) {
                 rotateJoystick.touchesMoved(touches, with: event)
             }
         }
@@ -164,12 +178,9 @@ class GameScene: SKScene {
             
             if moveJoystick.contains(location) {
                 moveJoystick.touchesEnded(touches, with: event)
-            }
-            
-            if rotateJoystick.contains(location) {
+            } else if rotateJoystick.contains(location) {
                 rotateJoystick.touchesEnded(touches, with: event)
             }
         }
     }
-
 }
