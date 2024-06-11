@@ -19,7 +19,7 @@ struct OnboardingView: View {
                 
                 VStack {
                     Text("Fall of Aethel")
-                        .font(.custom("JollyLodger", size: 80))
+                .font(.custom("JollyLodger", size: 80))
                         .foregroundColor(.white)
                         .padding()
                         .frame(height: 50)
