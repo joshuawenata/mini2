@@ -13,7 +13,7 @@ class GameScene: SKScene {
     
     var joystickStickImageEnabled = true {
         didSet {
-            let image = joystickStickImageEnabled ? UIImage(named: "jStick") : nil
+            let image = UIImage(named: "jStick")
             moveJoystick.handleImage = image
             rotateJoystick.handleImage = image
             setJoystickStickImageBtn.text = "\(joystickStickImageEnabled ? "Remove" : "Set") stick image"
@@ -22,7 +22,7 @@ class GameScene: SKScene {
     
     var joystickSubstrateImageEnabled = true {
         didSet {
-            let image = joystickSubstrateImageEnabled ? UIImage(named: "jSubstrate") : nil
+            let image = UIImage(named: "jSubstrate")
             moveJoystick.baseImage = image
             rotateJoystick.baseImage = image
             setJoystickSubstrateImageBtn.text = "\(joystickSubstrateImageEnabled ? "Remove" : "Set") substrate image"
@@ -40,6 +40,14 @@ class GameScene: SKScene {
         
         addCharacter(CGPoint(x: frame.midX, y: frame.midY))
         
+        configureJoysticks()
+        
+        addBuilding(at: CGPoint(x: 0, y: 100), imageName: "battleBuilding")
+        addBuilding(at: CGPoint(x: -400, y: 0), imageName: "shopBuilding")
+    }
+    
+    func configureJoysticks() {
+        
         addChild(cameraNode)
         camera = cameraNode
         
@@ -49,10 +57,6 @@ class GameScene: SKScene {
         cameraNode.addChild(rotateJoystick)
         rotateJoystick.position = CGPoint(x: 300, y: -100)
         
-        configureJoysticks()
-    }
-    
-    func configureJoysticks() {
         moveJoystick.on(.begin) { [unowned self] _ in
             self.startWalkingAnimation()
         }
