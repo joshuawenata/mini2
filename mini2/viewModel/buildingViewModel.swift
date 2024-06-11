@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import SpriteKit
 
-func addBuilding(at position: CGPoint, imageName: String) {
+func addBuilding(at position: CGPoint, imageName: String) -> SKSpriteNode {
     let building = SKSpriteNode(imageNamed: imageName)
     building.position = position
     building.setScale(0.2)
     building.zPosition = -1
-    addChild(building)
+    return building
 }

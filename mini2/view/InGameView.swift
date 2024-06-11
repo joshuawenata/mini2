@@ -18,6 +18,3 @@ struct InGameView: View {
     }
 }
 
-#Preview {
-    InGameView()
-}
