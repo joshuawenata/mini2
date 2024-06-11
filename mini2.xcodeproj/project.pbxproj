@@ -14,6 +14,7 @@
 		A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619562C16BC2B00FF75F1 /* CharacterView.swift */; };
 		A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619582C17F96400FF75F1 /* BackpackView.swift */; };
 		A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626195B2C188AC900FF75F1 /* buildingViewModel.swift */; };
+		A626195E2C188C1500FF75F1 /* menuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626195D2C188C1500FF75F1 /* menuViewModel.swift */; };
 		A660D2842C0ECB6400D3A74F /* mini2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = A660D2832C0ECB6400D3A74F /* mini2App.swift */; };
 		A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A660D2852C0ECB6400D3A74F /* ContentView.swift */; };
 		A660D2882C0ECB6500D3A74F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A660D2872C0ECB6500D3A74F /* Assets.xcassets */; };
@@ -49,6 +50,7 @@
 		A62619562C16BC2B00FF75F1 /* CharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterView.swift; sourceTree = "<group>"; };
 		A62619582C17F96400FF75F1 /* BackpackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackpackView.swift; sourceTree = "<group>"; };
 		A626195B2C188AC900FF75F1 /* buildingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = buildingViewModel.swift; sourceTree = "<group>"; };
+		A626195D2C188C1500FF75F1 /* menuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = menuViewModel.swift; sourceTree = "<group>"; };
 		A660D2802C0ECB6400D3A74F /* mini2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mini2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A660D2832C0ECB6400D3A74F /* mini2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mini2App.swift; sourceTree = "<group>"; };
 		A660D2852C0ECB6400D3A74F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				A626195B2C188AC900FF75F1 /* buildingViewModel.swift */,
+				A626195D2C188C1500FF75F1 /* menuViewModel.swift */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */,
 				2B3598DD2C11C01D00EDBA3C /* GameScene.swift in Sources */,
 				2B3598DF2C11C10600EDBA3C /* AnalogJoystick.swift in Sources */,
+				A626195E2C188C1500FF75F1 /* menuViewModel.swift in Sources */,
 				A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */,
 				2B3598E62C11C47600EDBA3C /* InGameView.swift in Sources */,
 				2B3598E42C11C39F00EDBA3C /* OnboardingView.swift in Sources */,
