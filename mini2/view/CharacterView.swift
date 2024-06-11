@@ -31,6 +31,12 @@ struct CharacterView: View {
                         .opacity(0.5)
                         .scaledToFit()
                     Spacer()
+                    Image("cancel")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .scaledToFit()
+                        .padding(.horizontal, 20)
+                        .scaledToFit()
                 }
                 .padding(.bottom, 20)
                 .padding(.horizontal, 15)
@@ -111,6 +117,3 @@ struct CharacterView: View {
     }
 }
 
-#Preview {
-    CharacterView()
-}
