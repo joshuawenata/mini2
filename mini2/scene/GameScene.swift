@@ -3,7 +3,8 @@ import SwiftUI
 
 class GameScene: SKScene {
     var characterNode: SKSpriteNode?
-    
+    var swordNode: SKSpriteNode?
+    var meleeAreaNode: SKSpriteNode?
     let moveJoystick = 🕹(withDiameter: 100)
     let rotateJoystick = TLAnalogJoystick(withDiameter: 100)
     
@@ -40,6 +41,9 @@ class GameScene: SKScene {
         addChild(background)
         
         addCharacter(CGPoint(x: frame.midX, y: frame.midY))
+        swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
+        meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea")
+        meleeAreaNode?.isHidden = true
         
         configureJoysticks()
         
@@ -59,7 +63,7 @@ class GameScene: SKScene {
         rotateJoystick.position = CGPoint(x: 300, y: -100)
         
         moveJoystick.on(.begin) { [unowned self] _ in
-            self.startWalkingAnimation()
+            startWalkingAnimation(characterNode: characterNode)
         }
         
         moveJoystick.on(.move) { [unowned self] joystick in
@@ -76,28 +80,60 @@ class GameScene: SKScene {
             characterNode.position.x += dx
             characterNode.position.y += dy
             
-            if self.rotateJoystick.tracking {
-                characterNode.zRotation = self.rotateJoystick.angular - CGFloat.pi / 2
-            }
+            swordNode?.position.x += dx
+            swordNode?.position.y += dy
+            
+            meleeAreaNode?.position.x += dx
+            meleeAreaNode?.position.y += dy
             
             self.cameraNode.position = characterNode.position
         }
         
         moveJoystick.on(.end) { [unowned self] _ in
-            self.stopWalkingAnimation()
+            stopWalkingAnimation(characterNode: characterNode)
+        }
+        
+        rotateJoystick.on(.begin) { [unowned self] _ in
+            guard let swordNode = self.swordNode else {
+                return
+            }
+            guard let meleeAreaNode = self.meleeAreaNode else {
+                return
+            }
+            meleeAreaNode.isHidden = false
+            meleeAreaNode.position.x += 60
+            meleeAreaNode.setScale(0.5)
+            meleeAreaNode.anchorPoint = CGPoint(x: 1.0, y: 0)
+            swordNode.position.x += 20
         }
         
         rotateJoystick.on(.move) { [unowned self] joystick in
-            guard let characterNode = self.characterNode else {
+            guard let meleeAreaNode = self.meleeAreaNode else {
                 return
             }
-            
-            characterNode.zRotation = joystick.angular
-            self.cameraNode.position = characterNode.position
+            meleeAreaNode.zRotation = joystick.angular
         }
         
         rotateJoystick.on(.end) { [unowned self] _ in
-            self.characterNode?.zRotation = 0
+            startAttackAnimation(characterNode: characterNode)
+            guard let swordNode = self.swordNode else {
+                return
+            }
+            guard let meleeAreaNode = self.meleeAreaNode else {
+                return
+            }
+            meleeAreaNode.isHidden = true
+            meleeAreaNode.position.x -= 60
+            self.meleeAreaNode?.zRotation = 0
+            
+            swordNode.anchorPoint = CGPoint(x: 1.0, y: 0)
+            let rotateRight = SKAction.rotate(byAngle: 45 * (.pi / 180), duration: 0.2)
+            let rotateLeft = SKAction.rotate(byAngle: -45 * (.pi / 180), duration: 0.2)
+            let rotateSequence = SKAction.sequence([rotateRight, rotateLeft])
+            let repeatRotation = SKAction.repeat(rotateSequence, count: 1)
+
+            swordNode.run(repeatRotation)
+            swordNode.position.x -= 20
         }
         
         joystickStickImageEnabled = true
@@ -120,34 +156,26 @@ class GameScene: SKScene {
         addChild(character)
         characterNode = character
         
-        startIdleAnimation()
+        startIdleAnimation(characterNode: characterNode)
     }
     
-    func startIdleAnimation() {
-        guard let characterNode = characterNode else { return }
+    func addItem(_ position: CGPoint, imageName: String, isPhysicsBody: Bool = false) -> SKSpriteNode {
+        guard let itemImage = UIImage(named: imageName) else {
+            return SKSpriteNode()
+        }
         
-        let idleTextures = [SKTexture(imageNamed: "charaIdle")]
-        let idleAnimation = SKAction.animate(with: idleTextures, timePerFrame: 0.2, resize: false, restore: true)
-        let repeatIdle = SKAction.repeatForever(idleAnimation)
-        characterNode.run(repeatIdle, withKey: "idle")
-    }
-    
-    func startWalkingAnimation() {
-        guard let characterNode = characterNode else { return }
+        let texture = SKTexture(image: itemImage)
+        let item = SKSpriteNode(texture: texture)
+        if(isPhysicsBody){
+            item.physicsBody = SKPhysicsBody(texture: texture, size: item.size)
+            item.physicsBody = SKPhysicsBody(texture: texture, size: item.size)
+            item.physicsBody!.affectedByGravity = false
+        }
+        item.position = CGPoint(x: -60, y: 0)
+        item.setScale(0.3)
+        addChild(item)
         
-        let walkTextures = [SKTexture(imageNamed: "charaWalk"), SKTexture(imageNamed: "charaIdle")]
-        let walkAnimation = SKAction.animate(with: walkTextures, timePerFrame: 0.2, resize: false, restore: true)
-        let repeatWalk = SKAction.repeatForever(walkAnimation)
-        characterNode.run(repeatWalk, withKey: "walk")
-        
-        characterNode.removeAction(forKey: "idle")
-    }
-    
-    func stopWalkingAnimation() {
-        guard let characterNode = characterNode else { return }
-        
-        characterNode.removeAction(forKey: "walk")
-        startIdleAnimation()
+        return item
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
