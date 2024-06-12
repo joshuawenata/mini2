@@ -10,7 +10,7 @@ import SwiftUI
 struct CharacterView: View {
     var body: some View {
         ZStack {
-            Image("bgDefault")
+            Image("greenbg1")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
@@ -19,12 +19,12 @@ struct CharacterView: View {
                 
                 HStack {
                     Text("Character")
-                        .font(.custom("JollyLodger", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .scaledToFit()
                     Text("Sparks")
-                        .font(.custom("JollyLodger", size: 30))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.horizontal, 20)
@@ -38,8 +38,10 @@ struct CharacterView: View {
                         .padding(.horizontal, 20)
                         .scaledToFit()
                 }
-                .padding(.bottom, 20)
+                //                .padding()
+                //                .padding(.bottom, 20)
                 .padding(.horizontal, 15)
+                .padding(.top)
                 
                 Spacer()
                 
@@ -48,7 +50,7 @@ struct CharacterView: View {
                     VStack(alignment: .leading) {
                         
                         Text("Status")
-                            .font(.custom("JollyLodger", size: 40))
+                            .font(.custom("AveriaSerifLibre-Regular", size: 40))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                             .padding(.horizontal)
@@ -60,7 +62,7 @@ struct CharacterView: View {
                                     .resizable()
                                     .frame(width: 40, height: 40)
                                 Text("5")
-                                    .font(.custom("JollyLodger", size: 30))
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
                             }
@@ -71,7 +73,7 @@ struct CharacterView: View {
                                     .font(.system(size: 30))
                                     .foregroundColor(.white)
                                 Text("100")
-                                    .font(.custom("JollyLodger", size: 30))
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
                             }
@@ -80,7 +82,7 @@ struct CharacterView: View {
                         .padding(.vertical)
                         
                         Text("Clothing")
-                            .font(.custom("JollyLodger", size: 40))
+                            .font(.custom("AveriaSerifLibre-Regular", size: 40))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                             .padding(.horizontal)
@@ -91,25 +93,31 @@ struct CharacterView: View {
                             .padding(.horizontal)
                             .padding(.bottom, 20)
                     }
-                    
-                    VStack {
-                        
-                        Image("charaIdle")
-                            .resizable()
-                            .frame(width: 150, height: 200)
-                            .padding(.horizontal, 150)
-                        
-                        Text("Naruto")
-                            .font(.custom("JollyLodger", size: 40))
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.horizontal)
-                            .frame(height: 50)
-                        
+                    .padding(.bottom, -10)
+                    ZStack {
+                        VStack {
+                            
+                            Image("charaIdle")
+                                .resizable()
+                                .frame(width: 150, height: 200)
+                                .padding(.horizontal, 150)
+                                .opacity(0)
+                            
+                            Text("|||Exalted|||")
+                                .font(.custom("AveriaSerifLibre-Regular", size: 40))
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal)
+                                .frame(height: 50)
+                            
+                        }
+                        Image("femboy")
+                            .offset(y: -45)
                     }
                     
-                }
                     
+                }
+                
             }
             .padding(.horizontal, 50)
             
@@ -117,3 +125,6 @@ struct CharacterView: View {
     }
 }
 
+#Preview {
+    CharacterView()
+}

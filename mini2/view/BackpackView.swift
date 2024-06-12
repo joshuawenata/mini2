@@ -17,7 +17,7 @@ struct BackpackView: View {
 
     var body: some View {
         ZStack {
-            Image("bgDefault")
+            Image("greenbg1")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
@@ -26,10 +26,11 @@ struct BackpackView: View {
                 
                 HStack {
                     Text("Backpack")
-                        .font(.custom("JollyLodger", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .scaledToFit()
+                        .padding()
                     Spacer()
                     Image("cancel")
                         .resizable()
@@ -69,4 +70,8 @@ struct BackpackView: View {
             .padding(.horizontal, 50)
         }
     }
+}
+
+#Preview {
+    BackpackView()
 }
