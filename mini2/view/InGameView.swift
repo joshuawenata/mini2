@@ -29,8 +29,8 @@ struct InGameView: View {
                                     .padding(.horizontal, 20)
                             })
                             
-                            NavigationLink(destination: EmptyView(), label: {
-                                Image("exit")
+                            NavigationLink(destination: optionView(), label: {
+                                Image("option")
                                     .resizable()
                                     .frame(width: 40, height: 40)
                                     .foregroundColor(.white)
