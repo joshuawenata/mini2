@@ -1,13 +1,8 @@
-//
-//  optionView.swift
-//  mini2
-//
-//  Created by Joshua Wenata Sunarto on 12/06/24.
-//
-
 import SwiftUI
 
-struct optionView: View {
+struct OptionView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         ZStack {
             Image("bgDefault")
@@ -16,9 +11,13 @@ struct optionView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                Text("Continue Game")
-                    .font(.custom("JollyLodger", size: 40))
-                    .foregroundStyle(.white)
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    Text("Continue Game")
+                        .font(.custom("JollyLodger", size: 40))
+                        .foregroundStyle(.white)
+                })
                 Text("Settings")
                     .font(.custom("JollyLodger", size: 40))
                     .foregroundStyle(.white)
@@ -29,6 +28,6 @@ struct optionView: View {
                     .foregroundStyle(.white)
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
-

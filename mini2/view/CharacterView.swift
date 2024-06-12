@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CharacterView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         ZStack {
             Image("bgDefault")
@@ -31,12 +33,16 @@ struct CharacterView: View {
                         .opacity(0.5)
                         .scaledToFit()
                     Spacer()
-                    Image("cancel")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .scaledToFit()
-                        .padding(.horizontal, 20)
-                        .scaledToFit()
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image("cancel")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .scaledToFit()
+                            .padding(.horizontal, 20)
+                            .scaledToFit()
+                    }
                 }
                 .padding(.bottom, 20)
                 .padding(.horizontal, 15)
@@ -114,7 +120,7 @@ struct CharacterView: View {
             .padding(.horizontal, 50)
             
         }
-        .navigationBarBackButtonHidden(true) 
+        .navigationBarBackButtonHidden(true)
     }
 }
 
