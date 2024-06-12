@@ -21,7 +21,7 @@ struct InGameView: View {
                                     .foregroundColor(.white)
                             })
                             
-                            NavigationLink(destination: EmptyView(), label: {
+                            NavigationLink(destination: BackpackView(), label: {
                                 Image("inventory")
                                     .resizable()
                                     .frame(width: 50, height: 50)
@@ -29,7 +29,7 @@ struct InGameView: View {
                                     .padding(.horizontal, 20)
                             })
                             
-                            NavigationLink(destination: optionView(), label: {
+                            NavigationLink(destination: OptionView(), label: {
                                 Image("option")
                                     .resizable()
                                     .frame(width: 40, height: 40)
