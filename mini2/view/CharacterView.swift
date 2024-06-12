@@ -114,6 +114,7 @@ struct CharacterView: View {
             .padding(.horizontal, 50)
             
         }
+        .navigationBarBackButtonHidden(true) 
     }
 }
 

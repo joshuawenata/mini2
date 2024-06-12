@@ -1,10 +1,3 @@
-//
-//  InGameView.swift
-//  mini2
-//
-//  Created by Timothy Andrian on 06/06/24.
-//
-
 import SwiftUI
 import SpriteKit
 
@@ -13,8 +6,46 @@ struct InGameView: View {
     
     var body: some View {
         NavigationStack {
-            SpriteView(scene: scene).ignoresSafeArea()
+            ZStack {
+                
+                SpriteView(scene: scene).ignoresSafeArea()
+                
+                VStack {
+                    VStack {
+                        HStack {
+                            Spacer()
+                            NavigationLink(destination: CharacterView(), label: {
+                                Image("character")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.white)
+                            })
+                            
+                            NavigationLink(destination: EmptyView(), label: {
+                                Image("inventory")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 20)
+                            })
+                            
+                            NavigationLink(destination: EmptyView(), label: {
+                                Image("exit")
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.white)
+                            })
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                }
+                .padding(.top, 20)
+                
+            }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

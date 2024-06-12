@@ -128,6 +128,13 @@
 			path = viewModel;
 			sourceTree = "<group>";
 		};
+		A626195F2C19514700FF75F1 /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		A660D2772C0ECB6400D3A74F = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +158,7 @@
 		A660D2822C0ECB6400D3A74F /* mini2 */ = {
 			isa = PBXGroup;
 			children = (
+				A626195F2C19514700FF75F1 /* model */,
 				A660D2C62C13203400D3A74F /* Info.plist */,
 				A660D2C02C131F7D00D3A74F /* helper */,
 				A660D2C32C13201500D3A74F /* Font */,
