@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BackpackView: View {
     @Environment(\.presentationMode) var presentationMode
-    let items = Array(0..<120) // Example with 20 items
+    let items = Array(0..<120)
     let itemsPerRow = 6
 
     var rows: Int {
