@@ -46,12 +46,6 @@ class GameScene: SKScene {
         addChild(addBuilding(at: CGPoint(x: 0, y: 100), imageName: "battleBuilding"))
         addChild(addBuilding(at: CGPoint(x: -400, y: 0), imageName: "shopBuilding"))
         
-        cameraNode.addChild(addMenu(at: CGPoint(x: 160, y: 150), imageName: "character", onClick: {
-            print("Character menu clicked")
-        }))
-        cameraNode.addChild(addMenu(at: CGPoint(x: 230, y: 150), imageName: "inventory"))
-        cameraNode.addChild(addMenu(at: CGPoint(x: 300, y: 150), imageName: "exit"))
-        
     }
     
     func configureJoysticks() {

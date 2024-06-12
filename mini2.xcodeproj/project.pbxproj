@@ -18,6 +18,9 @@
 		A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619582C17F96400FF75F1 /* BackpackView.swift */; };
 		A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626195B2C188AC900FF75F1 /* buildingViewModel.swift */; };
 		A626195E2C188C1500FF75F1 /* menuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626195D2C188C1500FF75F1 /* menuViewModel.swift */; };
+		A62619672C19690A00FF75F1 /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619662C19690A00FF75F1 /* OptionView.swift */; };
+		A62619692C19802D00FF75F1 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619682C19802D00FF75F1 /* Character.swift */; };
+		A626196B2C19814D00FF75F1 /* SparksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626196A2C19814D00FF75F1 /* SparksView.swift */; };
 		A660D2842C0ECB6400D3A74F /* mini2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = A660D2832C0ECB6400D3A74F /* mini2App.swift */; };
 		A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A660D2852C0ECB6400D3A74F /* ContentView.swift */; };
 		A660D2882C0ECB6500D3A74F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A660D2872C0ECB6500D3A74F /* Assets.xcassets */; };
@@ -57,6 +60,9 @@
 		A62619582C17F96400FF75F1 /* BackpackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackpackView.swift; sourceTree = "<group>"; };
 		A626195B2C188AC900FF75F1 /* buildingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = buildingViewModel.swift; sourceTree = "<group>"; };
 		A626195D2C188C1500FF75F1 /* menuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = menuViewModel.swift; sourceTree = "<group>"; };
+		A62619662C19690A00FF75F1 /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
+		A62619682C19802D00FF75F1 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		A626196A2C19814D00FF75F1 /* SparksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparksView.swift; sourceTree = "<group>"; };
 		A660D2802C0ECB6400D3A74F /* mini2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mini2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A660D2832C0ECB6400D3A74F /* mini2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mini2App.swift; sourceTree = "<group>"; };
 		A660D2852C0ECB6400D3A74F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -123,6 +129,8 @@
 				A62619582C17F96400FF75F1 /* BackpackView.swift */,
 				962D988D2C19655E00E38C85 /* ShopView.swift */,
 				962D988F2C19690A00E38C85 /* LeaderboardView.swift */,
+				A62619662C19690A00FF75F1 /* OptionView.swift */,
+				A626196A2C19814D00FF75F1 /* SparksView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -134,6 +142,14 @@
 				A626195D2C188C1500FF75F1 /* menuViewModel.swift */,
 			);
 			path = viewModel;
+			sourceTree = "<group>";
+		};
+		A626195F2C19514700FF75F1 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				A62619682C19802D00FF75F1 /* Character.swift */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 		A660D2772C0ECB6400D3A74F = {
@@ -159,6 +175,7 @@
 		A660D2822C0ECB6400D3A74F /* mini2 */ = {
 			isa = PBXGroup;
 			children = (
+				A626195F2C19514700FF75F1 /* model */,
 				A660D2C62C13203400D3A74F /* Info.plist */,
 				A660D2C02C131F7D00D3A74F /* helper */,
 				A660D2C32C13201500D3A74F /* Font */,
@@ -348,6 +365,8 @@
 				A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */,
 				2B3598DD2C11C01D00EDBA3C /* GameScene.swift in Sources */,
 				2B3598DF2C11C10600EDBA3C /* AnalogJoystick.swift in Sources */,
+				A62619692C19802D00FF75F1 /* Character.swift in Sources */,
+				A626196B2C19814D00FF75F1 /* SparksView.swift in Sources */,
 				A626195E2C188C1500FF75F1 /* menuViewModel.swift in Sources */,
 				962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */,
 				A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */,
@@ -356,6 +375,7 @@
 				A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */,
 				A660D2842C0ECB6400D3A74F /* mini2App.swift in Sources */,
 				962D988E2C19655E00E38C85 /* ShopView.swift in Sources */,
+				A62619672C19690A00FF75F1 /* OptionView.swift in Sources */,
 				A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -45,13 +45,11 @@ struct OnboardingView: View {
                     }
                     .padding()
                     
-                    Button(action: {
-                        presentGameScene()
-                    }) {
+                    NavigationLink(destination: InGameView(), label: {
                         Image("startbutton")
                             .resizable()
                             .frame(width: 250, height: 70)
-                    }
+                    })
                 }
             }
         }

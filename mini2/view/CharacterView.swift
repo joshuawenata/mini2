@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CharacterView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         ZStack {
             Image("greenbg1")
@@ -18,6 +20,7 @@ struct CharacterView: View {
             VStack(alignment: .leading) {
                 
                 HStack {
+                    
                     Text("Character")
                         .font(.custom("AveriaSerifLibre-Regular", size: 40))
                         .fontWeight(.bold)
@@ -31,12 +34,14 @@ struct CharacterView: View {
                         .opacity(0.5)
                         .scaledToFit()
                     Spacer()
-                    Image("cancel")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .scaledToFit()
-                        .padding(.horizontal, 20)
-                        .scaledToFit()
+                    NavigationLink(destination: InGameView(), label: {
+                        Image("cancel")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .scaledToFit()
+                            .padding(.horizontal, 20)
+                            .scaledToFit()
+                    })
                 }
                 //                .padding()
                 //                .padding(.bottom, 20)
@@ -122,6 +127,7 @@ struct CharacterView: View {
             .padding(.horizontal, 50)
             
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

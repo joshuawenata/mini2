@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct BackpackView: View {
-    let items = Array(0..<120) // Example with 20 items
+    @Environment(\.presentationMode) var presentationMode
+    let items = Array(0..<120)
     let itemsPerRow = 6
 
     var rows: Int {
@@ -32,12 +33,16 @@ struct BackpackView: View {
                         .scaledToFit()
                         .padding()
                     Spacer()
-                    Image("cancel")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .scaledToFit()
-                        .padding(.horizontal, 20)
-                        .scaledToFit()
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image("cancel")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .scaledToFit()
+                            .padding(.horizontal, 20)
+                            .scaledToFit()
+                    }
                 }
                 .padding(.bottom, 20)
                 .padding(.horizontal, 15)
@@ -69,6 +74,7 @@ struct BackpackView: View {
             }
             .padding(.horizontal, 50)
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
