@@ -20,29 +20,32 @@ struct CharacterView: View {
             VStack(alignment: .leading) {
                 
                 HStack {
+                    
                     Text("Character")
                         .font(.custom("JollyLodger", size: 40))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .scaledToFit()
-                    Text("Sparks")
-                        .font(.custom("JollyLodger", size: 30))
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 20)
-                        .opacity(0.5)
-                        .scaledToFit()
+                    
+                    NavigationLink(destination: SparksView(), label: {
+                        Text("Sparks")
+                            .font(.custom("JollyLodger", size: 30))
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 20)
+                            .opacity(0.5)
+                            .scaledToFit()
+                    })
+                    
                     Spacer()
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
+                    NavigationLink(destination: InGameView(), label: {
                         Image("cancel")
                             .resizable()
                             .frame(width: 40, height: 40)
                             .scaledToFit()
                             .padding(.horizontal, 20)
                             .scaledToFit()
-                    }
+                    })
                 }
                 .padding(.bottom, 20)
                 .padding(.horizontal, 15)
