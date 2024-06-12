@@ -11,6 +11,9 @@
 		2B3598DF2C11C10600EDBA3C /* AnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3598DE2C11C10600EDBA3C /* AnalogJoystick.swift */; };
 		2B3598E42C11C39F00EDBA3C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3598E32C11C39F00EDBA3C /* OnboardingView.swift */; };
 		2B3598E62C11C47600EDBA3C /* InGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3598E52C11C47600EDBA3C /* InGameView.swift */; };
+		962D988E2C19655E00E38C85 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988D2C19655E00E38C85 /* ShopView.swift */; };
+		962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988F2C19690A00E38C85 /* LeaderboardView.swift */; };
+		969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */; };
 		A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619562C16BC2B00FF75F1 /* CharacterView.swift */; };
 		A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619582C17F96400FF75F1 /* BackpackView.swift */; };
 		A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626195B2C188AC900FF75F1 /* buildingViewModel.swift */; };
@@ -52,6 +55,9 @@
 		2B3598DE2C11C10600EDBA3C /* AnalogJoystick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalogJoystick.swift; sourceTree = "<group>"; };
 		2B3598E32C11C39F00EDBA3C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		2B3598E52C11C47600EDBA3C /* InGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InGameView.swift; sourceTree = "<group>"; };
+		962D988D2C19655E00E38C85 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
+		962D988F2C19690A00E38C85 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
+		962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AveriaSerifLibre-Regular.ttf"; sourceTree = "<group>"; };
 		A62619562C16BC2B00FF75F1 /* CharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterView.swift; sourceTree = "<group>"; };
 		A62619582C17F96400FF75F1 /* BackpackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackpackView.swift; sourceTree = "<group>"; };
 		A626195B2C188AC900FF75F1 /* buildingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = buildingViewModel.swift; sourceTree = "<group>"; };
@@ -125,6 +131,8 @@
 				2B3598E52C11C47600EDBA3C /* InGameView.swift */,
 				A62619562C16BC2B00FF75F1 /* CharacterView.swift */,
 				A62619582C17F96400FF75F1 /* BackpackView.swift */,
+				962D988D2C19655E00E38C85 /* ShopView.swift */,
+				962D988F2C19690A00E38C85 /* LeaderboardView.swift */,
 				A62619662C19690A00FF75F1 /* OptionView.swift */,
 				A626196A2C19814D00FF75F1 /* SparksView.swift */,
 			);
@@ -223,6 +231,7 @@
 			isa = PBXGroup;
 			children = (
 				A660D2C42C13202200D3A74F /* JollyLodger.ttf */,
+				962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */,
 			);
 			path = Font;
 			sourceTree = "<group>";
@@ -333,6 +342,7 @@
 			files = (
 				A660D28B2C0ECB6500D3A74F /* Preview Assets.xcassets in Resources */,
 				A660D2C52C13202200D3A74F /* JollyLodger.ttf in Resources */,
+				969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */,
 				A660D2882C0ECB6500D3A74F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,11 +376,13 @@
 				A626196D2C199EBE00FF75F1 /* movementViewModel.swift in Sources */,
 				A626195E2C188C1500FF75F1 /* menuViewModel.swift in Sources */,
 				A62619732C19A01D00FF75F1 /* basicAttackViewModel.swift in Sources */,
+				962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */,
 				A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */,
 				2B3598E62C11C47600EDBA3C /* InGameView.swift in Sources */,
 				2B3598E42C11C39F00EDBA3C /* OnboardingView.swift in Sources */,
 				A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */,
 				A660D2842C0ECB6400D3A74F /* mini2App.swift in Sources */,
+				962D988E2C19655E00E38C85 /* ShopView.swift in Sources */,
 				A62619672C19690A00FF75F1 /* OptionView.swift in Sources */,
 				A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */,
 			);

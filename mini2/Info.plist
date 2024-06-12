@@ -5,6 +5,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>JollyLodger.ttf</string>
+		<string>AveriaSerifLibre-Regular.ttf</string>
 	</array>
 </dict>
 </plist>
