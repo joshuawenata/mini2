@@ -5,7 +5,7 @@ struct OptionView: View {
     
     var body: some View {
         ZStack {
-            Image("bgDefault")
+            Image("greenbg1")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
@@ -15,16 +15,16 @@ struct OptionView: View {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Text("Continue Game")
-                        .font(.custom("JollyLodger", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
                         .foregroundStyle(.white)
                 })
                 Text("Settings")
-                    .font(.custom("JollyLodger", size: 40))
+                    .font(.custom("AveriaSerifLibre-Regular", size: 40))
                     .foregroundStyle(.white)
                     .padding(.top, 15)
                     .padding(.bottom, 20)
                 Text("Exit Game")
-                    .font(.custom("JollyLodger", size: 40))
+                    .font(.custom("AveriaSerifLibre-Regular", size: 40))
                     .foregroundStyle(.white)
             }
         }
