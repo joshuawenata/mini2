@@ -6,6 +6,7 @@ class GameScene: SKScene {
     var first = true
     var swordNode: SKSpriteNode?
     var meleeAreaNode: SKSpriteNode?
+    var slashNode: SKSpriteNode?
     let moveJoystick = 🕹(withDiameter: 100)
     let rotateJoystick = TLAnalogJoystick(withDiameter: 100)
     
@@ -44,10 +45,15 @@ class GameScene: SKScene {
         addCharacter(CGPoint(x: frame.midX, y: frame.midY))
         swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
         meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea")
+        slashNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "slash_00000")
         meleeAreaNode?.isHidden = true
+        slashNode?.isHidden = true
         
         swordNode?.zRotation = -20
         swordNode?.position.x = -40
+        
+        slashNode?.setScale(1.0)
+        slashNode?.position.x = 0
         
         configureJoysticks()
         
@@ -90,6 +96,9 @@ class GameScene: SKScene {
             meleeAreaNode?.position.x += dx
             meleeAreaNode?.position.y += dy
             
+            slashNode?.position.x += dx
+            slashNode?.position.y += dy
+            
             self.cameraNode.position = characterNode.position
         }
         
@@ -101,8 +110,12 @@ class GameScene: SKScene {
             guard let meleeAreaNode = self.meleeAreaNode else {
                 return
             }
+            guard let slashNode = self.slashNode else {
+                return
+            }
             meleeAreaNode.isHidden = false
             meleeAreaNode.position.x += 60
+            slashNode.position.x += 60
             meleeAreaNode.setScale(0.5)
             meleeAreaNode.anchorPoint = CGPoint(x: 1.0, y: 0)
         }
@@ -111,7 +124,11 @@ class GameScene: SKScene {
             guard let meleeAreaNode = self.meleeAreaNode else {
                 return
             }
+            guard let slashNode = self.slashNode else {
+                return
+            }
             meleeAreaNode.zRotation = joystick.angular
+            slashNode.zRotation = joystick.angular
         }
         
         rotateJoystick.on(.end) { [unowned self] _ in
@@ -122,6 +139,12 @@ class GameScene: SKScene {
             guard let meleeAreaNode = self.meleeAreaNode else {
                 return
             }
+            guard let slashNode = self.slashNode else {
+                return
+            }
+            slashNode.isHidden = false
+            slashNode.position.x -= 60
+            startSlashAnimation(slashNode: slashNode)
             meleeAreaNode.isHidden = true
             meleeAreaNode.position.x -= 60
             self.meleeAreaNode?.zRotation = 0
