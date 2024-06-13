@@ -18,7 +18,7 @@ struct SparksView: View {
     
     var body: some View {
         ZStack {
-            Image("bgDefault")
+            Image("greenbg1")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
@@ -29,14 +29,14 @@ struct SparksView: View {
                     
                     NavigationLink(destination: CharacterView(), label: {
                         Text("Character")
-                            .font(.custom("JollyLodger", size: 30))
+                            .font(.custom("AveriaSerifLibre-Regular", size: 30))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                             .opacity(0.5)
                             .scaledToFit()
                     })
                     Text("Sparks")
-                        .font(.custom("JollyLodger", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.horizontal, 20)
@@ -64,7 +64,7 @@ struct SparksView: View {
                         HStack {
                                                         
                             Text("Equipped")
-                                .font(.custom("JollyLodger", size: 30))
+                                .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
@@ -112,7 +112,7 @@ struct SparksView: View {
                         HStack {
                             
                             Text("Crystal Sword")
-                                .font(.custom("JollyLodger", size: 30))
+                                .font(.custom("AveriaSerifLibre-Regular", size: 20))
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
@@ -123,7 +123,7 @@ struct SparksView: View {
                                 .frame(width: 50, height: 50)
                             
                             Text("+10")
-                                .font(.custom("JollyLodger", size: 30))
+                                .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .frame(height: 50)
@@ -147,7 +147,7 @@ struct SparksView: View {
                                     .padding(.leading, 10)
                                 
                                 Text("Equip")
-                                    .font(.custom("JollyLodger", size: 30))
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 20))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
                                 
@@ -169,7 +169,7 @@ struct SparksView: View {
                                         .padding(.horizontal, 5)
                                     
                                     Text("1000")
-                                        .font(.custom("JollyLodger", size: 30))
+                                        .font(.custom("AveriaSerifLibre-Regular", size: 20))
                                         .fontWeight(.bold)
                                         .foregroundColor(.white)
                                     
