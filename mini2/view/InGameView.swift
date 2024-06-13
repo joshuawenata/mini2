@@ -14,26 +14,32 @@ struct InGameView: View {
                     VStack {
                         HStack {
                             Spacer()
+                            NavigationLink(destination: LeaderboardView(), label: {
+                                Image(systemName: "trophy.fill")
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.black)
+                            })
+                            
                             NavigationLink(destination: CharacterView(), label: {
                                 Image("character")
                                     .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .foregroundColor(.white)
+                                    .frame(width: 45, height: 45)
+                                    .padding(.leading, 20)
                             })
                             
                             NavigationLink(destination: BackpackView(), label: {
                                 Image("inventory")
                                     .resizable()
                                     .frame(width: 50, height: 50)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 20)
+                                    .padding(.leading, 20)
                             })
                             
                             NavigationLink(destination: OptionView(), label: {
                                 Image("option")
                                     .resizable()
                                     .frame(width: 40, height: 40)
-                                    .foregroundColor(.white)
+                                    .padding(.leading, 20)
                             })
                         }
                     }

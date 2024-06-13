@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LeaderboardView: View {
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {
             Image("greenbg1")
@@ -31,12 +32,16 @@ struct LeaderboardView: View {
                         .scaledToFit()
                         .padding()
                     Spacer()
-                    Image("cancel")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .scaledToFit()
-                        .padding(.horizontal, 20)
-                        .scaledToFit()
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image("cancel")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .scaledToFit()
+                            .padding(.horizontal, 20)
+                            .scaledToFit()
+                    }
                 }
                 .padding(15)
                 .padding(.horizontal, 30)
@@ -150,6 +155,7 @@ struct LeaderboardView: View {
                 .padding(.horizontal, 30)
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
