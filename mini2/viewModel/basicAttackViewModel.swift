@@ -16,3 +16,12 @@ func startAttackAnimation(characterNode: SKSpriteNode?) {
     let repeatAttackCharacter = SKAction.repeat(attackCharacterAnimation, count: 1)
     characterNode.run(repeatAttackCharacter, withKey: "attack")
 }
+
+func startSlashAnimation(slashNode: SKSpriteNode?) {
+    guard let slashNode = slashNode else { return }
+    
+    let slashTextures = [SKTexture(imageNamed: "slash_00000"),SKTexture(imageNamed: "slash_00001"),SKTexture(imageNamed: "slash_00002"),SKTexture(imageNamed: "slash_00003"),SKTexture(imageNamed: "slash_00004"),SKTexture(imageNamed: "slash_00005"),SKTexture(imageNamed: "slash_00006"),SKTexture(imageNamed: "slash_00007"),SKTexture(imageNamed: "slash_00008"),SKTexture(imageNamed: "slash_00009"),SKTexture(imageNamed: "slash_00010"),SKTexture(imageNamed: "slash_00011"),SKTexture(imageNamed: "slash_00012"),SKTexture(imageNamed: "slash_00013"),SKTexture(imageNamed: "slash_00014")]
+    let slashAnimation = SKAction.animate(with: slashTextures, timePerFrame: 0.02, resize: false, restore: true)
+    let repeatSlash = SKAction.repeat(slashAnimation, count: 1)
+    slashNode.run(repeatSlash, withKey: "slash")
+}
