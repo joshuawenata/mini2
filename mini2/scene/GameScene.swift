@@ -3,6 +3,7 @@ import SwiftUI
 
 class GameScene: SKScene {
     var characterNode: SKSpriteNode?
+    var first = true
     var swordNode: SKSpriteNode?
     var meleeAreaNode: SKSpriteNode?
     let moveJoystick = 🕹(withDiameter: 100)
@@ -44,6 +45,9 @@ class GameScene: SKScene {
         swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
         meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea")
         meleeAreaNode?.isHidden = true
+        
+        swordNode?.zRotation = -20
+        swordNode?.position.x = -40
         
         configureJoysticks()
         
@@ -94,9 +98,6 @@ class GameScene: SKScene {
         }
         
         rotateJoystick.on(.begin) { [unowned self] _ in
-            guard let swordNode = self.swordNode else {
-                return
-            }
             guard let meleeAreaNode = self.meleeAreaNode else {
                 return
             }
@@ -104,7 +105,6 @@ class GameScene: SKScene {
             meleeAreaNode.position.x += 60
             meleeAreaNode.setScale(0.5)
             meleeAreaNode.anchorPoint = CGPoint(x: 1.0, y: 0)
-            swordNode.position.x += 20
         }
         
         rotateJoystick.on(.move) { [unowned self] joystick in
@@ -126,14 +126,18 @@ class GameScene: SKScene {
             meleeAreaNode.position.x -= 60
             self.meleeAreaNode?.zRotation = 0
             
+            if(first){
+                swordNode.position.y -= 25
+                first = false
+            }
+            
             swordNode.anchorPoint = CGPoint(x: 1.0, y: 0)
-            let rotateRight = SKAction.rotate(byAngle: 45 * (.pi / 180), duration: 0.2)
-            let rotateLeft = SKAction.rotate(byAngle: -45 * (.pi / 180), duration: 0.2)
+            let rotateRight = SKAction.rotate(byAngle: 60 * (.pi / 180), duration: 0.2)
+            let rotateLeft = SKAction.rotate(byAngle: -60 * (.pi / 180), duration: 0.2)
             let rotateSequence = SKAction.sequence([rotateRight, rotateLeft])
             let repeatRotation = SKAction.repeat(rotateSequence, count: 1)
 
             swordNode.run(repeatRotation)
-            swordNode.position.x -= 20
         }
         
         joystickStickImageEnabled = true
