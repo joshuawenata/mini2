@@ -14,6 +14,11 @@
 		962D988E2C19655E00E38C85 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988D2C19655E00E38C85 /* ShopView.swift */; };
 		962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988F2C19690A00E38C85 /* LeaderboardView.swift */; };
 		969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */; };
+		8B8FF0612C19450500BE749B /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0602C19450500BE749B /* GameCenterManager.swift */; };
+		8B8FF0682C1952B700BE749B /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0672C1952B700BE749B /* Enum.swift */; };
+		8B8FF06B2C19596F00BE749B /* PlayerPositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF06A2C19596F00BE749B /* PlayerPositionModel.swift */; };
+		8B8FF06D2C19602400BE749B /* BattleDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF06C2C19602400BE749B /* BattleDataModel.swift */; };
+		8B8FF0732C1A950E00BE749B /* MultipeerConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0722C1A950E00BE749B /* MultipeerConnectivityManager.swift */; };
 		A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619562C16BC2B00FF75F1 /* CharacterView.swift */; };
 		A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619582C17F96400FF75F1 /* BackpackView.swift */; };
 		A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626195B2C188AC900FF75F1 /* buildingViewModel.swift */; };
@@ -59,6 +64,12 @@
 		962D988D2C19655E00E38C85 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		962D988F2C19690A00E38C85 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AveriaSerifLibre-Regular.ttf"; sourceTree = "<group>"; };
+		8B8FF0602C19450500BE749B /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
+		8B8FF0662C1950CE00BE749B /* mini2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mini2.entitlements; sourceTree = "<group>"; };
+		8B8FF0672C1952B700BE749B /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
+		8B8FF06A2C19596F00BE749B /* PlayerPositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPositionModel.swift; sourceTree = "<group>"; };
+		8B8FF06C2C19602400BE749B /* BattleDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleDataModel.swift; sourceTree = "<group>"; };
+		8B8FF0722C1A950E00BE749B /* MultipeerConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerConnectivityManager.swift; sourceTree = "<group>"; };
 		A62619562C16BC2B00FF75F1 /* CharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterView.swift; sourceTree = "<group>"; };
 		A62619582C17F96400FF75F1 /* BackpackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackpackView.swift; sourceTree = "<group>"; };
 		A626195B2C188AC900FF75F1 /* buildingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = buildingViewModel.swift; sourceTree = "<group>"; };
@@ -142,6 +153,25 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		8B8FF05F2C19442300BE749B /* MultiplayerConnectivity */ = {
+			isa = PBXGroup;
+			children = (
+				8B8FF0602C19450500BE749B /* GameCenterManager.swift */,
+				8B8FF0672C1952B700BE749B /* Enum.swift */,
+				8B8FF0722C1A950E00BE749B /* MultipeerConnectivityManager.swift */,
+			);
+			path = MultiplayerConnectivity;
+			sourceTree = "<group>";
+		};
+		8B8FF0692C19595400BE749B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8B8FF06A2C19596F00BE749B /* PlayerPositionModel.swift */,
+				8B8FF06C2C19602400BE749B /* BattleDataModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		A626195A2C188A9400FF75F1 /* viewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +215,9 @@
 			isa = PBXGroup;
 			children = (
 				A626195F2C19514700FF75F1 /* model */,
+				8B8FF0692C19595400BE749B /* Model */,
+				8B8FF0662C1950CE00BE749B /* mini2.entitlements */,
+				8B8FF05F2C19442300BE749B /* MultiplayerConnectivity */,
 				A660D2C62C13203400D3A74F /* Info.plist */,
 				A660D2C02C131F7D00D3A74F /* helper */,
 				A660D2C32C13201500D3A74F /* Font */,
@@ -371,6 +404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B8FF0612C19450500BE749B /* GameCenterManager.swift in Sources */,
 				A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */,
 				2B3598DD2C11C01D00EDBA3C /* GameScene.swift in Sources */,
 				2B3598DF2C11C10600EDBA3C /* AnalogJoystick.swift in Sources */,
@@ -378,10 +412,13 @@
 				A626196B2C19814D00FF75F1 /* SparksView.swift in Sources */,
 				A626196D2C199EBE00FF75F1 /* movementViewModel.swift in Sources */,
 				A661374C2C229D3A00B6AC3D /* BattleScene.swift in Sources */,
+				8B8FF06D2C19602400BE749B /* BattleDataModel.swift in Sources */,
+				8B8FF0682C1952B700BE749B /* Enum.swift in Sources */,
 				A626195E2C188C1500FF75F1 /* menuViewModel.swift in Sources */,
 				A62619732C19A01D00FF75F1 /* basicAttackViewModel.swift in Sources */,
 				962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */,
 				A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */,
+				8B8FF06B2C19596F00BE749B /* PlayerPositionModel.swift in Sources */,
 				2B3598E62C11C47600EDBA3C /* InGameView.swift in Sources */,
 				2B3598E42C11C39F00EDBA3C /* OnboardingView.swift in Sources */,
 				A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */,
@@ -389,6 +426,7 @@
 				962D988E2C19655E00E38C85 /* ShopView.swift in Sources */,
 				A62619672C19690A00FF75F1 /* OptionView.swift in Sources */,
 				A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */,
+				8B8FF0732C1A950E00BE749B /* MultipeerConnectivityManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,10 +587,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = mini2/mini2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = T7SD288Q5G;
+				DEVELOPMENT_TEAM = U5CZ6K98KV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -579,10 +618,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = mini2/mini2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = T7SD288Q5G;
+				DEVELOPMENT_TEAM = U5CZ6K98KV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
