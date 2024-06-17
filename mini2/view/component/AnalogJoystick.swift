@@ -199,7 +199,7 @@ open class TLAnalogJoystick: SKNode {
     
     private var pHandleRatio: CGFloat
     private var displayLink: CADisplayLink!
-    private var hadnlers = [TLAnalogJoystickEventType: TLAnalogJoystickEventHandlers]()
+    private var handlers = [TLAnalogJoystickEventType: TLAnalogJoystickEventHandlers]()
     private var handlerIDsRelEvent = [TLAnalogJoystickHandlerID: TLAnalogJoystickEventType]()
     private(set) var tracking = false {
         didSet {
@@ -355,7 +355,7 @@ open class TLAnalogJoystick: SKNode {
     }
     
     private func getEventHandlers(forType type: TLAnalogJoystickEventType) -> TLAnalogJoystickEventHandlers {
-        return hadnlers[type] ?? TLAnalogJoystickEventHandlers()
+        return handlers[type] ?? TLAnalogJoystickEventHandlers()
     }
     
     private func runEvent(_ type: TLAnalogJoystickEventType) {
@@ -372,7 +372,7 @@ open class TLAnalogJoystick: SKNode {
         var currHandlers = getEventHandlers(forType: event)
         currHandlers[handlerID] = handler
         handlerIDsRelEvent[handlerID] = event
-        hadnlers[event] = currHandlers
+        handlers[event] = currHandlers
         
         return handlerID
     }
@@ -381,7 +381,7 @@ open class TLAnalogJoystick: SKNode {
         if let event = handlerIDsRelEvent[handlerID] {
             var currHandlers = getEventHandlers(forType: event)
             currHandlers.removeValue(forKey: handlerID)
-            hadnlers[event] = currHandlers
+            handlers[event] = currHandlers
         }
         
         handlerIDsRelEvent.removeValue(forKey: handlerID)

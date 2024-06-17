@@ -9,6 +9,7 @@ class GameScene: SKScene {
     var slashNode: SKSpriteNode?
     let moveJoystick = 🕹(withDiameter: 100)
     let rotateJoystick = TLAnalogJoystick(withDiameter: 100)
+    let skillJoystick = TLAnalogJoystick(withDiameter: 70)
     
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
@@ -20,6 +21,7 @@ class GameScene: SKScene {
             let image = UIImage(named: "jStick")
             moveJoystick.handleImage = image
             rotateJoystick.handleImage = image
+            skillJoystick.handleImage = image
             setJoystickStickImageBtn.text = "\(joystickStickImageEnabled ? "Remove" : "Set") stick image"
         }
     }
@@ -29,6 +31,7 @@ class GameScene: SKScene {
             let image = UIImage(named: "jSubstrate")
             moveJoystick.baseImage = image
             rotateJoystick.baseImage = image
+            skillJoystick.handleImage = UIImage(named: "fireballThrow")
             setJoystickSubstrateImageBtn.text = "\(joystickSubstrateImageEnabled ? "Remove" : "Set") substrate image"
         }
     }
@@ -71,6 +74,9 @@ class GameScene: SKScene {
         
         cameraNode.addChild(rotateJoystick)
         rotateJoystick.position = CGPoint(x: 300, y: -100)
+        
+        cameraNode.addChild(skillJoystick)
+        skillJoystick.position = CGPoint(x: 200, y: -25)
         
         moveJoystick.on(.begin) { [unowned self] _ in
             startWalkingAnimation(characterNode: characterNode)
@@ -163,6 +169,81 @@ class GameScene: SKScene {
             swordNode.run(repeatRotation)
         }
         
+        skillJoystick.on(.end) { [unowned self] joystick in
+            guard let characterNode = self.characterNode else {
+                return
+            }
+            
+            // Create projectile sprite node
+            guard let projectileImage = UIImage(named: "fireballThrow") else {
+                return
+            }
+            
+            // Ensure physics body is created and set properties
+            let texture = SKTexture(image: projectileImage)
+            let projectile = SKSpriteNode(texture: texture)
+            projectile.setScale(0.3)
+
+            
+            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width / 2)
+            projectile.physicsBody?.affectedByGravity = false
+            projectile.physicsBody?.linearDamping = 0 // Remove for testing
+
+            // Calculate position based on angle and quadrant
+            let position = calculateProjectilePosition(degree: joystick.velocity, from: characterNode.position, projectile: projectile)
+            projectile.position = position
+            let velocityOfMoving:CGFloat = 150
+            var nextPosition: CGPoint = projectile.position
+            
+            if GLKMathRadiansToDegrees(Float(joystick.angular)) > -30 && GLKMathRadiansToDegrees(Float(joystick.angular)) < 30 {
+                nextPosition.y += velocityOfMoving
+                nextPosition.x = projectile.position.x
+                projectile.zRotation = 0
+            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) < -150 || GLKMathRadiansToDegrees(Float(joystick.angular)) > 150 {
+                nextPosition.y -= velocityOfMoving
+                nextPosition.x = projectile.position.x
+                projectile.zRotation = 3.1
+            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) > 60 && GLKMathRadiansToDegrees(Float(joystick.angular)) < 120 {
+                nextPosition.y = projectile.position.y
+                nextPosition.x -= velocityOfMoving
+                projectile.zRotation = -11
+            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) < -60 && GLKMathRadiansToDegrees(Float(joystick.angular)) > -120 {
+                nextPosition.y = projectile.position.y
+                nextPosition.x += velocityOfMoving
+                projectile.zRotation = 11
+            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) > 30 && GLKMathRadiansToDegrees(Float(joystick.angular)) < 60 {
+                nextPosition.y += velocityOfMoving
+                nextPosition.x -= velocityOfMoving
+                projectile.zRotation = 7
+            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) > 90 && GLKMathRadiansToDegrees(Float(joystick.angular)) < 150 {
+                nextPosition.y -= velocityOfMoving
+                nextPosition.x -= velocityOfMoving
+                projectile.zRotation = 15
+            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) < -30 && GLKMathRadiansToDegrees(Float(joystick.angular)) > -60 {
+                nextPosition.y += velocityOfMoving
+                nextPosition.x += velocityOfMoving
+                projectile.zRotation = -7
+            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) > -150 && GLKMathRadiansToDegrees(Float(joystick.angular)) < -120 {
+                nextPosition.y -= velocityOfMoving
+                nextPosition.x += velocityOfMoving
+                projectile.zRotation = -15
+            } else {
+                print("Unknown!!")
+            }
+            
+            let path = createPath(from: projectile.position, to: nextPosition)
+         
+            let moveAction = SKAction.follow(path, asOffset: false, orientToPath: false, speed: 300)
+            let wait = SKAction.wait(forDuration: 0.6)
+            let updatePosition = SKAction.run {
+                projectile.removeFromParent()
+            }
+            let sequence = SKAction.sequence([wait, updatePosition])
+            projectile.run(moveAction)
+            addChild(projectile)
+            run(sequence)
+        }
+        
         joystickStickImageEnabled = true
         joystickSubstrateImageEnabled = true
         
@@ -206,18 +287,7 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            let node = atPoint(touch.location(in: self))
-            
-            switch node {
-            case setJoystickStickImageBtn:
-                joystickStickImageEnabled = !joystickStickImageEnabled
-            case setJoystickSubstrateImageBtn:
-                joystickSubstrateImageEnabled = !joystickSubstrateImageEnabled
-            default:
-                joystickStickImageEnabled = !joystickStickImageEnabled
-            }
-        }
+        return
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -242,5 +312,22 @@ class GameScene: SKScene {
                 rotateJoystick.touchesEnded(touches, with: event)
             }
         }
+    }
+    
+    func createPath(from start: CGPoint, to destination: CGPoint) -> CGMutablePath {
+        let pathToMove = CGMutablePath()
+        pathToMove.move(to: start)
+        pathToMove.addLine(to: destination)
+        return pathToMove
+    }
+    
+    // Function to calculate projectile position considering quadrant and coordinate system
+    func calculateProjectilePosition(degree: CGPoint, from applePosition: CGPoint, projectile: SKSpriteNode) -> CGPoint {
+
+        // Adjust signs based on quadrant
+        let x = Float(applePosition.x) + Float(degree.x)
+        let y = Float(applePosition.y) + Float(degree.y) // Inverted for SpriteKit coordinate system
+
+        return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
 }
