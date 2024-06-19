@@ -10,6 +10,8 @@ class GameScene: SKScene {
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
     let rotateJoystick = TLAnalogJoystick(withDiameter: 200)
     let skillJoystick = TLAnalogJoystick(withDiameter: 120)
+    var xOffset = 0.0
+    var yOffset = 0.0
     
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
@@ -57,7 +59,7 @@ class GameScene: SKScene {
         swordNode?.zRotation = -20
         swordNode?.position.x = -40
         
-        slashNode?.setScale(1.0)
+        slashNode?.setScale(0.5)
         slashNode?.position.x = 0
         
         configureJoysticks()
@@ -118,10 +120,16 @@ class GameScene: SKScene {
             guard let meleeAreaNode = self.meleeAreaNode else {
                 return
             }
+            guard let slashNode = self.slashNode else {
+                return
+            }
             meleeAreaNode.isHidden = false
             meleeAreaNode.position.x += 60
             meleeAreaNode.setScale(0.5)
             meleeAreaNode.anchorPoint = CGPoint(x: 1.0, y: 0)
+            
+            slashNode.position.x = meleeAreaNode.position.x
+            slashNode.position.y = meleeAreaNode.position.y
         }
         
         rotateJoystick.on(.move) { [unowned self] joystick in
@@ -131,6 +139,11 @@ class GameScene: SKScene {
             guard let slashNode = self.slashNode else {
                 return
             }
+            
+            let margin: CGFloat = 50.0
+            self.xOffset = cos(joystick.angular - 0.5) * margin
+            self.yOffset = sin(joystick.angular - 0.5) * margin
+            
             meleeAreaNode.zRotation = joystick.angular
             slashNode.zRotation = joystick.angular
         }
@@ -146,6 +159,8 @@ class GameScene: SKScene {
             guard let slashNode = self.slashNode else {
                 return
             }
+            slashNode.position.x -= xOffset
+            slashNode.position.y -= yOffset
             slashNode.isHidden = false
             startSlashAnimation(slashNode: slashNode)
             meleeAreaNode.isHidden = true
