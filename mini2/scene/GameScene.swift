@@ -7,9 +7,9 @@ class GameScene: SKScene {
     var swordNode: SKSpriteNode?
     var meleeAreaNode: SKSpriteNode?
     var slashNode: SKSpriteNode?
-    let moveJoystick = 🕹(withDiameter: 100)
-    let rotateJoystick = TLAnalogJoystick(withDiameter: 100)
-    let skillJoystick = TLAnalogJoystick(withDiameter: 70)
+    let moveJoystick = TLAnalogJoystick(withDiameter: 200)
+    let rotateJoystick = TLAnalogJoystick(withDiameter: 200)
+    let skillJoystick = TLAnalogJoystick(withDiameter: 120)
     
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
@@ -18,20 +18,22 @@ class GameScene: SKScene {
     
     var joystickStickImageEnabled = true {
         didSet {
-            let image = UIImage(named: "jStick")
-            moveJoystick.handleImage = image
-            rotateJoystick.handleImage = image
-            skillJoystick.handleImage = image
+            let jImage = UIImage(named: "jStick")
+            let rImage = UIImage(named: "rStick")
+            moveJoystick.handleImage = jImage
+            rotateJoystick.handleImage = rImage
+            skillJoystick.handleImage = UIImage(named: "fireballIcon")
             setJoystickStickImageBtn.text = "\(joystickStickImageEnabled ? "Remove" : "Set") stick image"
         }
     }
     
     var joystickSubstrateImageEnabled = true {
         didSet {
-            let image = UIImage(named: "jSubstrate")
-            moveJoystick.baseImage = image
-            rotateJoystick.baseImage = image
-            skillJoystick.handleImage = UIImage(named: "fireballThrow")
+            let jImage = UIImage(named: "jSubstrate")
+            let rImage = UIImage(named: "rSubstrate")
+            moveJoystick.baseImage = jImage
+            rotateJoystick.baseImage = rImage
+            skillJoystick.baseImage = jImage
             setJoystickSubstrateImageBtn.text = "\(joystickSubstrateImageEnabled ? "Remove" : "Set") substrate image"
         }
     }
@@ -116,12 +118,8 @@ class GameScene: SKScene {
             guard let meleeAreaNode = self.meleeAreaNode else {
                 return
             }
-            guard let slashNode = self.slashNode else {
-                return
-            }
             meleeAreaNode.isHidden = false
             meleeAreaNode.position.x += 60
-            slashNode.position.x += 60
             meleeAreaNode.setScale(0.5)
             meleeAreaNode.anchorPoint = CGPoint(x: 1.0, y: 0)
         }
@@ -149,7 +147,6 @@ class GameScene: SKScene {
                 return
             }
             slashNode.isHidden = false
-            slashNode.position.x -= 60
             startSlashAnimation(slashNode: slashNode)
             meleeAreaNode.isHidden = true
             meleeAreaNode.position.x -= 60
