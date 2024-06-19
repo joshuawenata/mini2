@@ -16,6 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         didSet {
             let image = UIImage(named: "jStick")
             moveJoystick.handleImage = image
+
             setJoystickStickImageBtn.text = "\(joystickStickImageEnabled ? "Remove" : "Set") stick image"
         }
     }
@@ -34,6 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         didSet {
             let image = UIImage(named: "jSubstrate")
             moveJoystick.baseImage = image
+
             setJoystickSubstrateImageBtn.text = "\(joystickSubstrateImageEnabled ? "Remove" : "Set") substrate image"
         }
     }
@@ -56,7 +58,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         configureJoysticks()
         
         addChild(addBuilding(at: CGPoint(x: 0, y: 100), imageName: "battleBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -400, y: 0), imageName: "shopBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -100, y: -200), imageName: "shopBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -400, y: -200), imageName: "houseBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -300, y: 100), imageName: "statueBuilding"))
         
     }
     
