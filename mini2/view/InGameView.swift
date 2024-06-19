@@ -15,7 +15,7 @@ struct InGameView: View {
                         HStack {
                             Spacer()
                             NavigationLink(destination: LeaderboardView(), label: {
-                                Image(systemName: "trophy.fill")
+                                Image("leaderboard")
                                     .resizable()
                                     .frame(width: 40, height: 40)
                                     .foregroundColor(.black)
@@ -24,14 +24,14 @@ struct InGameView: View {
                             NavigationLink(destination: CharacterView(), label: {
                                 Image("character")
                                     .resizable()
-                                    .frame(width: 45, height: 45)
+                                    .frame(width: 40, height: 40)
                                     .padding(.leading, 20)
                             })
                             
                             NavigationLink(destination: BackpackView(), label: {
                                 Image("inventory")
                                     .resizable()
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: 40, height: 40)
                                     .padding(.leading, 20)
                             })
                             
