@@ -34,3 +34,30 @@ func stopWalkingAnimation(characterNode: SKSpriteNode?) {
     characterNode.removeAction(forKey: "walk")
     startIdleAnimation(characterNode: characterNode)
 }
+
+func startIdleAnimationBattle(characterNode: SKSpriteNode?) {
+    guard let characterNode = characterNode else { return }
+    
+    let idleTextures = [SKTexture(imageNamed: "charaIdleBattle")]
+    let idleAnimation = SKAction.animate(with: idleTextures, timePerFrame: 0.2, resize: false, restore: true)
+    let repeatIdle = SKAction.repeatForever(idleAnimation)
+    characterNode.run(repeatIdle, withKey: "idle")
+}
+
+func startWalkingAnimationBattle(characterNode: SKSpriteNode?) {
+    guard let characterNode = characterNode else { return }
+    
+    let walkTextures = [SKTexture(imageNamed: "charaWalkBattle"), SKTexture(imageNamed: "charaIdleBattle")]
+    let walkAnimation = SKAction.animate(with: walkTextures, timePerFrame: 0.2, resize: false, restore: true)
+    let repeatWalk = SKAction.repeatForever(walkAnimation)
+    characterNode.run(repeatWalk, withKey: "walk")
+    
+    characterNode.removeAction(forKey: "idle")
+}
+
+func stopWalkingAnimationBattle(characterNode: SKSpriteNode?) {
+    guard let characterNode = characterNode else { return }
+    
+    characterNode.removeAction(forKey: "walk")
+    startIdleAnimationBattle(characterNode: characterNode)
+}

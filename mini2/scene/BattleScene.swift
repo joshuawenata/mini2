@@ -1,7 +1,7 @@
 import SpriteKit
 import SwiftUI
 
-class GameScene: SKScene {
+class BattleScene: SKScene {
     var characterNode: SKSpriteNode?
     var first = true
     var swordNode: SKSpriteNode?
@@ -44,12 +44,12 @@ class GameScene: SKScene {
         super.didMove(to: view)
         
         self.backgroundColor = .clear
-        let background = SKSpriteNode(imageNamed: "mainIsland")
+        let background = SKSpriteNode(imageNamed: "battleIsland")
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
         background.zPosition = -1
         addChild(background)
         
-        addCharacter(CGPoint(x: frame.midX, y: frame.midY))
+        addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY))
         swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
         meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea")
         slashNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "slash_00000")
@@ -63,12 +63,6 @@ class GameScene: SKScene {
         slashNode?.position.x = 0
         
         configureJoysticks()
-        
-        addChild(addBuilding(at: CGPoint(x: 0, y: 100), imageName: "battleBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -100, y: -200), imageName: "shopBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -400, y: -200), imageName: "houseBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -300, y: 100), imageName: "statueBuilding"))
-        
     }
     
     func configureJoysticks() {
@@ -85,7 +79,7 @@ class GameScene: SKScene {
         skillJoystick.position = CGPoint(x: 200, y: -25)
         
         moveJoystick.on(.begin) { [unowned self] _ in
-            startWalkingAnimation(characterNode: characterNode)
+            startWalkingAnimationBattle(characterNode: characterNode)
         }
         
         moveJoystick.on(.move) { [unowned self] joystick in
@@ -115,7 +109,7 @@ class GameScene: SKScene {
         }
         
         moveJoystick.on(.end) { [unowned self] _ in
-            stopWalkingAnimation(characterNode: characterNode)
+            stopWalkingAnimationBattle(characterNode: characterNode)
         }
         
         rotateJoystick.on(.begin) { [unowned self] _ in
@@ -151,7 +145,7 @@ class GameScene: SKScene {
         }
         
         rotateJoystick.on(.end) { [unowned self] _ in
-            startAttackAnimation(characterNode: characterNode)
+            startAttackAnimationBattle(characterNode: characterNode)
             guard let swordNode = self.swordNode else {
                 return
             }
@@ -264,8 +258,8 @@ class GameScene: SKScene {
         view?.isMultipleTouchEnabled = true
     }
     
-    func addCharacter(_ position: CGPoint) {
-        guard let characterImage = UIImage(named: "charaIdle") else {
+    func addCharacterBattle(_ position: CGPoint) {
+        guard let characterImage = UIImage(named: "charaIdleBattle") else {
             return
         }
         
@@ -278,7 +272,7 @@ class GameScene: SKScene {
         addChild(character)
         characterNode = character
         
-        startIdleAnimation(characterNode: characterNode)
+        startIdleAnimationBattle(characterNode: characterNode)
     }
     
     func addItem(_ position: CGPoint, imageName: String, isPhysicsBody: Bool = false) -> SKSpriteNode {
