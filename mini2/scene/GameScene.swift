@@ -3,6 +3,7 @@ import SwiftUI
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode?
+//    var NPCNode: [SKSpriteNode] = []
     var first = true
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
     var isWallContact = false
@@ -12,6 +13,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let cameraNode = SKCameraNode()
     
+//    func addNPC(_ position: CGPoint, category: UInt32, contact: UInt32, imageName: String) {
+//        guard let characterImage = UIImage(named: imageName) else {
+//            return
+//        }
+//        
+//        let texture = SKTexture(image: characterImage)
+//        let character = SKSpriteNode(texture: texture)
+//        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
+//        character.physicsBody?.affectedByGravity = false
+//        character.physicsBody?.allowsRotation = false
+//        character.position = CGPoint(x: 200, y: 0)
+//        character.setScale(0.3)
+//        character.physicsBody?.categoryBitMask = category
+//        character.physicsBody?.contactTestBitMask = contact
+//        character.physicsBody?.isDynamic = false
+//        
+//        addChild(character)
+//        
+//        NPCNode.append(character)
+//    }
+
     let gameCenter = GameCenterManager()
     let battleScene = BattleScene(size: UIScreen.main.bounds.size)
         
@@ -61,12 +83,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         configureJoysticks()
         
-        addChild(addBuilding(at: CGPoint(x: 0, y: 100), imageName: "battleBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -100, y: -200), imageName: "shopBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -700, y: -200), imageName: "npcHouseOne"))
-        addChild(addBuilding(at: CGPoint(x: -400, y: -200), imageName: "npcHouseTwo"))
-        addChild(addBuilding(at: CGPoint(x: 300, y: -200), imageName: "npcHouseThree"))
-        addChild(addBuilding(at: CGPoint(x: -300, y: 100), imageName: "statueBuilding"))
+        //top
+        addChild(addBuilding(at: CGPoint(x: -200, y: 300), imageName: "statueBuilding"))
+        addChild(addBuilding(at: CGPoint(x: 0, y: 300), imageName: "battleBuilding"))
+        addChild(addBuilding(at: CGPoint(x: 200, y: 250), imageName: "npcBattle"))
+        
+        //left
+        addChild(addBuilding(at: CGPoint(x: -1500, y: 500), imageName: "river"))
+        addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
+        addChild(addBuilding(at: CGPoint(x: -500, y: -200), imageName: "npcHorse"))
+        
+        //middle
+        addChild(addBuilding(at: CGPoint(x: -200, y: -100), imageName: "questBuilding"))
+        addChild(addBuilding(at: CGPoint(x: 0, y: -100), imageName: "shopBuilding"))
+        addChild(addBuilding(at: CGPoint(x: 200, y: -100), imageName: "dinerBuilding"))
+        
+        //bottom
+        addChild(addBuilding(at: CGPoint(x: -200, y: -500), imageName: "npcHouseOne"))
+        addChild(addBuilding(at: CGPoint(x: 0, y: -500), imageName: "npcHouseTwo"))
+        addChild(addBuilding(at: CGPoint(x: 200, y: -500), imageName: "npcHouseThree"))
+        addChild(addBuilding(at: CGPoint(x: 350, y: -550), imageName: "npcHouse"))
+        
+        //right
+        addChild(addBuilding(at: CGPoint(x: 500, y: 0), imageName: "npcFlower"))
     }
     
     func configureJoysticks() {
