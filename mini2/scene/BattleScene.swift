@@ -1,8 +1,9 @@
 import SpriteKit
 import SwiftUI
 
-class BattleScene: SKScene {
+class BattleScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode?
+    var dummyRobot: SKSpriteNode?
     var first = true
     var swordNode: SKSpriteNode?
     var meleeAreaNode: SKSpriteNode?
@@ -12,6 +13,9 @@ class BattleScene: SKScene {
     let skillJoystick = TLAnalogJoystick(withDiameter: 120)
     var xOffset = 0.0
     var yOffset = 0.0
+    var counterDidBegin = 0
+    var hpEnemy = 100
+    var isHitMelee = false
     
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
@@ -40,6 +44,22 @@ class BattleScene: SKScene {
         }
     }
     
+    func didBegin(_ contact: SKPhysicsContact) {
+        counterDidBegin += 1
+        let a = contact.bodyA.contactTestBitMask
+        let b = contact.bodyB.contactTestBitMask
+        print("a = \(a)")
+        print("b = \(b)")
+        if a == 3 && b == 2 {
+            print("Is Hit!!!")
+            print("current HP: \(hpEnemy)")
+            isHitMelee = true
+        } else {
+            print("Is NOT Hit!!!")
+            isHitMelee = false
+        }
+    }
+    
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
@@ -49,11 +69,15 @@ class BattleScene: SKScene {
         background.zPosition = -1
         addChild(background)
         
-        addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY))
+        addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: 0,contact: 0,collision: 0)
+        
+        addDummyRobot(CGPoint(x: frame.midX+200, y: frame.midY), category: 2, contact: 3)
+        
         swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
-        meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea")
+        meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea",isPhysicsBody: true, category: 2, contact: 2, collision: 1)
         slashNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "slash_00000")
         meleeAreaNode?.isHidden = true
+        meleeAreaNode?.zPosition = 2
         slashNode?.isHidden = true
         
         swordNode?.zRotation = -20
@@ -62,7 +86,9 @@ class BattleScene: SKScene {
         slashNode?.setScale(0.5)
         slashNode?.position.x = 0
         
+        
         configureJoysticks()
+        physicsWorld.contactDelegate = self
     }
     
     func configureJoysticks() {
@@ -175,6 +201,9 @@ class BattleScene: SKScene {
             let repeatRotation = SKAction.repeat(rotateSequence, count: 1)
 
             swordNode.run(repeatRotation)
+            if isHitMelee {
+                hpEnemy -= 10
+            }
         }
         
         skillJoystick.on(.end) { [unowned self] joystick in
@@ -258,7 +287,7 @@ class BattleScene: SKScene {
         view?.isMultipleTouchEnabled = true
     }
     
-    func addCharacterBattle(_ position: CGPoint) {
+    func addCharacterBattle(_ position: CGPoint, category: UInt32, contact: UInt32, collision: UInt32) {
         guard let characterImage = UIImage(named: "charaIdleBattle") else {
             return
         }
@@ -266,16 +295,41 @@ class BattleScene: SKScene {
         let texture = SKTexture(image: characterImage)
         let character = SKSpriteNode(texture: texture)
         character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
-        character.physicsBody!.affectedByGravity = false
+        character.physicsBody?.affectedByGravity = false
         character.position = CGPoint(x: 0, y: 0)
         character.setScale(0.3)
+        character.physicsBody?.categoryBitMask = category
+        character.physicsBody?.contactTestBitMask = contact
+        character.physicsBody?.collisionBitMask = collision
         addChild(character)
         characterNode = character
         
         startIdleAnimationBattle(characterNode: characterNode)
     }
     
-    func addItem(_ position: CGPoint, imageName: String, isPhysicsBody: Bool = false) -> SKSpriteNode {
+    func addDummyRobot(_ position: CGPoint, category: UInt32, contact: UInt32) {
+        guard let characterImage = UIImage(named: "charaIdleBattle") else {
+            return
+        }
+        
+        let texture = SKTexture(image: characterImage)
+        let character = SKSpriteNode(texture: texture)
+        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
+        character.physicsBody?.affectedByGravity = false
+        character.physicsBody?.allowsRotation = false
+        character.position = CGPoint(x: 200, y: 0)
+        character.setScale(0.3)
+        character.physicsBody?.categoryBitMask = category
+        character.physicsBody?.contactTestBitMask = contact
+        character.physicsBody?.isDynamic = false
+        
+        addChild(character)
+        
+        dummyRobot = character
+        
+    }
+    
+    func addItem(_ position: CGPoint, imageName: String, isPhysicsBody: Bool = false, category: UInt32 = 0, contact: UInt32 = 0, collision: UInt32 = 0) -> SKSpriteNode {
         guard let itemImage = UIImage(named: imageName) else {
             return SKSpriteNode()
         }
@@ -284,8 +338,10 @@ class BattleScene: SKScene {
         let item = SKSpriteNode(texture: texture)
         if(isPhysicsBody){
             item.physicsBody = SKPhysicsBody(texture: texture, size: item.size)
-            item.physicsBody = SKPhysicsBody(texture: texture, size: item.size)
-            item.physicsBody!.affectedByGravity = false
+            item.physicsBody?.affectedByGravity = false
+            item.physicsBody?.categoryBitMask = category
+            item.physicsBody?.contactTestBitMask = contact
+            item.physicsBody?.collisionBitMask = collision
         }
         item.position = CGPoint(x: -60, y: 0)
         item.setScale(0.3)
@@ -337,5 +393,11 @@ class BattleScene: SKScene {
         let y = Float(applePosition.y) + Float(degree.y) // Inverted for SpriteKit coordinate system
 
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if hpEnemy <= 0 {
+            dummyRobot?.removeFromParent()
+        }
     }
 }
