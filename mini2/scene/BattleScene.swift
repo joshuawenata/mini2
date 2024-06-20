@@ -8,6 +8,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var swordNode: SKSpriteNode?
     var meleeAreaNode: SKSpriteNode?
     var slashNode: SKSpriteNode?
+    var projectileNode: SKSpriteNode?
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
     let rotateJoystick = TLAnalogJoystick(withDiameter: 200)
     let skillJoystick = TLAnalogJoystick(withDiameter: 120)
@@ -16,6 +17,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var counterDidBegin = 0
     var hpEnemy = 100
     var isHitMelee = false
+    var isHitProjectile = false
     
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
@@ -48,18 +50,30 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         counterDidBegin += 1
         let a = contact.bodyA.contactTestBitMask
         let b = contact.bodyB.contactTestBitMask
-        print("a = \(a)")
-        print("b = \(b)")
+//        print("a = \(a)")
+//        print("b = \(b)")
         if a == 3 && b == 2 {
             print("Is Hit!!!")
             print("current HP: \(hpEnemy)")
             isHitMelee = true
+        } else if a == 3 && b == 1 {
+            print("Is FIRE!!!")
+            print("current HP: \(hpEnemy)")
+            projectileNode?.removeFromParent()
+            isHitProjectile = true
         } else {
             print("Is NOT Hit!!!")
             isHitMelee = false
+            isHitProjectile = false
         }
     }
     
+//    func didEnd(_ contact: SKPhysicsContact) {
+//        print("Not Fired!!")
+//        isHitMelee = false
+//        isHitProjectile = false
+//    }
+//    
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
@@ -229,6 +243,11 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             // Calculate position based on angle and quadrant
             let position = calculateProjectilePosition(degree: joystick.velocity, from: characterNode.position, projectile: projectile)
             projectile.position = position
+            projectile.zPosition = -1
+            
+            projectile.physicsBody?.categoryBitMask = 1
+            projectile.physicsBody?.contactTestBitMask = 1
+            
             let velocityOfMoving:CGFloat = 150
             var nextPosition: CGPoint = projectile.position
             
@@ -278,7 +297,13 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             let sequence = SKAction.sequence([wait, updatePosition])
             projectile.run(moveAction)
             addChild(projectile)
+            projectileNode = projectile
             run(sequence)
+            if isHitProjectile {
+                print("Mengurangi Health!")
+                hpEnemy -= 10
+                isHitProjectile = false
+            }
         }
         
         joystickStickImageEnabled = true
