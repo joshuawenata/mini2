@@ -17,7 +17,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        guard let characterImage = UIImage(named: imageName) else {
 //            return
 //        }
-//        
+//
 //        let texture = SKTexture(image: characterImage)
 //        let character = SKSpriteNode(texture: texture)
 //        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
@@ -28,9 +28,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        character.physicsBody?.categoryBitMask = category
 //        character.physicsBody?.contactTestBitMask = contact
 //        character.physicsBody?.isDynamic = false
-//        
+//
 //        addChild(character)
-//        
+//
 //        NPCNode.append(character)
 //    }
 
@@ -47,8 +47,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        if String(contact.bodyB.node?.name ?? "unknown") == "battleBuilding" {
-            gameCenter.startMatchmaking()
+        switch String(contact.bodyB.node?.name ?? "Unknown") {
+            case "battleBuilding":
+                gameCenter.startMatchmaking()
+            case "questBuilding":
+                presentView(view: AnyView(QuestView()))
+            case "shopBuilding":
+                presentView(view: AnyView(ShopView()))
+            case "dinerBuilding":
+                presentView(view: AnyView(ShopView()))
+            default:
+            print("\(contact.bodyB.node?.name ?? "Unknown") No Action")
         }
         isWallContact = true
     }
@@ -91,12 +100,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //left
         addChild(addBuilding(at: CGPoint(x: -1500, y: 500), imageName: "river"))
         addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
-        addChild(addBuilding(at: CGPoint(x: -500, y: -200), imageName: "npcHorse"))
+        addChild(addBuilding(at: CGPoint(x: -700, y: -100), imageName: "npcHorse"))
         
         //middle
-        addChild(addBuilding(at: CGPoint(x: -200, y: -100), imageName: "questBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -250, y: -100), imageName: "questBuilding"))
         addChild(addBuilding(at: CGPoint(x: 0, y: -100), imageName: "shopBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 200, y: -100), imageName: "dinerBuilding"))
+        addChild(addBuilding(at: CGPoint(x: 300, y: -100), imageName: "dinerBuilding"))
         
         //bottom
         addChild(addBuilding(at: CGPoint(x: -200, y: -500), imageName: "npcHouseOne"))
@@ -105,7 +114,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(addBuilding(at: CGPoint(x: 350, y: -550), imageName: "npcHouse"))
         
         //right
-        addChild(addBuilding(at: CGPoint(x: 500, y: 0), imageName: "npcFlower"))
+        addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
     }
     
     func configureJoysticks() {
@@ -155,7 +164,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let character = SKSpriteNode(texture: texture)
         character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
         character.physicsBody?.affectedByGravity = false
-        character.position = CGPoint(x: 0, y: 0)
+        character.position = CGPoint(x: 0, y: 100)
         character.physicsBody?.allowsRotation = false
         character.setScale(0.3)
         character.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue
@@ -214,6 +223,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pathToMove.addLine(to: destination)
         return pathToMove
     }
+    
+    func presentView(view: AnyView) {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let keyWindow = windowScene.windows.first {
+            let hostingController = UIHostingController(rootView: view)
+            keyWindow.rootViewController?.present(hostingController, animated: true, completion: nil)
+        }
+    }
+    
+    
 }
 
 enum CollisionCategory: UInt32 {
