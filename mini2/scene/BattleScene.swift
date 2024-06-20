@@ -89,9 +89,9 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         rangeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "rangeArea",isPhysicsBody: false, category: 1, contact: 1, collision: 2)
         slashNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "slash_00000")
         meleeAreaNode?.isHidden = true
-        meleeAreaNode?.zPosition = 2
+        meleeAreaNode?.zPosition = -1
         rangeAreaNode?.isHidden = true
-        rangeAreaNode?.zPosition = 2
+        rangeAreaNode?.zPosition = -1
         slashNode?.isHidden = true
         
         swordNode?.zRotation = -20
@@ -284,7 +284,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             let projectile = SKSpriteNode(texture: texture)
             projectile.setScale(0.3)
 
-            
             projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width / 2)
             projectile.physicsBody?.affectedByGravity = false
             projectile.physicsBody?.linearDamping = 0 // Remove for testing
@@ -421,7 +420,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         addChild(character)
         
         dummyRobot = character
-        
     }
     
     func addItem(_ position: CGPoint, imageName: String, isPhysicsBody: Bool = false, category: UInt32 = 0, contact: UInt32 = 0, collision: UInt32 = 0) -> SKSpriteNode {
