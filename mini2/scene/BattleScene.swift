@@ -3,10 +3,13 @@ import SwiftUI
 
 class BattleScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode?
+    var hpBarInner: SKSpriteNode?
+    var hpBarOuter: SKSpriteNode?
     var dummyRobot: SKSpriteNode?
     var first = true
     var swordNode: SKSpriteNode?
     var meleeAreaNode: SKSpriteNode?
+    var rangeAreaNode: SKSpriteNode?
     var slashNode: SKSpriteNode?
     var projectileNode: SKSpriteNode?
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
@@ -23,6 +26,8 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     let setJoystickSubstrateImageBtn = SKLabelNode()
     
     let cameraNode = SKCameraNode()
+    
+    let gameCenter = GameCenterManager()
     
     var joystickStickImageEnabled = true {
         didSet {
@@ -50,8 +55,8 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         counterDidBegin += 1
         let a = contact.bodyA.contactTestBitMask
         let b = contact.bodyB.contactTestBitMask
-//        print("a = \(a)")
-//        print("b = \(b)")
+        print("a = \(a)")
+        print("b = \(b)")
         if a == 3 && b == 2 {
             print("Is Hit!!!")
             print("current HP: \(hpEnemy)")
@@ -68,12 +73,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-//    func didEnd(_ contact: SKPhysicsContact) {
-//        print("Not Fired!!")
-//        isHitMelee = false
-//        isHitProjectile = false
-//    }
-//    
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
@@ -86,12 +85,15 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: 0,contact: 0,collision: 0)
         
         addDummyRobot(CGPoint(x: frame.midX+200, y: frame.midY), category: 2, contact: 3)
-        
+
         swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
         meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea",isPhysicsBody: true, category: 2, contact: 2, collision: 1)
+        rangeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "rangeArea",isPhysicsBody: false, category: 1, contact: 1, collision: 2)
         slashNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "slash_00000")
         meleeAreaNode?.isHidden = true
         meleeAreaNode?.zPosition = 2
+        rangeAreaNode?.isHidden = true
+        rangeAreaNode?.zPosition = 2
         slashNode?.isHidden = true
         
         swordNode?.zRotation = -20
@@ -99,7 +101,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         slashNode?.setScale(0.5)
         slashNode?.position.x = 0
-        
         
         configureJoysticks()
         physicsWorld.contactDelegate = self
@@ -127,6 +128,14 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
             
+            guard let hpBarInner = self.hpBarInner else {
+                return
+            }
+            
+            guard let hpBarOuter = self.hpBarOuter else {
+                return
+            }
+            
             let pVelocity = joystick.velocity
             let speed = CGFloat(0.12)
             
@@ -142,8 +151,17 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             meleeAreaNode?.position.x += dx
             meleeAreaNode?.position.y += dy
             
+            rangeAreaNode?.position.x += dx
+            rangeAreaNode?.position.y += dy
+            
             slashNode?.position.x += dx
             slashNode?.position.y += dy
+            
+            hpBarOuter.position.x += dx
+            hpBarOuter.position.y += dy
+            
+            hpBarInner.position.x += dx
+            hpBarInner.position.y += dy
             
             self.cameraNode.position = characterNode.position
         }
@@ -220,10 +238,43 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
+        skillJoystick.on(.begin) { [unowned self] _ in
+            guard let rangeAreaNode = self.rangeAreaNode else {
+                return
+            }
+            
+            rangeAreaNode.isHidden = false
+            rangeAreaNode.position.x += 60
+            rangeAreaNode.setScale(0.5)
+            rangeAreaNode.anchorPoint = CGPoint(x: 1.0, y: 0.5)
+        }
+        
+        skillJoystick.on(.move) { [unowned self] joystick in
+            guard let characterNode = self.characterNode else {
+                return
+            }
+            guard let rangeAreaNode = self.rangeAreaNode else {
+                return
+            }
+            
+            let margin: CGFloat = 70.0
+            self.xOffset = cos(joystick.angular - 1.57) * margin
+            self.yOffset = sin(joystick.angular - 1.57) * margin
+            rangeAreaNode.position.x = characterNode.position.x - xOffset
+            rangeAreaNode.position.y = characterNode.position.y - yOffset
+            rangeAreaNode.zRotation = joystick.angular-1.57
+        }
+        
         skillJoystick.on(.end) { [unowned self] joystick in
             guard let characterNode = self.characterNode else {
                 return
             }
+            guard let rangeAreaNode = self.rangeAreaNode else {
+                return
+            }
+            
+            rangeAreaNode.isHidden = true
+            rangeAreaNode.position.x -= 60
             
             // Create projectile sprite node
             guard let projectileImage = UIImage(named: "fireballThrow") else {
@@ -329,6 +380,27 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         addChild(character)
         characterNode = character
         
+        guard let hpBarOuterImage = UIImage(named: "hpbarouter") else {
+            return
+        }
+        guard let hpBarInnerTexture = UIImage(named: "hpbarinner") else {
+            return
+        }
+
+        let hpbartextureinner = SKTexture(image: hpBarInnerTexture)
+        let hpbarinner = SKSpriteNode(texture: hpbartextureinner)
+        hpbarinner.position = CGPoint(x: 0, y: 54)
+        
+        let hpbartextureouter = SKTexture(image: hpBarOuterImage)
+        let hpbarouter = SKSpriteNode(texture: hpbartextureouter)
+        hpbarouter.position = CGPoint(x: -5, y: 50)
+        
+        addChild(hpbarinner)
+        addChild(hpbarouter)
+        
+        hpBarInner = hpbarinner
+        hpBarOuter = hpbarouter
+        
         startIdleAnimationBattle(characterNode: characterNode)
     }
     
@@ -379,6 +451,13 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         return
     }
     
+    override func update(_ currentTime: TimeInterval) {
+        if hpEnemy <= 0 {
+            dummyRobot?.removeFromParent()
+        }
+    }
+
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self)
@@ -418,11 +497,5 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         let y = Float(applePosition.y) + Float(degree.y) // Inverted for SpriteKit coordinate system
 
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        if hpEnemy <= 0 {
-            dummyRobot?.removeFromParent()
-        }
     }
 }
