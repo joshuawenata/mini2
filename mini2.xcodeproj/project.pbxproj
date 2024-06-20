@@ -596,11 +596,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-<<<<<<< HEAD
-				DEVELOPMENT_TEAM = 5T75SV584X;
-=======
 				DEVELOPMENT_TEAM = T7SD288Q5G;
->>>>>>> main
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -614,11 +610,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-<<<<<<< HEAD
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethal;
-=======
 				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethel;
->>>>>>> main
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
