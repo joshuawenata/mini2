@@ -3,6 +3,8 @@ import SwiftUI
 
 class BattleScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode?
+    var hpBarInner: SKSpriteNode?
+    var hpBarOuter: SKSpriteNode?
     var dummyRobot: SKSpriteNode?
     var first = true
     var swordNode: SKSpriteNode?
@@ -124,6 +126,14 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
             
+            guard let hpBarInner = self.hpBarInner else {
+                return
+            }
+            
+            guard let hpBarOuter = self.hpBarOuter else {
+                return
+            }
+            
             let pVelocity = joystick.velocity
             let speed = CGFloat(0.12)
             
@@ -144,6 +154,12 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             
             slashNode?.position.x += dx
             slashNode?.position.y += dy
+            
+            hpBarOuter.position.x += dx
+            hpBarOuter.position.y += dy
+            
+            hpBarInner.position.x += dx
+            hpBarInner.position.y += dy
             
             self.cameraNode.position = characterNode.position
         }
@@ -361,6 +377,27 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         character.physicsBody?.collisionBitMask = collision
         addChild(character)
         characterNode = character
+        
+        guard let hpBarOuterImage = UIImage(named: "hpbarouter") else {
+            return
+        }
+        guard let hpBarInnerTexture = UIImage(named: "hpbarinner") else {
+            return
+        }
+
+        let hpbartextureinner = SKTexture(image: hpBarInnerTexture)
+        let hpbarinner = SKSpriteNode(texture: hpbartextureinner)
+        hpbarinner.position = CGPoint(x: 0, y: 54)
+        
+        let hpbartextureouter = SKTexture(image: hpBarOuterImage)
+        let hpbarouter = SKSpriteNode(texture: hpbartextureouter)
+        hpbarouter.position = CGPoint(x: -5, y: 50)
+        
+        addChild(hpbarinner)
+        addChild(hpbarouter)
+        
+        hpBarInner = hpbarinner
+        hpBarOuter = hpbarouter
         
         startIdleAnimationBattle(characterNode: characterNode)
     }
