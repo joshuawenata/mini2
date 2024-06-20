@@ -27,6 +27,8 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     
     let cameraNode = SKCameraNode()
     
+    let gameCenter = GameCenterManager()
+    
     var joystickStickImageEnabled = true {
         didSet {
             let jImage = UIImage(named: "jStick")
@@ -83,7 +85,8 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: 0,contact: 0,collision: 0)
         
         addDummyRobot(CGPoint(x: frame.midX+200, y: frame.midY), category: 2, contact: 3)
-        
+
+        addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY))
         swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
         meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea",isPhysicsBody: true, category: 2, contact: 2, collision: 1)
         rangeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "rangeArea",isPhysicsBody: false, category: 1, contact: 1, collision: 2)
@@ -448,6 +451,17 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         return
     }
+    
+    override func update(_ currentTime: TimeInterval) {
+        let rangeX = 3...7
+        let rangeY = 85...100
+        
+        print("total players", gameCenter.totalPlayer)
+        if rangeX.contains(Int(characterNode?.position.x ?? 0)) && rangeY.contains(Int(characterNode?.position.y ?? 0)) {
+            gameCenter.startMatchmaking()
+        }
+    }
+
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {

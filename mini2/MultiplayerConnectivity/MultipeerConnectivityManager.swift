@@ -18,12 +18,12 @@ class MPConnectionManager: NSObject, ObservableObject {
     let myPeerId: MCPeerID
     let nearbyServiceAdvertiser: MCNearbyServiceAdvertiser
     let nearbyServiceBrowser: MCNearbyServiceBrowser
-    var playerPosition: PlayerPositionModel?
+//    var playerPosition: PlayerPositionModel?
 //    var objective: Objective?
 //
-    func setupPlayerPosition(position: PlayerPositionModel) {
-        self.playerPosition = position
-    }
+//    func setupPlayerPosition(position: PlayerPositionModel) {
+//        self.playerPosition = position
+//    }
 //
 //    func setupObjective(objective: Objective) {
 //        self.objective = objective
@@ -71,9 +71,7 @@ class MPConnectionManager: NSObject, ObservableObject {
 
     func addPlayerFailed() {
         playerFinished.append(false)
-        print(playerFinished)
-        print("Finished")
-    }
+        print(playerFinished)    }
 
     func startAdvertising() {
         nearbyServiceAdvertiser.startAdvertisingPeer()
@@ -91,18 +89,6 @@ class MPConnectionManager: NSObject, ObservableObject {
         nearbyServiceBrowser.stopBrowsingForPeers()
         availablePeers.removeAll()
     }
-
-//    func send(ingredient: MyIngredient) {
-//        if !session.connectedPeers.isEmpty {
-//            do {
-//                if let data = ingredient.data() {
-//                    try session.send(data, toPeers: session.connectedPeers, with: .reliable)
-//                }
-//            } catch {
-//                print("Error \(error.localizedDescription)")
-//            }
-//        }
-//    }
 }
 
 extension MPConnectionManager: MCNearbyServiceBrowserDelegate {

@@ -9,6 +9,7 @@ import SwiftUI
 import SpriteKit
 
 struct OnboardingView: View {
+    let gameCenter = GameCenterManager()
     var body: some View {
         NavigationStack {
             ZStack {
@@ -33,7 +34,9 @@ struct OnboardingView: View {
                     })
                 }
             }
-        }
+        }.onAppear(perform: {
+            gameCenter.authenticatePlayer()
+        })
     }
     
     func presentGameScene() {

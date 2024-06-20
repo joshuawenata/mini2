@@ -7,15 +7,16 @@
 
 import Foundation
 import GameKit
-
+import SwiftUI
 class GameCenterManager: NSObject, ObservableObject {
     
     var match: GKMatch?
     var localPlayer = GKLocalPlayer.local
     var otherPlayer: GKPlayer?
     @Published var authenticationState  = PlayerAuthState.authenticating
-    @Published var enumSendData = SendingData.playerPosition
-
+    @Published var battleView = false
+    @Published var jungleView = true
+    @Published var totalPlayer = 0
     
     var rootViewController: UIViewController? {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -47,11 +48,10 @@ class GameCenterManager: NSObject, ObservableObject {
     }
     
     func startMatchmaking() {
-        print("start match making")
+        let match = GKMatch()
         let request = GKMatchRequest()
         request.minPlayers = 2
         request.maxPlayers = 4
-        request.queueName = "map"
         
         let matchmakingVC = GKMatchmakerViewController(matchRequest: request)
         matchmakingVC?.matchmakerDelegate = self
@@ -62,48 +62,25 @@ class GameCenterManager: NSObject, ObservableObject {
     
     func startGame(newMatch: GKMatch) {
         match = newMatch
-        match?.delegate = self
-        otherPlayer = match?.players.first        
+        match?.delegate = self        
+        battleView = true
+        jungleView = false
+        totalPlayer = match?.players.count ?? 0
+        print("player count", match?.players.count)
     }
 }
 
 extension GameCenterManager: GKMatchDelegate {
     // RECEIVING DATA FROM OTHER PLAYERS
-//    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-//        do {
-//            print("received data")
-//            let decoder = JSONDecoder()
-//            let playerData = try decoder.decode(SendingDataModel.self, from: data)
-//            
-//            if playerData.name == "player position" {
-//                let playerPosition = try decoder.decode(PlayerDataModel.self, from: playerData.data)
-//                print(playerPosition)
-//            }
-//        } catch {
-//            
-//        }
-//    }
+   func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+       
+       
+   }
     
     // SENDING DATA TO ALL PLAYERS
-    private func sendData(_ data: Data, mode: GKMatch.SendDataMode) {
-         do {
-             try match?.sendData(toAllPlayers: data, with: mode)
-         } catch {
-             // CATCH ERROR
-         }
-    }
+   private func sendData(_ data: Data, mode: GKMatch.SendDataMode) {
 
-//    func sendPlayerData(_ message: PlayerDataModel) {
-//        enumSendData = .playerPosition
-//        let encoder = JSONEncoder()
-//        do {
-//            let encodeData = try encoder.encode(message)
-//            let sendingData = SendingDataModel(name: enumSendData.rawValue, data: encodeData)
-//            let encodeSendingData = try encoder.encode(sendingData)
-//            print("data send")
-//            sendData(encodeSendingData, mode: .reliable)
-//        } catch {}
-//    }
+   }
     
     // HANDLING PLAYERS CONNECTION STATE
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
@@ -133,41 +110,24 @@ extension GameCenterManager: GKMatchDelegate {
             }
         }
     }
+    
+    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+//        guard let model = GameModel.decode(data: data) else { return }
+//        gameModel = model
+    }
 }
 
-extension GameCenterManager: GKMatchmakerViewControllerDelegate {
-    
+extension GameCenterManager: GKMatchmakerViewControllerDelegate  {
     func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
-        print("check1")
         viewController.dismiss(animated: true)
         startGame(newMatch: match)
     }
     
     func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: any Error) {
-        print("check2")
         viewController.dismiss(animated: true)
     }
     
     func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
-        print("check3")
         viewController.dismiss(animated: true)
     }
-    
-//    func player(_ player: GKPlayer, didAccept invite: GKInvite) {
-//        let request = GKMatchRequest()
-//
-//        if let viewController = GKMatchmakerViewController(invite: invite) {
-//            viewController.matchmakerDelegate = self
-//            rootViewController?.present(viewController, animated: true) { }
-//        }
-        
-//        if let viewController = GKMatchmakerViewController(matchRequest: request) {
-//            request.minPlayers = 2
-//            request.maxPlayers = 10
-//            request.queueName = "map"
-//
-//            viewController.matchmakerDelegate = self
-//            rootViewController?.present(viewController, animated: true) { }
-//        }
-//    }
 }

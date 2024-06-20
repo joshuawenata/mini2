@@ -12,6 +12,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let cameraNode = SKCameraNode()
     
+    let gameCenter = GameCenterManager()
+    let battleScene = BattleScene(size: UIScreen.main.bounds.size)
+        
     var joystickStickImageEnabled = true {
         didSet {
             let image = UIImage(named: "jStick")
@@ -155,6 +158,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if moveJoystick.contains(location) {
                 moveJoystick.touchesEnded(touches, with: event)
             }
+        }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        let rangeX = 3...7
+        let rangeY = 85...100
+        
+        if rangeX.contains(Int(characterNode?.position.x ?? 0)) && rangeY.contains(Int(characterNode?.position.y ?? 0)) {
+            gameCenter.startMatchmaking()
+        }
+        
+        if gameCenter.battleView {
+            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
+            self.view?.presentScene(battleScene, transition: transition)
         }
     }
     
