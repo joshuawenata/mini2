@@ -67,8 +67,6 @@
 		8B8FF0602C19450500BE749B /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
 		8B8FF0662C1950CE00BE749B /* mini2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mini2.entitlements; sourceTree = "<group>"; };
 		8B8FF0672C1952B700BE749B /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
-		8B8FF06A2C19596F00BE749B /* PlayerPositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPositionModel.swift; sourceTree = "<group>"; };
-		8B8FF06C2C19602400BE749B /* BattleDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleDataModel.swift; sourceTree = "<group>"; };
 		8B8FF0722C1A950E00BE749B /* MultipeerConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerConnectivityManager.swift; sourceTree = "<group>"; };
 		962D988D2C19655E00E38C85 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		962D988F2C19690A00E38C85 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
@@ -413,7 +411,6 @@
 				A626196B2C19814D00FF75F1 /* SparksView.swift in Sources */,
 				A626196D2C199EBE00FF75F1 /* movementViewModel.swift in Sources */,
 				A661374C2C229D3A00B6AC3D /* BattleScene.swift in Sources */,
-				8B8FF06D2C19602400BE749B /* BattleDataModel.swift in Sources */,
 				8B8FF0682C1952B700BE749B /* Enum.swift in Sources */,
 				A626195E2C188C1500FF75F1 /* menuViewModel.swift in Sources */,
 				A62619732C19A01D00FF75F1 /* basicAttackViewModel.swift in Sources */,

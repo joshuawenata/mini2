@@ -33,7 +33,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        
 //        NPCNode.append(character)
 //    }
-    
+
+    let gameCenter = GameCenterManager()
+    let battleScene = BattleScene(size: UIScreen.main.bounds.size)
+        
     var joystickStickImageEnabled = true {
         didSet {
             let image = UIImage(named: "jStick")
@@ -44,12 +47,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        print(contact.bodyB.node?.name ?? "unknown")
+        if String(contact.bodyB.node?.name ?? "unknown") == "battleBuilding" {
+            gameCenter.startMatchmaking()
+        }
         isWallContact = true
     }
     
     func didEnd(_ contact: SKPhysicsContact) {
-        print(contact.bodyB.node?.name ?? "unknown")
         isWallContact = false
     }
     
@@ -194,6 +198,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if moveJoystick.contains(location) {
                 moveJoystick.touchesEnded(touches, with: event)
             }
+        }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if gameCenter.battleView {
+            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
+            self.view?.presentScene(battleScene, transition: transition)
         }
     }
     
