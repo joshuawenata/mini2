@@ -23,12 +23,4 @@ func addBuilding(at position: CGPoint, imageName: String) -> SKSpriteNode {
     building.physicsBody?.isDynamic = false
     
     return building
-    
-//    let building = SKSpriteNode(imageNamed: imageName)
-//            building.position = position
-//            building.name = imageName
-//            building.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: imageName), size: building.size)
-//            building.physicsBody?.isDynamic = false
-//            building.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue
-//            return building
 }

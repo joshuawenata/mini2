@@ -2,7 +2,7 @@ import SwiftUI
 import SpriteKit
 
 struct InGameView: View {
-    let scene = GameScene(size: UIScreen.main.bounds.size)
+    let scene = BattleScene(size: UIScreen.main.bounds.size)
     
     var body: some View {
         NavigationStack {
