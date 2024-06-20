@@ -1,13 +1,13 @@
 //
-//  LeaderboardView.swift
+//  QuestView.swift
 //  mini2
 //
-//  Created by Raphael on 12/06/24.
+//  Created by Joshua Wenata Sunarto on 20/06/24.
 //
 
 import SwiftUI
 
-struct LeaderboardView: View {
+struct QuestView: View {
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {
@@ -18,17 +18,10 @@ struct LeaderboardView: View {
             
             VStack(alignment: .leading) {
                 HStack {
-                    Text("Leaderboard")
+                    Text("Quest")
                         .font(.custom("AveriaSerifLibre-Regular", size: 40))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
-                        .scaledToFit()
-                        .padding()
-                    Text("winrate%")
-                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .opacity(0.6)
                         .scaledToFit()
                         .padding()
                     Spacer()
@@ -62,27 +55,28 @@ struct LeaderboardView: View {
                         
                         
                         HStack {
-                            Text("#1")
-                                .foregroundStyle(.white)
-                                .font(.custom("AveriaSerifLibre-Regular", size: 50))
-                                .offset(x: -70)
-                            Image("profileicon")
-                                .resizable(capInsets: EdgeInsets(), resizingMode: .stretch)
-                                .aspectRatio(contentMode: .fill)
-                                .frame(maxWidth: 80, maxHeight: 80)
-                                .scaledToFill()
-                                .cornerRadius(15)
-                                .offset(x: -5)
-                            Text("|||Exalted|||")
+                            ZStack{
+                                Image("bgcoin")
+                                    .resizable()
+                                    .frame(width: 120, height: 80)
+                                    .scaledToFit()
+                                HStack {
+                                    Text("100")
+                                        .foregroundStyle(.white)
+                                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    Image("coin")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                }
+                            }
+                            .padding(.trailing, 50)
+                            Text("Deliver items to the blacksmith")
                                 .foregroundStyle(.white)
                                 .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                 .padding(.trailing, 50)
-                            Text("100%")
-                                .foregroundStyle(.white)
-                                .font(.custom("AveriaSerifLibre-Regular", size: 40))
                         }
                     }
-                    .padding(.bottom, -10)
+                    .padding(.bottom, 10)
                     ZStack {
                         RoundedRectangle(cornerRadius: 15)
                             .frame(width: 700, height: 100)
@@ -96,27 +90,28 @@ struct LeaderboardView: View {
                         
                         
                         HStack {
-                            Text("#1")
-                                .foregroundStyle(.white)
-                                .font(.custom("AveriaSerifLibre-Regular", size: 50))
-                                .offset(x: -70)
-                            Image("profileicon")
-                                .resizable(capInsets: EdgeInsets(), resizingMode: .stretch)
-                                .aspectRatio(contentMode: .fill)
-                                .frame(maxWidth: 80, maxHeight: 80)
-                                .scaledToFill()
-                                .cornerRadius(15)
-                                .offset(x: -5)
-                            Text("|||Exalted|||")
+                            ZStack{
+                                Image("bgcoin")
+                                    .resizable()
+                                    .frame(width: 120, height: 80)
+                                    .scaledToFit()
+                                HStack {
+                                    Text("100")
+                                        .foregroundStyle(.white)
+                                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    Image("coin")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                }
+                            }
+                            .padding(.trailing, 50)
+                            Text("Deliver items to the blacksmith")
                                 .foregroundStyle(.white)
                                 .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                 .padding(.trailing, 50)
-                            Text("100%")
-                                .foregroundStyle(.white)
-                                .font(.custom("AveriaSerifLibre-Regular", size: 40))
                         }
                     }
-                    .padding(.bottom, -10)
+                    .padding(.bottom, 10)
                     ZStack {
                         RoundedRectangle(cornerRadius: 15)
                             .frame(width: 700, height: 100)
@@ -130,27 +125,28 @@ struct LeaderboardView: View {
                         
                         
                         HStack {
-                            Text("#1")
-                                .foregroundStyle(.white)
-                                .font(.custom("AveriaSerifLibre-Regular", size: 50))
-                                .offset(x: -70)
-                            Image("profileicon")
-                                .resizable(capInsets: EdgeInsets(), resizingMode: .stretch)
-                                .aspectRatio(contentMode: .fill)
-                                .frame(maxWidth: 80, maxHeight: 80)
-                                .scaledToFill()
-                                .cornerRadius(15)
-                                .offset(x: -5)
-                            Text("|||Exalted|||")
+                            ZStack{
+                                Image("bgcoin")
+                                    .resizable()
+                                    .frame(width: 120, height: 80)
+                                    .scaledToFit()
+                                HStack {
+                                    Text("100")
+                                        .foregroundStyle(.white)
+                                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    Image("coin")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                }
+                            }
+                            .padding(.trailing, 50)
+                            Text("Deliver items to the blacksmith")
                                 .foregroundStyle(.white)
                                 .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                 .padding(.trailing, 50)
-                            Text("100%")
-                                .foregroundStyle(.white)
-                                .font(.custom("AveriaSerifLibre-Regular", size: 40))
                         }
-                        
                     }
+                    .padding(.bottom, 10)
                 }
                 .padding(.horizontal, 30)
             }
@@ -161,5 +157,5 @@ struct LeaderboardView: View {
 }
 
 #Preview {
-    LeaderboardView()
+    QuestView()
 }

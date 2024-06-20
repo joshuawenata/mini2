@@ -39,6 +39,7 @@
 		A661374C2C229D3A00B6AC3D /* BattleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661374B2C229D3A00B6AC3D /* BattleScene.swift */; };
 		A661374E2C23CDAB00B6AC3D /* VictoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661374D2C23CDAB00B6AC3D /* VictoryView.swift */; };
 		A66137502C23D09500B6AC3D /* DefeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661374F2C23D09500B6AC3D /* DefeatView.swift */; };
+		A66137522C23E13700B6AC3D /* QuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66137512C23E13700B6AC3D /* QuestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,7 @@
 		A661374B2C229D3A00B6AC3D /* BattleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleScene.swift; sourceTree = "<group>"; };
 		A661374D2C23CDAB00B6AC3D /* VictoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VictoryView.swift; sourceTree = "<group>"; };
 		A661374F2C23D09500B6AC3D /* DefeatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefeatView.swift; sourceTree = "<group>"; };
+		A66137512C23E13700B6AC3D /* QuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 				A626196A2C19814D00FF75F1 /* SparksView.swift */,
 				A661374D2C23CDAB00B6AC3D /* VictoryView.swift */,
 				A661374F2C23D09500B6AC3D /* DefeatView.swift */,
+				A66137512C23E13700B6AC3D /* QuestView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 				A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */,
 				A66137502C23D09500B6AC3D /* DefeatView.swift in Sources */,
 				A660D2842C0ECB6400D3A74F /* mini2App.swift in Sources */,
+				A66137522C23E13700B6AC3D /* QuestView.swift in Sources */,
 				962D988E2C19655E00E38C85 /* ShopView.swift in Sources */,
 				A62619672C19690A00FF75F1 /* OptionView.swift in Sources */,
 				A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */,
