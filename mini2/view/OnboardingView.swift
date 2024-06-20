@@ -26,25 +26,6 @@ struct OnboardingView: View {
                         .padding(.top, 50)
                         .padding(.bottom, 20)
                     
-                    VStack(alignment: .leading) {
-                        Text("What is your name, adventurer?")
-                            .font(.custom("JollyLodger", size: 50))
-                            .foregroundColor(.white)
-                            .frame(height: 50)
-                        
-                        ZStack {
-                            Image("textbox")
-                                .resizable()
-                                .frame(width: 500, height: 80)
-                                .scaledToFit()
-                            
-                            TextField("Enter your name", text: .constant(""))
-                                .padding()
-                                .frame(width: 400)
-                        }
-                    }
-                    .padding()
-                    
                     NavigationLink(destination: InGameView(), label: {
                         Image("startbutton")
                             .resizable()

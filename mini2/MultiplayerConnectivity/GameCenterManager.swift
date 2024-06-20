@@ -69,20 +69,20 @@ class GameCenterManager: NSObject, ObservableObject {
 
 extension GameCenterManager: GKMatchDelegate {
     // RECEIVING DATA FROM OTHER PLAYERS
-    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        do {
-            print("received data")
-            let decoder = JSONDecoder()
-            let playerData = try decoder.decode(SendingDataModel.self, from: data)
-            
-            if playerData.name == "player position" {
-                let playerPosition = try decoder.decode(PlayerDataModel.self, from: playerData.data)
-                print(playerPosition)
-            }
-        } catch {
-            
-        }
-    }
+//    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+//        do {
+//            print("received data")
+//            let decoder = JSONDecoder()
+//            let playerData = try decoder.decode(SendingDataModel.self, from: data)
+//            
+//            if playerData.name == "player position" {
+//                let playerPosition = try decoder.decode(PlayerDataModel.self, from: playerData.data)
+//                print(playerPosition)
+//            }
+//        } catch {
+//            
+//        }
+//    }
     
     // SENDING DATA TO ALL PLAYERS
     private func sendData(_ data: Data, mode: GKMatch.SendDataMode) {
@@ -93,17 +93,17 @@ extension GameCenterManager: GKMatchDelegate {
          }
     }
 
-    func sendPlayerData(_ message: PlayerDataModel) {
-        enumSendData = .playerPosition
-        let encoder = JSONEncoder()
-        do {
-            let encodeData = try encoder.encode(message)
-            let sendingData = SendingDataModel(name: enumSendData.rawValue, data: encodeData)
-            let encodeSendingData = try encoder.encode(sendingData)
-            print("data send")
-            sendData(encodeSendingData, mode: .reliable)
-        } catch {}
-    }
+//    func sendPlayerData(_ message: PlayerDataModel) {
+//        enumSendData = .playerPosition
+//        let encoder = JSONEncoder()
+//        do {
+//            let encodeData = try encoder.encode(message)
+//            let sendingData = SendingDataModel(name: enumSendData.rawValue, data: encodeData)
+//            let encodeSendingData = try encoder.encode(sendingData)
+//            print("data send")
+//            sendData(encodeSendingData, mode: .reliable)
+//        } catch {}
+//    }
     
     // HANDLING PLAYERS CONNECTION STATE
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
