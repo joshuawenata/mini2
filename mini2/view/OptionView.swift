@@ -5,7 +5,7 @@ struct OptionView: View {
     
     var body: some View {
         ZStack {
-            Image("greenbg1")
+            Image("bgDefault")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)

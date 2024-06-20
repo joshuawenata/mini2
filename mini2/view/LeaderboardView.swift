@@ -11,7 +11,7 @@ struct LeaderboardView: View {
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {
-            Image("greenbg1")
+            Image("greenbg")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
