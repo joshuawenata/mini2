@@ -86,7 +86,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         addDummyRobot(CGPoint(x: frame.midX+200, y: frame.midY), category: 2, contact: 3)
 
-        addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY))
         swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
         meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea",isPhysicsBody: true, category: 2, contact: 2, collision: 1)
         rangeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "rangeArea",isPhysicsBody: false, category: 1, contact: 1, collision: 2)
@@ -453,12 +452,8 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        let rangeX = 3...7
-        let rangeY = 85...100
-        
-        print("total players", gameCenter.totalPlayer)
-        if rangeX.contains(Int(characterNode?.position.x ?? 0)) && rangeY.contains(Int(characterNode?.position.y ?? 0)) {
-            gameCenter.startMatchmaking()
+        if hpEnemy <= 0 {
+            dummyRobot?.removeFromParent()
         }
     }
 
@@ -502,11 +497,5 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         let y = Float(applePosition.y) + Float(degree.y) // Inverted for SpriteKit coordinate system
 
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        if hpEnemy <= 0 {
-            dummyRobot?.removeFromParent()
-        }
     }
 }

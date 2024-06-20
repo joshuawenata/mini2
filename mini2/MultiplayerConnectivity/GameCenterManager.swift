@@ -110,11 +110,6 @@ extension GameCenterManager: GKMatchDelegate {
             }
         }
     }
-    
-    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-//        guard let model = GameModel.decode(data: data) else { return }
-//        gameModel = model
-    }
 }
 
 extension GameCenterManager: GKMatchmakerViewControllerDelegate  {

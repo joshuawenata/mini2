@@ -25,12 +25,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        print(contact.bodyB.node?.name ?? "unknown")
+        if String(contact.bodyB.node?.name ?? "unknown") == "battleBuilding" {
+            gameCenter.startMatchmaking()
+        }
         isWallContact = true
     }
     
     func didEnd(_ contact: SKPhysicsContact) {
-        print(contact.bodyB.node?.name ?? "unknown")
         isWallContact = false
     }
     
@@ -162,13 +163,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        let rangeX = 3...7
-        let rangeY = 85...100
-        
-        if rangeX.contains(Int(characterNode?.position.x ?? 0)) && rangeY.contains(Int(characterNode?.position.y ?? 0)) {
-            gameCenter.startMatchmaking()
-        }
-        
         if gameCenter.battleView {
             let transition = SKTransition.flipHorizontal(withDuration: 1.0)
             self.view?.presentScene(battleScene, transition: transition)
