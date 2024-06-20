@@ -10,6 +10,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
     
+    let shopNode = SKSpriteNode(color: .clear, size: CGSize(width: 200, height: 200))
+    let battleNode = SKSpriteNode(color: .clear, size: CGSize(width: 300, height: 300))
+    let interactionThresholdDistance: CGFloat = 200
+    
     let cameraNode = SKCameraNode()
     
     var joystickStickImageEnabled = true {
@@ -21,13 +25,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func didBegin(_ contact: SKPhysicsContact) {
-        print("Begin!")
+    func didBegin(_ contact: SKPhysicsContact, with node: SKSpriteNode) {
+        print("Begin! \(node)")
         isWallContanct = true
     }
     
-    func didEnd(_ contact: SKPhysicsContact) {
-        print("Ending!")
+    func didEnd(_ contact: SKPhysicsContact, with node: SKNode) {
+        print("Ending! \(node)")
         isWallContanct = false
     }
     
@@ -62,6 +66,44 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(addBuilding(at: CGPoint(x: -400, y: -200), imageName: "houseBuilding"))
         addChild(addBuilding(at: CGPoint(x: -300, y: 100), imageName: "statueBuilding"))
         
+        shopNode.position = CGPoint(x: -100, y: -240)
+        shopNode.alpha = 0.5
+        self.addChild(shopNode)
+        
+        battleNode.position = CGPoint(x: 0, y: 50)
+        battleNode.alpha = 0.5
+        self.addChild(battleNode)
+    }
+    
+    
+    
+    override func update(_ currentTime: TimeInterval) {
+        
+        let distanceToShop = hypot((shopNode.position.x) - (characterNode?.position.x ?? 0), (shopNode.position.y) - (characterNode?.position.y ?? 0))
+        
+        if distanceToShop < interactionThresholdDistance {
+//            print("In box\(distanceToShop)")
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.nearestBuilding = "Shop"
+        }
+        if distanceToShop > interactionThresholdDistance {
+//            print("out box\(distanceToShop)")
+            VariableManager.shared.interactionButtonHidden = true
+            VariableManager.shared.nearestBuilding = ""
+        }
+        
+        let distanceToBattle = hypot((battleNode.position.x) - (characterNode?.position.x ?? 0), (battleNode.position.y) - (characterNode?.position.y ?? 0))
+        
+        if distanceToBattle < interactionThresholdDistance {
+//            print("In box\(distanceToBattle)")
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.nearestBuilding = "Battle"
+        }
+        if distanceToBattle > interactionThresholdDistance {
+//            print("out box\(distanceToBattle)")
+            VariableManager.shared.interactionButtonHidden = true
+            VariableManager.shared.nearestBuilding = ""
+        }
     }
     
     func configureJoysticks() {
