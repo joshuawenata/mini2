@@ -83,16 +83,16 @@ extension GameCenterManager: GKMatchDelegate {
 //            
 //        }
 //    }
-//    
-//    // SENDING DATA TO ALL PLAYERS
-//    private func sendData(_ data: Data, mode: GKMatch.SendDataMode) {
-//         do {
-//             try match?.sendData(toAllPlayers: data, with: mode)
-//         } catch {
-//             // CATCH ERROR
-//         }
-//    }
-//
+    
+    // SENDING DATA TO ALL PLAYERS
+    private func sendData(_ data: Data, mode: GKMatch.SendDataMode) {
+         do {
+             try match?.sendData(toAllPlayers: data, with: mode)
+         } catch {
+             // CATCH ERROR
+         }
+    }
+
 //    func sendPlayerData(_ message: PlayerDataModel) {
 //        enumSendData = .playerPosition
 //        let encoder = JSONEncoder()

@@ -11,7 +11,7 @@ struct LeaderboardView: View {
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {
-            Image("greenbg1")
+            Image("greenbg")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
@@ -155,6 +155,7 @@ struct LeaderboardView: View {
                 .padding(.horizontal, 30)
             }
         }
+        .padding(.leading, 50)
         .navigationBarBackButtonHidden(true)
     }
 }
