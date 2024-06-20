@@ -18,7 +18,7 @@ struct BackpackView: View {
 
     var body: some View {
         ZStack {
-            Image("greenbg1")
+            Image("greenbg")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
