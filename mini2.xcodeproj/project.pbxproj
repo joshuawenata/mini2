@@ -37,6 +37,8 @@
 		A660D2A12C0ECB6500D3A74F /* mini2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A660D2A02C0ECB6500D3A74F /* mini2UITestsLaunchTests.swift */; };
 		A660D2C52C13202200D3A74F /* JollyLodger.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A660D2C42C13202200D3A74F /* JollyLodger.ttf */; };
 		A661374C2C229D3A00B6AC3D /* BattleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661374B2C229D3A00B6AC3D /* BattleScene.swift */; };
+		A661374E2C23CDAB00B6AC3D /* VictoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661374D2C23CDAB00B6AC3D /* VictoryView.swift */; };
+		A66137502C23D09500B6AC3D /* DefeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661374F2C23D09500B6AC3D /* DefeatView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +94,8 @@
 		A660D2C42C13202200D3A74F /* JollyLodger.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = JollyLodger.ttf; sourceTree = "<group>"; };
 		A660D2C62C13203400D3A74F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A661374B2C229D3A00B6AC3D /* BattleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleScene.swift; sourceTree = "<group>"; };
+		A661374D2C23CDAB00B6AC3D /* VictoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VictoryView.swift; sourceTree = "<group>"; };
+		A661374F2C23D09500B6AC3D /* DefeatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefeatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +153,8 @@
 				962D988F2C19690A00E38C85 /* LeaderboardView.swift */,
 				A62619662C19690A00FF75F1 /* OptionView.swift */,
 				A626196A2C19814D00FF75F1 /* SparksView.swift */,
+				A661374D2C23CDAB00B6AC3D /* VictoryView.swift */,
+				A661374F2C23D09500B6AC3D /* DefeatView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -411,9 +417,11 @@
 				962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */,
 				A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */,
 				8B8FF06B2C19596F00BE749B /* PlayerPositionModel.swift in Sources */,
+				A661374E2C23CDAB00B6AC3D /* VictoryView.swift in Sources */,
 				2B3598E62C11C47600EDBA3C /* InGameView.swift in Sources */,
 				2B3598E42C11C39F00EDBA3C /* OnboardingView.swift in Sources */,
 				A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */,
+				A66137502C23D09500B6AC3D /* DefeatView.swift in Sources */,
 				A660D2842C0ECB6400D3A74F /* mini2App.swift in Sources */,
 				962D988E2C19655E00E38C85 /* ShopView.swift in Sources */,
 				A62619672C19690A00FF75F1 /* OptionView.swift in Sources */,
