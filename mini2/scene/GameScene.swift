@@ -4,8 +4,8 @@ import SwiftUI
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode?
     var first = true
-    let moveJoystick = 🕹(withDiameter: 100)
-    var isWallContanct = false
+    let moveJoystick = TLAnalogJoystick(withDiameter: 200)
+    var isWallContact = false
     
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
@@ -25,14 +25,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func didBegin(_ contact: SKPhysicsContact, with node: SKSpriteNode) {
-        print("Begin! \(node)")
-        isWallContanct = true
+
+    func didBegin(_ contact: SKPhysicsContact) {
+        print(contact.bodyB.node?.name ?? "unknown")
+        isWallContact = true
     }
     
-    func didEnd(_ contact: SKPhysicsContact, with node: SKNode) {
-        print("Ending! \(node)")
-        isWallContanct = false
+    func didEnd(_ contact: SKPhysicsContact) {
+        print(contact.bodyB.node?.name ?? "unknown")
+        isWallContact = false
     }
     
     var joystickSubstrateImageEnabled = true {
@@ -63,7 +64,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(addBuilding(at: CGPoint(x: 0, y: 100), imageName: "battleBuilding"))
         addChild(addBuilding(at: CGPoint(x: -100, y: -200), imageName: "shopBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -400, y: -200), imageName: "houseBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -700, y: -200), imageName: "npcHouseOne"))
+        addChild(addBuilding(at: CGPoint(x: -400, y: -200), imageName: "npcHouseTwo"))
+        addChild(addBuilding(at: CGPoint(x: 300, y: -200), imageName: "npcHouseThree"))
         addChild(addBuilding(at: CGPoint(x: -300, y: 100), imageName: "statueBuilding"))
         
         shopNode.position = CGPoint(x: -100, y: -240)
@@ -104,6 +107,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             VariableManager.shared.interactionButtonHidden = true
             VariableManager.shared.nearestBuilding = ""
         }
+
     }
     
     func configureJoysticks() {
@@ -168,7 +172,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        return
+        for touch in touches {
+            let location = touch.location(in: self)
+            let nodesAtPoint = nodes(at: location)
+            for node in nodesAtPoint {
+                if let nodeName = node.name {
+                    print("Touched building: \(nodeName)")
+                }
+            }
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
