@@ -13,12 +13,12 @@
 		2B3598E62C11C47600EDBA3C /* InGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3598E52C11C47600EDBA3C /* InGameView.swift */; };
 		8B8FF0612C19450500BE749B /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0602C19450500BE749B /* GameCenterManager.swift */; };
 		8B8FF0682C1952B700BE749B /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0672C1952B700BE749B /* Enum.swift */; };
-		8B8FF06B2C19596F00BE749B /* PlayerPositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF06A2C19596F00BE749B /* PlayerPositionModel.swift */; };
-		8B8FF06D2C19602400BE749B /* BattleDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF06C2C19602400BE749B /* BattleDataModel.swift */; };
+		8B8FF06B2C19596F00BE749B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		8B8FF0732C1A950E00BE749B /* MultipeerConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0722C1A950E00BE749B /* MultipeerConnectivityManager.swift */; };
 		962D988E2C19655E00E38C85 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988D2C19655E00E38C85 /* ShopView.swift */; };
 		962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988F2C19690A00E38C85 /* LeaderboardView.swift */; };
 		969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */; };
+		969C3DDC2C23EF8D007117C4 /* VariableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969C3DDB2C23EF8D007117C4 /* VariableManager.swift */; };
 		A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619562C16BC2B00FF75F1 /* CharacterView.swift */; };
 		A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619582C17F96400FF75F1 /* BackpackView.swift */; };
 		A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626195B2C188AC900FF75F1 /* buildingViewModel.swift */; };
@@ -71,6 +71,7 @@
 		962D988D2C19655E00E38C85 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		962D988F2C19690A00E38C85 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AveriaSerifLibre-Regular.ttf"; sourceTree = "<group>"; };
+		969C3DDB2C23EF8D007117C4 /* VariableManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariableManager.swift; sourceTree = "<group>"; };
 		A62619562C16BC2B00FF75F1 /* CharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterView.swift; sourceTree = "<group>"; };
 		A62619582C17F96400FF75F1 /* BackpackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackpackView.swift; sourceTree = "<group>"; };
 		A626195B2C188AC900FF75F1 /* buildingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = buildingViewModel.swift; sourceTree = "<group>"; };
@@ -184,8 +185,6 @@
 		A626195F2C19514700FF75F1 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				8B8FF06A2C19596F00BE749B /* PlayerPositionModel.swift */,
-				8B8FF06C2C19602400BE749B /* BattleDataModel.swift */,
 				A62619682C19802D00FF75F1 /* Character.swift */,
 			);
 			path = model;
@@ -258,6 +257,7 @@
 		A660D2C02C131F7D00D3A74F /* helper */ = {
 			isa = PBXGroup;
 			children = (
+				969C3DDB2C23EF8D007117C4 /* VariableManager.swift */,
 			);
 			path = helper;
 			sourceTree = "<group>";
@@ -416,8 +416,9 @@
 				A62619732C19A01D00FF75F1 /* basicAttackViewModel.swift in Sources */,
 				962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */,
 				A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */,
-				8B8FF06B2C19596F00BE749B /* PlayerPositionModel.swift in Sources */,
+				8B8FF06B2C19596F00BE749B /* (null) in Sources */,
 				A661374E2C23CDAB00B6AC3D /* VictoryView.swift in Sources */,
+				969C3DDC2C23EF8D007117C4 /* VariableManager.swift in Sources */,
 				2B3598E62C11C47600EDBA3C /* InGameView.swift in Sources */,
 				2B3598E42C11C39F00EDBA3C /* OnboardingView.swift in Sources */,
 				A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */,
@@ -592,7 +593,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = T7SD288Q5G;
+				DEVELOPMENT_TEAM = 5T75SV584X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -606,7 +607,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethel;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -623,7 +624,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = T7SD288Q5G;
+				DEVELOPMENT_TEAM = 5T75SV584X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -637,7 +638,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethel;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

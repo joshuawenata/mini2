@@ -2,7 +2,14 @@ import SwiftUI
 import SpriteKit
 
 struct InGameView: View {
+
+    @StateObject var varManager: VariableManager = VariableManager.shared
+    
+    @State private var isHidden: Bool = VariableManager.shared.interactionButtonHidden
+    @State private var interactionButtonDestination: String = VariableManager.shared.touchBuilding
+
     let gameCenter = GameCenterManager()
+
     let scene = GameScene(size: UIScreen.main.bounds.size)
     
     var body: some View {
@@ -16,6 +23,7 @@ struct InGameView: View {
                     VStack {
                         HStack {
                             Spacer()
+
                             if !gameCenter.battleView {
                                 NavigationLink(destination: LeaderboardView(), label: {
                                     Image("leaderboard")
@@ -53,9 +61,48 @@ struct InGameView: View {
                 }
                 .padding(.top, 20)
                 
+                NavigationLink(destination: destinationView(), label: {
+                    Image("InteractButton")
+                        .resizable()
+                        .frame(width: 105, height: 35)
+                        .padding(.leading, 200)
+                })
+                .hidden(VariableManager.shared.interactionButtonHidden)
             }
         }
         .navigationBarBackButtonHidden(true)
     }
 }
 
+@ViewBuilder
+    private func destinationView() -> some View {
+        switch VariableManager.shared.touchBuilding {
+        case "shopBuilding":
+            ShopView()
+        case "dinerBuilding":
+            ShopView()
+        case "questBuilding":
+            QuestView()
+        default:
+            EmptyView()
+        }
+    }
+
+
+extension View {
+    func hidden(_ shouldHide: Bool) -> some View {
+        modifier(HiddenModifier(isHidden: shouldHide))
+    }
+}
+
+struct HiddenModifier: ViewModifier {
+    var isHidden: Bool
+
+    func body(content: Content) -> some View {
+        content.opacity(isHidden ? 0 : 1)
+    }
+}
+
+#Preview {
+    InGameView()
+}

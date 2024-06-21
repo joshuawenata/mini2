@@ -3,7 +3,7 @@ import SwiftUI
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode?
-//    var NPCNode: [SKSpriteNode] = []
+    //    var NPCNode: [SKSpriteNode] = []
     var first = true
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
     var isWallContact = false
@@ -11,66 +11,91 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
     
+    let shopNode = SKSpriteNode(color: .clear, size: CGSize(width: 200, height: 200))
+    let battleNode = SKSpriteNode(color: .clear, size: CGSize(width: 300, height: 300))
+    let interactionThresholdDistance: CGFloat = 200
+    
     let cameraNode = SKCameraNode()
     
-//    func addNPC(_ position: CGPoint, category: UInt32, contact: UInt32, imageName: String) {
-//        guard let characterImage = UIImage(named: imageName) else {
-//            return
-//        }
-//
-//        let texture = SKTexture(image: characterImage)
-//        let character = SKSpriteNode(texture: texture)
-//        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
-//        character.physicsBody?.affectedByGravity = false
-//        character.physicsBody?.allowsRotation = false
-//        character.position = CGPoint(x: 200, y: 0)
-//        character.setScale(0.3)
-//        character.physicsBody?.categoryBitMask = category
-//        character.physicsBody?.contactTestBitMask = contact
-//        character.physicsBody?.isDynamic = false
-//
-//        addChild(character)
-//
-//        NPCNode.append(character)
-//    }
-
+    //    func addNPC(_ position: CGPoint, category: UInt32, contact: UInt32, imageName: String) {
+    //        guard let characterImage = UIImage(named: imageName) else {
+    //            return
+    //        }
+    //
+    //        let texture = SKTexture(image: characterImage)
+    //        let character = SKSpriteNode(texture: texture)
+    //        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
+    //        character.physicsBody?.affectedByGravity = false
+    //        character.physicsBody?.allowsRotation = false
+    //        character.position = CGPoint(x: 200, y: 0)
+    //        character.setScale(0.3)
+    //        character.physicsBody?.categoryBitMask = category
+    //        character.physicsBody?.contactTestBitMask = contact
+    //        character.physicsBody?.isDynamic = false
+    //
+    //        addChild(character)
+    //
+    //        NPCNode.append(character)
+    //    }
+    
     let gameCenter = GameCenterManager()
     let battleScene = BattleScene(size: UIScreen.main.bounds.size)
-        
+    
     var joystickStickImageEnabled = true {
         didSet {
             let image = UIImage(named: "jStick")
             moveJoystick.handleImage = image
-
+            
             setJoystickStickImageBtn.text = "\(joystickStickImageEnabled ? "Remove" : "Set") stick image"
         }
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        switch String(contact.bodyB.node?.name ?? "Unknown") {
-            case "battleBuilding":
-                gameCenter.startMatchmaking()
-            case "questBuilding":
-                presentView(view: AnyView(QuestView()))
-            case "shopBuilding":
-                presentView(view: AnyView(ShopView()))
-            case "dinerBuilding":
-                presentView(view: AnyView(ShopView()))
-            default:
-            print("\(contact.bodyB.node?.name ?? "Unknown") No Action")
+        
+        if String(contact.bodyB.node?.name ?? "unknown") == "battleBuilding" {
+            gameCenter.startMatchmaking()
+        } else if String(contact.bodyB.node?.name ?? "unknown") == "shopBuilding"{
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "shopBuilding"
+        } else if String(contact.bodyB.node?.name ?? "unknown") == "dinerBuilding"{
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "shopBuilding"
+        } else if String(contact.bodyB.node?.name ?? "unknown") == "questBuilding"{
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "questBuilding"
         }
+        
+
+//        switch String(contact.bodyB.node?.name ?? "Unknown") {
+//        case "battleBuilding":
+//            gameCenter.startMatchmaking()
+//        case "questBuilding":
+//            VariableManager.shared.interactionButtonHidden = false
+//            VariableManager.shared.touchBuilding = "questBuilding"
+//        case "shopBuilding":
+//            VariableManager.shared.interactionButtonHidden = false
+//            VariableManager.shared.touchBuilding = "shopBuilding"
+//        case "dinerBuilding":
+//            VariableManager.shared.interactionButtonHidden = false
+//            VariableManager.shared.touchBuilding = "shopBuilding"
+//        default:
+//            VariableManager.shared.interactionButtonHidden = true
+//            
+//        }
         isWallContact = true
     }
     
+    
     func didEnd(_ contact: SKPhysicsContact) {
         isWallContact = false
+        VariableManager.shared.interactionButtonHidden = true
     }
     
     var joystickSubstrateImageEnabled = true {
         didSet {
             let image = UIImage(named: "jSubstrate")
             moveJoystick.baseImage = image
-
+            
             setJoystickSubstrateImageBtn.text = "\(joystickSubstrateImageEnabled ? "Remove" : "Set") substrate image"
         }
     }
@@ -93,28 +118,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         configureJoysticks()
         
         //top
-        addChild(addBuilding(at: CGPoint(x: -200, y: 300), imageName: "statueBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 0, y: 300), imageName: "battleBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 200, y: 250), imageName: "npcBattle"))
+                addChild(addBuilding(at: CGPoint(x: -200, y: 300), imageName: "statueBuilding"))
+                addChild(addBuilding(at: CGPoint(x: 0, y: 300), imageName: "battleBuilding"))
+                addChild(addBuilding(at: CGPoint(x: 200, y: 250), imageName: "npcBattle"))
+                
+                //left
+                addChild(addBuilding(at: CGPoint(x: -1500, y: 500), imageName: "river"))
+                addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
+                addChild(addBuilding(at: CGPoint(x: -700, y: -100), imageName: "npcHorse"))
+                
+                //middle
+                addChild(addBuilding(at: CGPoint(x: -250, y: -100), imageName: "questBuilding"))
+                addChild(addBuilding(at: CGPoint(x: 0, y: -100), imageName: "shopBuilding"))
+                addChild(addBuilding(at: CGPoint(x: 300, y: -100), imageName: "dinerBuilding"))
+                
+                //bottom
+                addChild(addBuilding(at: CGPoint(x: -200, y: -500), imageName: "npcHouseOne"))
+                addChild(addBuilding(at: CGPoint(x: 0, y: -500), imageName: "npcHouseTwo"))
+                addChild(addBuilding(at: CGPoint(x: 200, y: -500), imageName: "npcHouseThree"))
+                addChild(addBuilding(at: CGPoint(x: 350, y: -550), imageName: "npcHouse"))
+                
+                //right
+                addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if gameCenter.battleView {
+            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
+            self.view?.presentScene(battleScene, transition: transition)
+        }
         
-        //left
-        addChild(addBuilding(at: CGPoint(x: -1500, y: 500), imageName: "river"))
-        addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
-        addChild(addBuilding(at: CGPoint(x: -700, y: -100), imageName: "npcHorse"))
         
-        //middle
-        addChild(addBuilding(at: CGPoint(x: -250, y: -100), imageName: "questBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 0, y: -100), imageName: "shopBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 300, y: -100), imageName: "dinerBuilding"))
         
-        //bottom
-        addChild(addBuilding(at: CGPoint(x: -200, y: -500), imageName: "npcHouseOne"))
-        addChild(addBuilding(at: CGPoint(x: 0, y: -500), imageName: "npcHouseTwo"))
-        addChild(addBuilding(at: CGPoint(x: 200, y: -500), imageName: "npcHouseThree"))
-        addChild(addBuilding(at: CGPoint(x: 350, y: -550), imageName: "npcHouse"))
         
-        //right
-        addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
     }
     
     func configureJoysticks() {
@@ -210,13 +246,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        if gameCenter.battleView {
-            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
-            self.view?.presentScene(battleScene, transition: transition)
-        }
-    }
-    
     func createPath(from start: CGPoint, to destination: CGPoint) -> CGMutablePath {
         let pathToMove = CGMutablePath()
         pathToMove.move(to: start)
@@ -238,3 +267,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 enum CollisionCategory: UInt32 {
     case building = 1
 }
+

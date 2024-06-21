@@ -35,6 +35,7 @@ struct ShopView: View {
                         .resizable()
                         .frame(maxWidth: 40, maxHeight: 40)
                     
+
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }) {
@@ -44,6 +45,7 @@ struct ShopView: View {
                             .scaledToFit()
                             .padding(.horizontal, 20)
                             .scaledToFit()
+
                     }
                 }
                 .padding(15)
@@ -188,7 +190,7 @@ struct ShopView: View {
             
             
         }
-        
+        .navigationBarBackButtonHidden(true)
     }
 }
 
