@@ -6,7 +6,7 @@ struct InGameView: View {
     @StateObject var varManager: VariableManager = VariableManager.shared
     
     @State private var isHidden: Bool = VariableManager.shared.interactionButtonHidden
-    
+    @State private var interactionButtonDestination: String = VariableManager.shared.touchBuilding
 
     let gameCenter = GameCenterManager()
 
@@ -61,7 +61,7 @@ struct InGameView: View {
                 }
                 .padding(.top, 20)
                 
-                NavigationLink(destination: ShopView(), label: {
+                NavigationLink(destination: destinationView(), label: {
                     Image("InteractButton")
                         .resizable()
                         .frame(width: 105, height: 35)
@@ -73,6 +73,19 @@ struct InGameView: View {
         .navigationBarBackButtonHidden(true)
     }
 }
+
+@ViewBuilder
+    private func destinationView() -> some View {
+        switch VariableManager.shared.touchBuilding {
+        case "shopBuilding":
+            ShopView()
+        case "statueBuilding":
+            CharacterView()
+        default:
+            CharacterView()
+        }
+    }
+
 
 extension View {
     func hidden(_ shouldHide: Bool) -> some View {

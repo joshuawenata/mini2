@@ -10,6 +10,6 @@ import Foundation
 class VariableManager: ObservableObject {
     static let shared = VariableManager()
     
-    @Published var nearestBuilding: String = ""
+    @Published var touchBuilding: String = ""
     @Published var interactionButtonHidden: Bool = true
 }

@@ -27,17 +27,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             setJoystickStickImageBtn.text = "\(joystickStickImageEnabled ? "Remove" : "Set") stick image"
         }
     }
-    
 
     func didBegin(_ contact: SKPhysicsContact) {
         if String(contact.bodyB.node?.name ?? "unknown") == "battleBuilding" {
             gameCenter.startMatchmaking()
+        } else if String(contact.bodyB.node?.name ?? "unknown") == "shopBuilding"{
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "shopBuilding"
+        } else if String(contact.bodyB.node?.name ?? "unknown") == "statueBuilding"{
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "statueBuilding"
         }
         isWallContact = true
     }
     
     func didEnd(_ contact: SKPhysicsContact) {
         isWallContact = false
+        VariableManager.shared.interactionButtonHidden = true
     }
     
     var joystickSubstrateImageEnabled = true {
@@ -85,32 +91,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
+        if gameCenter.battleView {
+            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
+            self.view?.presentScene(battleScene, transition: transition)
+        }
         
-        let distanceToShop = hypot((shopNode.position.x) - (characterNode?.position.x ?? 0), (shopNode.position.y) - (characterNode?.position.y ?? 0))
-        
-        if distanceToShop < interactionThresholdDistance {
+//        let distanceToShop = hypot((shopNode.position.x) - (characterNode?.position.x ?? 0), (shopNode.position.y) - (characterNode?.position.y ?? 0))
+//        
+//        if distanceToShop < interactionThresholdDistance {
 //            print("In box\(distanceToShop)")
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.nearestBuilding = "Shop"
-        }
-        if distanceToShop > interactionThresholdDistance {
+//            VariableManager.shared.interactionButtonHidden = false
+//            VariableManager.shared.nearestBuilding = "Shop"
+//        }
+//        if distanceToShop > interactionThresholdDistance {
 //            print("out box\(distanceToShop)")
-            VariableManager.shared.interactionButtonHidden = true
-            VariableManager.shared.nearestBuilding = ""
-        }
-        
-        let distanceToBattle = hypot((battleNode.position.x) - (characterNode?.position.x ?? 0), (battleNode.position.y) - (characterNode?.position.y ?? 0))
-        
-        if distanceToBattle < interactionThresholdDistance {
+//            VariableManager.shared.interactionButtonHidden = true
+//            VariableManager.shared.nearestBuilding = ""
+//        }
+//        
+//        let distanceToBattle = hypot((battleNode.position.x) - (characterNode?.position.x ?? 0), (battleNode.position.y) - (characterNode?.position.y ?? 0))
+//        
+//        if distanceToBattle < interactionThresholdDistance {
 //            print("In box\(distanceToBattle)")
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.nearestBuilding = "Battle"
-        }
-        if distanceToBattle > interactionThresholdDistance {
+//            VariableManager.shared.interactionButtonHidden = false
+//            VariableManager.shared.nearestBuilding = "Battle"
+//        }
+//        if distanceToBattle > interactionThresholdDistance {
 //            print("out box\(distanceToBattle)")
-            VariableManager.shared.interactionButtonHidden = true
-            VariableManager.shared.nearestBuilding = ""
-        }
+//            VariableManager.shared.interactionButtonHidden = true
+//            VariableManager.shared.nearestBuilding = ""
+//        }
 
     }
     
@@ -204,13 +214,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if moveJoystick.contains(location) {
                 moveJoystick.touchesEnded(touches, with: event)
             }
-        }
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        if gameCenter.battleView {
-            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
-            self.view?.presentScene(battleScene, transition: transition)
         }
     }
     
