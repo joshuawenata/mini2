@@ -8,7 +8,7 @@ struct InGameView: View {
     @State private var isHidden: Bool = VariableManager.shared.interactionButtonHidden
     @State private var interactionButtonDestination: String = VariableManager.shared.touchBuilding
 
-    let gameCenter = GameCenterManager()
+    let gameCenter = GameCenterManager.shared
 
     let scene = GameScene(size: UIScreen.main.bounds.size)
     

@@ -9,7 +9,7 @@ import SwiftUI
 import SpriteKit
 
 struct OnboardingView: View {
-    let gameCenter = GameCenterManager()
+    let gameCenter = GameCenterManager.shared
     var body: some View {
         NavigationStack {
             ZStack {

@@ -1,8 +1,9 @@
 import SpriteKit
+import GameKit
 import SwiftUI
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    var characterNode: SKSpriteNode?
+    var characterNode: SKSpriteNode!
     //    var NPCNode: [SKSpriteNode] = []
     var first = true
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
@@ -16,7 +17,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let interactionThresholdDistance: CGFloat = 200
     
     let cameraNode = SKCameraNode()
-    
+   
+        
     //    func addNPC(_ position: CGPoint, category: UInt32, contact: UInt32, imageName: String) {
     //        guard let characterImage = UIImage(named: imageName) else {
     //            return
@@ -38,7 +40,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //        NPCNode.append(character)
     //    }
     
-    let gameCenter = GameCenterManager()
+    let gameCenter = GameCenterManager.shared
     let battleScene = BattleScene(size: UIScreen.main.bounds.size)
     
     var joystickStickImageEnabled = true {
@@ -118,28 +120,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         configureJoysticks()
         
         //top
-                addChild(addBuilding(at: CGPoint(x: -200, y: 300), imageName: "statueBuilding"))
-                addChild(addBuilding(at: CGPoint(x: 0, y: 300), imageName: "battleBuilding"))
-                addChild(addBuilding(at: CGPoint(x: 200, y: 250), imageName: "npcBattle"))
-                
-                //left
-                addChild(addBuilding(at: CGPoint(x: -1500, y: 500), imageName: "river"))
-                addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
-                addChild(addBuilding(at: CGPoint(x: -700, y: -100), imageName: "npcHorse"))
-                
-                //middle
-                addChild(addBuilding(at: CGPoint(x: -250, y: -100), imageName: "questBuilding"))
-                addChild(addBuilding(at: CGPoint(x: 0, y: -100), imageName: "shopBuilding"))
-                addChild(addBuilding(at: CGPoint(x: 300, y: -100), imageName: "dinerBuilding"))
-                
-                //bottom
-                addChild(addBuilding(at: CGPoint(x: -200, y: -500), imageName: "npcHouseOne"))
-                addChild(addBuilding(at: CGPoint(x: 0, y: -500), imageName: "npcHouseTwo"))
-                addChild(addBuilding(at: CGPoint(x: 200, y: -500), imageName: "npcHouseThree"))
-                addChild(addBuilding(at: CGPoint(x: 350, y: -550), imageName: "npcHouse"))
-                
-                //right
-                addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
+        addChild(addBuilding(at: CGPoint(x: -200, y: 300), imageName: "statueBuilding"))
+        addChild(addBuilding(at: CGPoint(x: 0, y: 300), imageName: "battleBuilding"))
+        addChild(addBuilding(at: CGPoint(x: 200, y: 250), imageName: "npcBattle"))
+        
+        //left
+        addChild(addBuilding(at: CGPoint(x: -1500, y: 500), imageName: "river"))
+        addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
+        addChild(addBuilding(at: CGPoint(x: -700, y: -100), imageName: "npcHorse"))
+        
+        //middle
+        addChild(addBuilding(at: CGPoint(x: -250, y: -100), imageName: "questBuilding"))
+        addChild(addBuilding(at: CGPoint(x: 0, y: -100), imageName: "shopBuilding"))
+        addChild(addBuilding(at: CGPoint(x: 300, y: -100), imageName: "dinerBuilding"))
+        
+        //bottom
+        addChild(addBuilding(at: CGPoint(x: -200, y: -500), imageName: "npcHouseOne"))
+        addChild(addBuilding(at: CGPoint(x: 0, y: -500), imageName: "npcHouseTwo"))
+        addChild(addBuilding(at: CGPoint(x: 200, y: -500), imageName: "npcHouseThree"))
+        addChild(addBuilding(at: CGPoint(x: 350, y: -550), imageName: "npcHouse"))
+        
+        //right
+        addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
+//        gameCenter.startMatchmaking()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -147,10 +150,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let transition = SKTransition.flipHorizontal(withDuration: 1.0)
             self.view?.presentScene(battleScene, transition: transition)
         }
-        
-        
-        
-        
     }
     
     func configureJoysticks() {
@@ -200,7 +199,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let character = SKSpriteNode(texture: texture)
         character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
         character.physicsBody?.affectedByGravity = false
-        character.position = CGPoint(x: 0, y: 100)
+        character.position = CGPoint(x: 0, y: 0)
         character.physicsBody?.allowsRotation = false
         character.setScale(0.3)
         character.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue
@@ -210,7 +209,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(character)
         characterNode = character
-        
+                
         startIdleAnimation(characterNode: characterNode)
     }
     
