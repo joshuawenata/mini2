@@ -79,10 +79,12 @@ struct InGameView: View {
         switch VariableManager.shared.touchBuilding {
         case "shopBuilding":
             ShopView()
-        case "statueBuilding":
-            CharacterView()
+        case "dinerBuilding":
+            ShopView()
+        case "questBuilding":
+            QuestView()
         default:
-            CharacterView()
+            EmptyView()
         }
     }
 

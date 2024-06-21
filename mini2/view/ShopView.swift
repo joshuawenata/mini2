@@ -35,15 +35,18 @@ struct ShopView: View {
                         .resizable()
                         .frame(maxWidth: 40, maxHeight: 40)
                     
-                    NavigationLink(destination: InGameView(), label: {
+
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
                         Image("cancel")
                             .resizable()
                             .frame(width: 40, height: 40)
                             .scaledToFit()
                             .padding(.horizontal, 20)
                             .scaledToFit()
-                    })
 
+                    }
                 }
                 .padding(15)
                 .padding(.horizontal, 30)
