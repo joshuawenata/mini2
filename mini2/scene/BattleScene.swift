@@ -2,7 +2,7 @@ import SpriteKit
 import SwiftUI
 
 class BattleScene: SKScene, SKPhysicsContactDelegate {
-    var characterNode: SKSpriteNode?
+    var characterNode: SKSpriteNode!
     var hpBarInner: SKSpriteNode?
     var hpBarOuter: SKSpriteNode?
     var dummyRobot: SKSpriteNode?
@@ -27,7 +27,9 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     
     let cameraNode = SKCameraNode()
     
-    let gameCenter = GameCenterManager()
+    let gameCenter = GameCenterManager.shared
+    var gameModel: GameModel!
+    var anotherPlayer: SKSpriteNode!
     
     var joystickStickImageEnabled = true {
         didSet {
@@ -452,6 +454,20 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         if hpEnemy <= 0 {
             dummyRobot?.removeFromParent()
+        }
+        
+        gameModel = GameModel(player: characterNode.position, name: gameCenter.player2Name)
+        gameCenter.sendGameModel(gameModel)
+        
+        if gameCenter.dataModel != nil {
+            print("game center model", gameCenter.dataModel!)
+            if anotherPlayer != nil {
+                print("another player")
+                anotherPlayer.position = gameCenter.dataModel!.player
+            } else {
+                anotherPlayer = addCharacterPlayer(gameCenter.dataModel!.player)
+                addChild(anotherPlayer)
+            }
         }
     }
 

@@ -8,7 +8,17 @@
 import Foundation
 import GameKit
 import SwiftUI
+
+
 class GameCenterManager: NSObject, ObservableObject {
+    
+    // SINGLETON INSTANCE
+    static let shared = GameCenterManager()
+    
+    // PRIVATE INIT TO PREVENT CREATING MULTIPLE INSTANCE
+    private override init() {
+        super.init()
+    }
     
     var match: GKMatch?
     var localPlayer = GKLocalPlayer.local
@@ -16,13 +26,15 @@ class GameCenterManager: NSObject, ObservableObject {
     @Published var authenticationState  = PlayerAuthState.authenticating
     @Published var battleView = false
     @Published var jungleView = true
-    @Published var totalPlayer = 0
+    @Published var dataModel:  GameModel?
+    @Published var player2Name: String = ""
     
     var rootViewController: UIViewController? {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         return windowScene?.windows.first?.rootViewController
     }
     
+    // AUTHENTICATION GAME CENTER ACCOUNT
     func authenticatePlayer() {
         GKLocalPlayer.local.authenticateHandler = { [self] controller, err in
             if let viewController = controller {
@@ -47,8 +59,8 @@ class GameCenterManager: NSObject, ObservableObject {
         }
     }
     
+    // START ROOM MATCHMAKIN
     func startMatchmaking() {
-        let match = GKMatch()
         let request = GKMatchRequest()
         request.minPlayers = 2
         request.maxPlayers = 4
@@ -59,29 +71,45 @@ class GameCenterManager: NSObject, ObservableObject {
         rootViewController?.present(matchmakingVC!, animated: true)
     }
 
-    
+    // STARTING GAME
     func startGame(newMatch: GKMatch) {
         match = newMatch
-        match?.delegate = self        
+        match?.delegate = self
+        otherPlayer = match?.players.first
+        player2Name = match?.players.first?.displayName ?? ""
         battleView = true
         jungleView = false
-        totalPlayer = match?.players.count ?? 0
-        print("player count", match?.players.count)
     }
 }
 
 extension GameCenterManager: GKMatchDelegate {
-    // RECEIVING DATA FROM OTHER PLAYERS
-   func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-       
-       
-   }
+    // RECEIVING DATA TO SHARE TO OTHER PLAYERS
+    func receivedData(_ message: GameModel) {
+        dataModel = message
+    }
+    
+    func sendGameModel(_ message: GameModel) {
+        guard let encoded = message.encode() else { return }
+        sendData(encoded, mode: .reliable)
+    }
     
     // SENDING DATA TO ALL PLAYERS
-   private func sendData(_ data: Data, mode: GKMatch.SendDataMode) {
+    private func sendData(_ data: Data, mode: GKMatch.SendDataMode) {
+        do {
+            try match?.sendData(toAllPlayers: data, with: mode)
+        } catch {
+            print(error)
+        }
+    }
 
-   }
-    
+    // RECEIVING DATA FROM OTHER PLAYERS
+   func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+       guard let gameModel = GameModel.decode(data: data) else {
+           return print("Received data is not a valid GameModel")
+       }
+       receivedData(gameModel)
+    }
+
     // HANDLING PLAYERS CONNECTION STATE
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
         guard state == .disconnected else { return }

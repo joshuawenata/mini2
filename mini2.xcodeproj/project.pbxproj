@@ -15,6 +15,8 @@
 		8B8FF0682C1952B700BE749B /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0672C1952B700BE749B /* Enum.swift */; };
 		8B8FF06B2C19596F00BE749B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		8B8FF0732C1A950E00BE749B /* MultipeerConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0722C1A950E00BE749B /* MultipeerConnectivityManager.swift */; };
+		8BC9BCB12C25502B002403ED /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCB02C25502B002403ED /* GameModel.swift */; };
+		8BC9BCB32C258B79002403ED /* characterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCB22C258B79002403ED /* characterViewModel.swift */; };
 		962D988E2C19655E00E38C85 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988D2C19655E00E38C85 /* ShopView.swift */; };
 		962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988F2C19690A00E38C85 /* LeaderboardView.swift */; };
 		969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */; };
@@ -69,6 +71,8 @@
 		8B8FF0662C1950CE00BE749B /* mini2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mini2.entitlements; sourceTree = "<group>"; };
 		8B8FF0672C1952B700BE749B /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		8B8FF0722C1A950E00BE749B /* MultipeerConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerConnectivityManager.swift; sourceTree = "<group>"; };
+		8BC9BCB02C25502B002403ED /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameModel.swift; path = mini2/Model/GameModel.swift; sourceTree = SOURCE_ROOT; };
+		8BC9BCB22C258B79002403ED /* characterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = characterViewModel.swift; sourceTree = "<group>"; };
 		962D988D2C19655E00E38C85 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		962D988F2C19690A00E38C85 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AveriaSerifLibre-Regular.ttf"; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 				A626195D2C188C1500FF75F1 /* menuViewModel.swift */,
 				A626196C2C199EBE00FF75F1 /* movementViewModel.swift */,
 				A62619722C19A01D00FF75F1 /* basicAttackViewModel.swift */,
+				8BC9BCB22C258B79002403ED /* characterViewModel.swift */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 			children = (
 				A62619682C19802D00FF75F1 /* Character.swift */,
 				A66137592C25333100B6AC3D /* Quest.swift */,
+				8BC9BCB02C25502B002403ED /* GameModel.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -408,6 +414,7 @@
 			files = (
 				8B8FF0612C19450500BE749B /* GameCenterManager.swift in Sources */,
 				A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */,
+				8BC9BCB12C25502B002403ED /* GameModel.swift in Sources */,
 				A661375A2C25333100B6AC3D /* Quest.swift in Sources */,
 				2B3598DD2C11C01D00EDBA3C /* GameScene.swift in Sources */,
 				2B3598DF2C11C10600EDBA3C /* AnalogJoystick.swift in Sources */,
@@ -431,6 +438,7 @@
 				A66137522C23E13700B6AC3D /* QuestView.swift in Sources */,
 				962D988E2C19655E00E38C85 /* ShopView.swift in Sources */,
 				A62619672C19690A00FF75F1 /* OptionView.swift in Sources */,
+				8BC9BCB32C258B79002403ED /* characterViewModel.swift in Sources */,
 				A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */,
 				8B8FF0732C1A950E00BE749B /* MultipeerConnectivityManager.swift in Sources */,
 			);
@@ -597,7 +605,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = 5T75SV584X;
+				DEVELOPMENT_TEAM = U5CZ6K98KV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -611,7 +619,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethl;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.mini2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -628,7 +636,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = 5T75SV584X;
+				DEVELOPMENT_TEAM = U5CZ6K98KV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -642,7 +650,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethl;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.mini2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
