@@ -2,14 +2,13 @@ import SwiftUI
 import SpriteKit
 
 struct InGameView: View {
-
     @StateObject var varManager: VariableManager = VariableManager.shared
     
     @State private var isHidden: Bool = VariableManager.shared.interactionButtonHidden
     @State private var interactionButtonDestination: String = VariableManager.shared.touchBuilding
 
     let gameCenter = GameCenterManager.shared
-
+    
     let scene = GameScene(size: UIScreen.main.bounds.size)
     
     var body: some View {
@@ -77,14 +76,16 @@ struct InGameView: View {
 @ViewBuilder
     private func destinationView() -> some View {
         switch VariableManager.shared.touchBuilding {
-        case "shopBuilding":
-            ShopView()
-        case "dinerBuilding":
-            ShopView()
-        case "questBuilding":
-            QuestView()
-        default:
-            EmptyView()
+            case "shopBuilding":
+                ShopView()
+            case "dinerBuilding":
+                ShopView()
+            case "questBuilding":
+                QuestView()
+            case "npcHorse":
+                QuestFinishedView(id: 1)
+            default:
+                EmptyView()
         }
     }
 
@@ -101,8 +102,4 @@ struct HiddenModifier: ViewModifier {
     func body(content: Content) -> some View {
         content.opacity(isHidden ? 0 : 1)
     }
-}
-
-#Preview {
-    InGameView()
 }

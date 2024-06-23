@@ -43,6 +43,7 @@
 		A66137502C23D09500B6AC3D /* DefeatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661374F2C23D09500B6AC3D /* DefeatView.swift */; };
 		A66137522C23E13700B6AC3D /* QuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66137512C23E13700B6AC3D /* QuestView.swift */; };
 		A661375A2C25333100B6AC3D /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66137592C25333100B6AC3D /* Quest.swift */; };
+		A661375C2C27FFE600B6AC3D /* QuestFinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375B2C27FFE600B6AC3D /* QuestFinishedView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +104,7 @@
 		A661374F2C23D09500B6AC3D /* DefeatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefeatView.swift; sourceTree = "<group>"; };
 		A66137512C23E13700B6AC3D /* QuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestView.swift; sourceTree = "<group>"; };
 		A66137592C25333100B6AC3D /* Quest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quest.swift; sourceTree = "<group>"; };
+		A661375B2C27FFE600B6AC3D /* QuestFinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFinishedView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 				A661374D2C23CDAB00B6AC3D /* VictoryView.swift */,
 				A661374F2C23D09500B6AC3D /* DefeatView.swift */,
 				A66137512C23E13700B6AC3D /* QuestView.swift */,
+				A661375B2C27FFE600B6AC3D /* QuestFinishedView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 				8BC9BCB12C25502B002403ED /* GameModel.swift in Sources */,
 				A661375A2C25333100B6AC3D /* Quest.swift in Sources */,
 				2B3598DD2C11C01D00EDBA3C /* GameScene.swift in Sources */,
+				A661375C2C27FFE600B6AC3D /* QuestFinishedView.swift in Sources */,
 				2B3598DF2C11C10600EDBA3C /* AnalogJoystick.swift in Sources */,
 				A62619692C19802D00FF75F1 /* Character.swift in Sources */,
 				A626196B2C19814D00FF75F1 /* SparksView.swift in Sources */,
@@ -605,7 +609,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = U5CZ6K98KV;
+				DEVELOPMENT_TEAM = T7SD288Q5G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -619,7 +623,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.mini2;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -636,7 +640,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = U5CZ6K98KV;
+				DEVELOPMENT_TEAM = T7SD288Q5G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -650,7 +654,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.mini2;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
