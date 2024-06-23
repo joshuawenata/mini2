@@ -27,6 +27,7 @@ func initQuest(context: ModelContext, allQuests: [Quest]) {
         Quest(id: 3, title: "Find the lost cat", reward: 150, completed: false),
         Quest(id: 4, title: "Buy some fish", reward: 50, completed: false),
         Quest(id: 5, title: "Buy some flower", reward: 50, completed: false),
+        Quest(id: 6, title: "Chat with villagers", reward: 100, completed: false),
     ]
     
     for quest in quests {
