@@ -11,6 +11,7 @@ struct BackpackView: View {
     @Environment(\.presentationMode) var presentationMode
     let items = Array(0..<120)
     let itemsPerRow = 6
+    let character = Character()
 
     var rows: Int {
         return (items.count + itemsPerRow - 1) / itemsPerRow

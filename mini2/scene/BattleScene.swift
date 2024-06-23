@@ -45,7 +45,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var joystickSubstrateImageEnabled = true {
         didSet {
             let jImage = UIImage(named: "jSubstrate")
-            let rImage = UIImage(named: "rSubstrate")
+            let rImage = UIImage(named: "sword_joystick")
             moveJoystick.baseImage = jImage
             rotateJoystick.baseImage = rImage
             skillJoystick.baseImage = jImage
