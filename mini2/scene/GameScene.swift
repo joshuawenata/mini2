@@ -11,7 +11,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
     
-    let shopNode = SKSpriteNode(color: .clear, size: CGSize(width: 200, height: 200))
+    let blacksmithNode = SKSpriteNode(color: .clear, size: CGSize(width: 200, height: 200))
     let battleNode = SKSpriteNode(color: .clear, size: CGSize(width: 300, height: 300))
     let interactionThresholdDistance: CGFloat = 200
     
@@ -38,15 +38,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         switch nodeName {
             case "battleBuilding":
                 gameCenter.startMatchmaking()
-            case "shopBuilding", "dinerBuilding":
+            case "blacksmith_00000", "blacksmith_00001", "blacksmith_00002", "blacksmith_00003", "blacksmith_00004", "blacksmith_00005", "blacksmith_00006", "blacksmith_00007", "blacksmith_00008", "blacksmith_00009", "blacksmith_00010", "blacksmith_00011", "blacksmith_00012", "blacksmith_00013", "blacksmith_00014", "blacksmith_00015", "blacksmith_00016", "blacksmith_00017", "blacksmith_00018", "blacksmith_00019", "blacksmith_00020", "blacksmith_00021", "blacksmith_00022", "blacksmith_00023", "blacksmith_00024", "blacksmith_00025", "blacksmith_00026", "blacksmith_00027", "blacksmith_00028", "blacksmith_00029":
                 VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "shopBuilding"
+                VariableManager.shared.touchBuilding = "blacksmith"
+            case "dinerBuilding":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "dinerBuilding"
             case "questBuilding":
                 VariableManager.shared.interactionButtonHidden = false
                 VariableManager.shared.touchBuilding = "questBuilding"
-            case "npcHorse":
+            case "horse_00000", "horse_0001", "horse_0002", "horse_0003", "horse_0004", "horse_0005", "horse_0006", "horse_0007", "horse_0008", "horse_0009", "horse_0010", "horse_0011", "horse_0012", "horse_0013", "horse_0014", "horse_0015", "horse_0016", "horse_0017", "horse_0018", "horse_0019", "horse_0020", "horse_0021", "horse_0022", "horse_0023", "horse_0024", "horse_0025", "horse_0026", "horse_0027", "horse_0028", "horse_0029":
                 VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "npcHorse"
+                VariableManager.shared.touchBuilding = "horse"
             case "npcFish":
                 VariableManager.shared.interactionButtonHidden = false
                 VariableManager.shared.touchBuilding = "npcFish"
@@ -116,14 +119,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(addBuilding(at: CGPoint(x: 200, y: 250), imageName: "npcBattle"))
         
         //left
-        addChild(addBuilding(at: CGPoint(x: -1500, y: 500), imageName: "river"))
+        let river = addBuilding(at: CGPoint(x: -1600, y: 650), imageName: "river2")
+        river.setScale(0.925)
+        addChild(river)
+        startRiverAnimation(riverNode: river)
+        
         addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
-        addChild(addBuilding(at: CGPoint(x: -700, y: -100), imageName: "npcHorse"))
+        
+        let horse = addBuilding(at: CGPoint(x: -700, y: -100), imageName: "horse_00000")
+        horse.setScale(0.35)
+        addChild(horse)
+        startHorseAnimation(horseNode: horse)
+        
         addChild(addBuilding(at: CGPoint(x: -600, y: -150), imageName: "apple"))
         
         //middle
         addChild(addBuilding(at: CGPoint(x: -250, y: -100), imageName: "questBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 0, y: -100), imageName: "shopBuilding"))
+        
+        let blacksmith = addBuilding(at: CGPoint(x: 0, y: -100), imageName: "blacksmith_00000")
+        blacksmith.setScale(0.35)
+        addChild(blacksmith)
+        startBlacksmithAnimation(blacksmithNode: blacksmith)
+        
         addChild(addBuilding(at: CGPoint(x: 300, y: -100), imageName: "dinerBuilding"))
         
         //bottom
