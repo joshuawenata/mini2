@@ -11,8 +11,11 @@ struct InGameView: View {
     @Environment (\.presentationMode) var presentationMode
     @Query var quest: [Quest]
     
-    var isQuestCompleted: Bool {
-        quest.first(where: { $0.id == 1 })?.completed ?? false
+    var isQuestCompleted: [Bool] {
+        let questIDs = [1, 2, 3, 4, 5, 6]
+        return questIDs.map { id in
+            quest.first(where: { $0.id == id })?.completed ?? false
+        }
     }
     
     var body: some View {
@@ -65,12 +68,20 @@ struct InGameView: View {
                 .padding(.top, 20)
                 
                 NavigationLink(destination: destinationView(), label: {
-                    Image("InteractButton")
+                    Image(imageButton())
                         .resizable()
                         .frame(width: 105, height: 35)
                         .padding(.leading, 200)
                 })
-                .hidden(VariableManager.shared.interactionButtonHidden || (VariableManager.shared.touchBuilding == "npcHorse" && isQuestCompleted))
+                .hidden(
+                    VariableManager.shared.interactionButtonHidden ||
+                    (VariableManager.shared.touchBuilding == "npcHorse" && isQuestCompleted[0]) ||
+                    (VariableManager.shared.touchBuilding == "apple" && isQuestCompleted[1]) ||
+                    (VariableManager.shared.touchBuilding == "cat" && isQuestCompleted[2]) ||
+                    (VariableManager.shared.touchBuilding == "npcFish" && isQuestCompleted[3]) ||
+                    (VariableManager.shared.touchBuilding == "npcFlower" && isQuestCompleted[4]) ||
+                    (VariableManager.shared.touchBuilding == "npcHouse" && isQuestCompleted[5])
+                )
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -88,8 +99,35 @@ struct InGameView: View {
                 QuestView()
             case "npcHorse":
                 QuestFinishedView(id: 1)
+            case "apple":
+                QuestFinishedView(id: 2)
+            case "cat":
+                QuestFinishedView(id: 3)
+            case "npcFish":
+                QuestFinishedView(id: 4)
+            case "npcFlower":
+                QuestFinishedView(id: 5)
+            case "npcHouse":
+                QuestFinishedView(id: 6)
             default:
                 EmptyView()
+        }
+    }
+
+    private func imageButton() -> String {
+        switch VariableManager.shared.touchBuilding {
+            case "shopBuilding", "dinerBuilding", "npcFish", "npcFlower":
+                return "buybutton"
+            case "questBuilding", "npcHorse":
+                return "interactbutton"
+            case "apple":
+                return "collectbutton"
+            case "cat":
+                return "catchbutton"
+            case "npcHouse":
+                return "chatbutton"
+            default:
+                return "interactbutton"
         }
     }
 

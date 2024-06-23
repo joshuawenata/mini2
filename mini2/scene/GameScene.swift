@@ -38,10 +38,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         switch nodeName {
             case "battleBuilding":
                 gameCenter.startMatchmaking()
-            case "shopBuilding":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "shopBuilding"
-            case "dinerBuilding":
+            case "shopBuilding", "dinerBuilding":
                 VariableManager.shared.interactionButtonHidden = false
                 VariableManager.shared.touchBuilding = "shopBuilding"
             case "questBuilding":
@@ -50,6 +47,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             case "npcHorse":
                 VariableManager.shared.interactionButtonHidden = false
                 VariableManager.shared.touchBuilding = "npcHorse"
+            case "npcFish":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "npcFish"
+            case "npcFlower":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "npcFlower"
+            case "apple":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "apple"
+            case "cat":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "cat"
+            case "npcHouse":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "npcHouse"
             default:
                 break
         }
@@ -101,6 +113,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(addBuilding(at: CGPoint(x: -1500, y: 500), imageName: "river"))
         addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
         addChild(addBuilding(at: CGPoint(x: -700, y: -100), imageName: "npcHorse"))
+        addChild(addBuilding(at: CGPoint(x: -600, y: -150), imageName: "apple"))
         
         //middle
         addChild(addBuilding(at: CGPoint(x: -250, y: -100), imageName: "questBuilding"))
@@ -115,6 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //right
         addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
+        addChild(addBuilding(at: CGPoint(x: 900, y: 100), imageName: "cat"))
     }
     
     override func update(_ currentTime: TimeInterval) {
