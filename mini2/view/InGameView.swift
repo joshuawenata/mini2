@@ -109,6 +109,8 @@ struct InGameView: View {
                 QuestFinishedView(id: 5)
             case "npcHouse":
                 QuestFinishedView(id: 6)
+            case "sparks", "chest_opened":
+                FoundView()
             default:
                 EmptyView()
         }
@@ -126,6 +128,10 @@ struct InGameView: View {
                 return "catchbutton"
             case "npcHouse":
                 return "chatbutton"
+            case "chest_opened":
+                return "openbutton"
+            case "sparks":
+                return "questionmarkbutton"
             default:
                 return "interactbutton"
         }

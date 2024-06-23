@@ -62,6 +62,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             case "npcHouse":
                 VariableManager.shared.interactionButtonHidden = false
                 VariableManager.shared.touchBuilding = "npcHouse"
+            case "sparks":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "sparks"
+            case "chest_opened":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "chest_opened"
             default:
                 break
         }
@@ -129,6 +135,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //right
         addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
         addChild(addBuilding(at: CGPoint(x: 900, y: 100), imageName: "cat"))
+        
+        let waitSpark = SKAction.wait(forDuration: 36000)
+        let addRandomEventSpark = SKAction.run { [weak self] in
+            self?.addRandomSparks()
+        }
+        let sequenceSpark = SKAction.sequence([addRandomEventSpark, waitSpark])
+        let repeatActionSpark = SKAction.repeatForever(sequenceSpark)
+        self.run(repeatActionSpark)
+        
+        let waitChest = SKAction.wait(forDuration: 3600)
+        let addRandomEventChest = SKAction.run { [weak self] in
+            self?.addRandomChest()
+        }
+        let sequenceChest = SKAction.sequence([addRandomEventChest, waitChest])
+        let repeatActionChest = SKAction.repeatForever(sequenceChest)
+        self.run(repeatActionChest)
+    }
+    
+    func random(min: CGFloat, max: CGFloat) -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt32.max) * (max - min) + min
+    }
+    
+    func addRandomSparks() {
+        let sparksPosition = CGPoint(x: random(min: 0, max: 1000), y: random(min: -500, max: 500))
+        let sparks = addBuilding(at: sparksPosition, imageName: "sparks")
+        
+        addChild(sparks)
+    }
+    
+    func addRandomChest() {
+        let chestPosition = CGPoint(x: random(min: -300, max: 300), y: random(min: 100, max: 200))
+        let chest = addBuilding(at: chestPosition, imageName: "chest_opened")
+        
+        addChild(chest)
     }
     
     override func update(_ currentTime: TimeInterval) {
