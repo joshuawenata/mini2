@@ -9,7 +9,7 @@ struct InGameView: View {
 
     let gameCenter = GameCenterManager.shared
     
-    let scene = GameScene(size: UIScreen.main.bounds.size)
+    let scene = BattleScene(size: UIScreen.main.bounds.size)
     
     var body: some View {
         NavigationStack {

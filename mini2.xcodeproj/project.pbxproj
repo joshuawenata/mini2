@@ -44,6 +44,7 @@
 		A66137522C23E13700B6AC3D /* QuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66137512C23E13700B6AC3D /* QuestView.swift */; };
 		A661375A2C25333100B6AC3D /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66137592C25333100B6AC3D /* Quest.swift */; };
 		A661375C2C27FFE600B6AC3D /* QuestFinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375B2C27FFE600B6AC3D /* QuestFinishedView.swift */; };
+		A661375E2C284CB100B6AC3D /* skillAttackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		A66137512C23E13700B6AC3D /* QuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestView.swift; sourceTree = "<group>"; };
 		A66137592C25333100B6AC3D /* Quest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quest.swift; sourceTree = "<group>"; };
 		A661375B2C27FFE600B6AC3D /* QuestFinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFinishedView.swift; sourceTree = "<group>"; };
+		A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skillAttackViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +190,7 @@
 				A626196C2C199EBE00FF75F1 /* movementViewModel.swift */,
 				A62619722C19A01D00FF75F1 /* basicAttackViewModel.swift */,
 				8BC9BCB22C258B79002403ED /* characterViewModel.swift */,
+				A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				A626196B2C19814D00FF75F1 /* SparksView.swift in Sources */,
 				A626196D2C199EBE00FF75F1 /* movementViewModel.swift in Sources */,
 				A661374C2C229D3A00B6AC3D /* BattleScene.swift in Sources */,
+				A661375E2C284CB100B6AC3D /* skillAttackViewModel.swift in Sources */,
 				8B8FF0682C1952B700BE749B /* Enum.swift in Sources */,
 				A626195E2C188C1500FF75F1 /* menuViewModel.swift in Sources */,
 				A62619732C19A01D00FF75F1 /* basicAttackViewModel.swift in Sources */,
