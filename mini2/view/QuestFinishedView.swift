@@ -1,20 +1,23 @@
 //
-//  VictoryView.swift
+//  QuestFinishedView.swift
 //  mini2
 //
-//  Created by Joshua Wenata Sunarto on 20/06/24.
+//  Created by Joshua Wenata Sunarto on 23/06/24.
 //
 
 import SwiftUI
+import SwiftData
 
-struct VictoryView: View {
+struct QuestFinishedView: View {
+    @Query var allQuests: [Quest]
     
+    var id: Int
     var items = Array(0...9)
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("victorybg")
+                Image("questFinishedBg")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -60,10 +63,17 @@ struct VictoryView: View {
                 
             }
         }
+        .onAppear {
+            let quest = allQuests.first { $0.id == id }
+            if let quest = quest {
+                quest.completed = true
+            }
+        }
         .navigationBarBackButtonHidden(true)
     }
+    
 }
 
 #Preview {
-    VictoryView()
+    QuestFinishedView(id: 1)
 }

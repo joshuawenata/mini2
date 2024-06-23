@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+import SwiftData
 
 class VariableManager: ObservableObject {
     static let shared = VariableManager()

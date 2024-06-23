@@ -54,36 +54,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
         
-        if String(contact.bodyB.node?.name ?? "unknown") == "battleBuilding" {
-            gameCenter.startMatchmaking()
-        } else if String(contact.bodyB.node?.name ?? "unknown") == "shopBuilding"{
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "shopBuilding"
-        } else if String(contact.bodyB.node?.name ?? "unknown") == "dinerBuilding"{
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "shopBuilding"
-        } else if String(contact.bodyB.node?.name ?? "unknown") == "questBuilding"{
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "questBuilding"
+        switch contact.bodyB.node?.name {
+            case "battleBuilding":
+                gameCenter.startMatchmaking()
+            case "shopBuilding":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "shopBuilding"
+            case "dinerBuilding":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "shopBuilding"
+            case "questBuilding":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "questBuilding"
+            case "npcHorse":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "npcHorse"
+            case .none:
+                break
+            case .some(_):
+                break
         }
         
-
-//        switch String(contact.bodyB.node?.name ?? "Unknown") {
-//        case "battleBuilding":
-//            gameCenter.startMatchmaking()
-//        case "questBuilding":
-//            VariableManager.shared.interactionButtonHidden = false
-//            VariableManager.shared.touchBuilding = "questBuilding"
-//        case "shopBuilding":
-//            VariableManager.shared.interactionButtonHidden = false
-//            VariableManager.shared.touchBuilding = "shopBuilding"
-//        case "dinerBuilding":
-//            VariableManager.shared.interactionButtonHidden = false
-//            VariableManager.shared.touchBuilding = "shopBuilding"
-//        default:
-//            VariableManager.shared.interactionButtonHidden = true
-//            
-//        }
         isWallContact = true
     }
     
