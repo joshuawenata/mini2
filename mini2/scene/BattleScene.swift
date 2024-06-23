@@ -1,6 +1,15 @@
 import SpriteKit
 import SwiftUI
 
+struct PhysicsCategory {
+    static let none: UInt32 = 0
+    static let character: UInt32 = 0x1 << 0
+    static let meleeArea: UInt32 = 0x1 << 1
+    static let rangeArea: UInt32 = 0x1 << 2
+    static let projectile: UInt32 = 0x1 << 3
+    static let enemy: UInt32 = 0x1 << 4
+}
+
 class BattleScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode!
     var hpBarInner: SKSpriteNode?
@@ -55,20 +64,28 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
         counterDidBegin += 1
-        let a = contact.bodyA.contactTestBitMask
-        let b = contact.bodyB.contactTestBitMask
-        print("a = \(a)")
-        print("b = \(b)")
-        if a == 3 && b == 2 {
+        let bodyA = contact.bodyA
+        let bodyB = contact.bodyB
+        
+        // Check for melee hit
+        if (bodyA.categoryBitMask == PhysicsCategory.meleeArea && bodyB.categoryBitMask == PhysicsCategory.enemy) ||
+           (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.meleeArea) {
             print("Is Hit!!!")
             print("current HP: \(hpEnemy)")
             isHitMelee = true
-        } else if a == 3 && b == 1 {
+        }
+        
+        // Check for projectile hit
+        if (bodyA.categoryBitMask == PhysicsCategory.projectile && bodyB.categoryBitMask == PhysicsCategory.enemy) ||
+           (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.projectile) {
             print("Is FIRE!!!")
             print("current HP: \(hpEnemy)")
             projectileNode?.removeFromParent()
             isHitProjectile = true
-        } else {
+        }
+        
+        // If neither, not a hit
+        if !(isHitMelee || isHitProjectile) {
             print("Is NOT Hit!!!")
             isHitMelee = false
             isHitProjectile = false
@@ -84,13 +101,13 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         background.zPosition = -1
         addChild(background)
         
-        addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: 0,contact: 0,collision: 0)
+        addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none)
         
-        addDummyRobot(CGPoint(x: frame.midX+200, y: frame.midY), category: 2, contact: 3)
+        addDummyRobot(CGPoint(x: frame.midX+200, y: frame.midY), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
 
         swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
-        meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea",isPhysicsBody: true, category: 2, contact: 2, collision: 1)
-        rangeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "rangeArea",isPhysicsBody: false, category: 1, contact: 1, collision: 2)
+        meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
+        rangeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "rangeArea",isPhysicsBody: false, category: PhysicsCategory.rangeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
         slashNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "slash_00000")
         meleeAreaNode?.isHidden = true
         meleeAreaNode?.zPosition = -1
@@ -268,89 +285,51 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         }
         
         skillJoystick.on(.end) { [unowned self] joystick in
-            guard let characterNode = self.characterNode else {
-                return
-            }
-            guard let rangeAreaNode = self.rangeAreaNode else {
-                return
-            }
+            guard let characterNode = self.characterNode else { return }
+            guard let rangeAreaNode = self.rangeAreaNode else { return }
             
             rangeAreaNode.isHidden = true
             rangeAreaNode.position.x -= 60
             
-            // Create projectile sprite node
-            guard let projectileImage = UIImage(named: "fireballThrow") else {
-                return
-            }
+            guard let projectileImage = UIImage(named: "fire_1") else { return }
             
-            // Ensure physics body is created and set properties
             let texture = SKTexture(image: projectileImage)
             let projectile = SKSpriteNode(texture: texture)
-            projectile.setScale(0.3)
-
+            projectile.setScale(0.2)
+            
             projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width / 2)
             projectile.physicsBody?.affectedByGravity = false
-            projectile.physicsBody?.linearDamping = 0 // Remove for testing
-
-            // Calculate position based on angle and quadrant
-            let position = calculateProjectilePosition(degree: joystick.velocity, from: characterNode.position, projectile: projectile)
-            projectile.position = position
+            projectile.physicsBody?.linearDamping = 0
+            
+            startSkillAnimation(projectileNode: projectile, imageSet: ["fire_1", "fire_2", "fire_3", "fire_4", "fire_5"], timePerFrame: 0.1)
+            
+            projectile.position = characterNode.position
             projectile.zPosition = -1
             
-            projectile.physicsBody?.categoryBitMask = 1
-            projectile.physicsBody?.contactTestBitMask = 1
+            projectile.physicsBody?.categoryBitMask = PhysicsCategory.projectile
+            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.enemy
+            projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
             
-            let velocityOfMoving:CGFloat = 150
-            var nextPosition: CGPoint = projectile.position
+            let velocityOfMoving: CGFloat = 200
+            let angle = CGFloat(joystick.angular)
+            let dy = cos(angle) * velocityOfMoving
+            let dx = sin(angle) * velocityOfMoving
             
-            if GLKMathRadiansToDegrees(Float(joystick.angular)) > -30 && GLKMathRadiansToDegrees(Float(joystick.angular)) < 30 {
-                nextPosition.y += velocityOfMoving
-                nextPosition.x = projectile.position.x
-                projectile.zRotation = 0
-            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) < -150 || GLKMathRadiansToDegrees(Float(joystick.angular)) > 150 {
-                nextPosition.y -= velocityOfMoving
-                nextPosition.x = projectile.position.x
-                projectile.zRotation = 3.1
-            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) > 60 && GLKMathRadiansToDegrees(Float(joystick.angular)) < 120 {
-                nextPosition.y = projectile.position.y
-                nextPosition.x -= velocityOfMoving
-                projectile.zRotation = -11
-            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) < -60 && GLKMathRadiansToDegrees(Float(joystick.angular)) > -120 {
-                nextPosition.y = projectile.position.y
-                nextPosition.x += velocityOfMoving
-                projectile.zRotation = 11
-            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) > 30 && GLKMathRadiansToDegrees(Float(joystick.angular)) < 60 {
-                nextPosition.y += velocityOfMoving
-                nextPosition.x -= velocityOfMoving
-                projectile.zRotation = 7
-            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) > 90 && GLKMathRadiansToDegrees(Float(joystick.angular)) < 150 {
-                nextPosition.y -= velocityOfMoving
-                nextPosition.x -= velocityOfMoving
-                projectile.zRotation = 15
-            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) < -30 && GLKMathRadiansToDegrees(Float(joystick.angular)) > -60 {
-                nextPosition.y += velocityOfMoving
-                nextPosition.x += velocityOfMoving
-                projectile.zRotation = -7
-            } else if GLKMathRadiansToDegrees(Float(joystick.angular)) > -150 && GLKMathRadiansToDegrees(Float(joystick.angular)) < -120 {
-                nextPosition.y -= velocityOfMoving
-                nextPosition.x += velocityOfMoving
-                projectile.zRotation = -15
-            } else {
-                print("Unknown!!")
-            }
+            projectile.zRotation = angle + CGFloat.pi
             
+            let nextPosition = CGPoint(x: projectile.position.x - dx, y: projectile.position.y + dy)
             let path = createPath(from: projectile.position, to: nextPosition)
-         
+            
             let moveAction = SKAction.follow(path, asOffset: false, orientToPath: false, speed: 300)
-            let wait = SKAction.wait(forDuration: 0.6)
             let updatePosition = SKAction.run {
                 projectile.removeFromParent()
             }
-            let sequence = SKAction.sequence([wait, updatePosition])
-            projectile.run(moveAction)
+            let sequence = SKAction.sequence([moveAction, updatePosition])
+            
+            projectile.run(sequence)
             addChild(projectile)
             projectileNode = projectile
-            run(sequence)
+            
             if isHitProjectile {
                 print("Mengurangi Health!")
                 hpEnemy -= 10
@@ -503,12 +482,10 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         return pathToMove
     }
     
-    // Function to calculate projectile position considering quadrant and coordinate system
     func calculateProjectilePosition(degree: CGPoint, from applePosition: CGPoint, projectile: SKSpriteNode) -> CGPoint {
 
-        // Adjust signs based on quadrant
         let x = Float(applePosition.x) + Float(degree.x)
-        let y = Float(applePosition.y) + Float(degree.y) // Inverted for SpriteKit coordinate system
+        let y = Float(applePosition.y) + Float(degree.y)
 
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
