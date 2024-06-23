@@ -1,15 +1,19 @@
 import SwiftUI
 import SpriteKit
+import SwiftData
 
 struct InGameView: View {
     @StateObject var varManager: VariableManager = VariableManager.shared
-    
     @State private var isHidden: Bool = VariableManager.shared.interactionButtonHidden
     @State private var interactionButtonDestination: String = VariableManager.shared.touchBuilding
-
     let gameCenter = GameCenterManager.shared
+    let scene = GameScene(size: UIScreen.main.bounds.size)
+    @Environment (\.presentationMode) var presentationMode
+    @Query var quest: [Quest]
     
-    let scene = BattleScene(size: UIScreen.main.bounds.size)
+    var isQuestCompleted: Bool {
+        quest.first(where: { $0.id == 1 })?.completed ?? false
+    }
     
     var body: some View {
         NavigationStack {
@@ -66,7 +70,7 @@ struct InGameView: View {
                         .frame(width: 105, height: 35)
                         .padding(.leading, 200)
                 })
-                .hidden(VariableManager.shared.interactionButtonHidden)
+                .hidden(VariableManager.shared.interactionButtonHidden || (VariableManager.shared.touchBuilding == "npcHorse" && isQuestCompleted))
             }
         }
         .navigationBarBackButtonHidden(true)

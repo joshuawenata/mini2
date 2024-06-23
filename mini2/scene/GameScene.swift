@@ -1,13 +1,12 @@
 import SpriteKit
 import GameKit
 import SwiftUI
+import SwiftData
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode!
-    //    var NPCNode: [SKSpriteNode] = []
     var first = true
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
-    var isWallContact = false
     
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
@@ -17,31 +16,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let interactionThresholdDistance: CGFloat = 200
     
     let cameraNode = SKCameraNode()
-   
-        
-    //    func addNPC(_ position: CGPoint, category: UInt32, contact: UInt32, imageName: String) {
-    //        guard let characterImage = UIImage(named: imageName) else {
-    //            return
-    //        }
-    //
-    //        let texture = SKTexture(image: characterImage)
-    //        let character = SKSpriteNode(texture: texture)
-    //        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
-    //        character.physicsBody?.affectedByGravity = false
-    //        character.physicsBody?.allowsRotation = false
-    //        character.position = CGPoint(x: 200, y: 0)
-    //        character.setScale(0.3)
-    //        character.physicsBody?.categoryBitMask = category
-    //        character.physicsBody?.contactTestBitMask = contact
-    //        character.physicsBody?.isDynamic = false
-    //
-    //        addChild(character)
-    //
-    //        NPCNode.append(character)
-    //    }
     
     let gameCenter = GameCenterManager.shared
     let battleScene = BattleScene(size: UIScreen.main.bounds.size)
+    var hiddenTriggered = false
     
     var joystickStickImageEnabled = true {
         didSet {
@@ -53,8 +31,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+        guard let nodeName = contact.bodyA.node?.name ?? contact.bodyB.node?.name else {
+            return
+        }
         
-        switch contact.bodyB.node?.name {
+        switch nodeName {
             case "battleBuilding":
                 gameCenter.startMatchmaking()
             case "shopBuilding":
@@ -69,19 +50,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             case "npcHorse":
                 VariableManager.shared.interactionButtonHidden = false
                 VariableManager.shared.touchBuilding = "npcHorse"
-            case .none:
-                break
-            case .some(_):
+            default:
                 break
         }
         
-        isWallContact = true
     }
-    
-    
+
     func didEnd(_ contact: SKPhysicsContact) {
-        isWallContact = false
-        VariableManager.shared.interactionButtonHidden = true
+        if(!hiddenTriggered){
+            self.hiddenTriggered = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                VariableManager.shared.interactionButtonHidden = true
+                self.hiddenTriggered = false
+            }
+        }
     }
     
     var joystickSubstrateImageEnabled = true {
@@ -133,7 +115,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //right
         addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
-//        gameCenter.startMatchmaking()
     }
     
     override func update(_ currentTime: TimeInterval) {

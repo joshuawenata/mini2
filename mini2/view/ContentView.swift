@@ -22,9 +22,11 @@ struct ContentView: View {
 
 func initQuest(context: ModelContext, allQuests: [Quest]) {
     let quests = [
-        Quest(id: 1, title: "Deliver items to man with horse", reward: 100, completed: false),
-        Quest(id: 2, title: "Collect apple", reward: 50, completed: false),
+        Quest(id: 1, title: "Deliver items to man with horse", reward: 50, completed: false),
+        Quest(id: 2, title: "Collect apple", reward: 100, completed: false),
         Quest(id: 3, title: "Find the lost cat", reward: 150, completed: false),
+        Quest(id: 4, title: "Buy some fish", reward: 50, completed: false),
+        Quest(id: 5, title: "Buy some flower", reward: 50, completed: false),
     ]
     
     for quest in quests {
