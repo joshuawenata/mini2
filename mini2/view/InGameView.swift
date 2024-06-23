@@ -75,7 +75,7 @@ struct InGameView: View {
                 })
                 .hidden(
                     VariableManager.shared.interactionButtonHidden ||
-                    (VariableManager.shared.touchBuilding == "npcHorse" && isQuestCompleted[0]) ||
+                    (VariableManager.shared.touchBuilding == "horse" && isQuestCompleted[0]) ||
                     (VariableManager.shared.touchBuilding == "apple" && isQuestCompleted[1]) ||
                     (VariableManager.shared.touchBuilding == "cat" && isQuestCompleted[2]) ||
                     (VariableManager.shared.touchBuilding == "npcFish" && isQuestCompleted[3]) ||
@@ -91,13 +91,13 @@ struct InGameView: View {
 @ViewBuilder
     private func destinationView() -> some View {
         switch VariableManager.shared.touchBuilding {
-            case "shopBuilding":
+            case "blacksmith":
                 ShopView()
             case "dinerBuilding":
                 ShopView()
             case "questBuilding":
                 QuestView()
-            case "npcHorse":
+            case "horse":
                 QuestFinishedView(id: 1)
             case "apple":
                 QuestFinishedView(id: 2)
@@ -120,7 +120,7 @@ struct InGameView: View {
         switch VariableManager.shared.touchBuilding {
             case "shopBuilding", "dinerBuilding", "npcFish", "npcFlower":
                 return "buybutton"
-            case "questBuilding", "npcHorse":
+            case "questBuilding", "horse":
                 return "interactbutton"
             case "apple":
                 return "collectbutton"
