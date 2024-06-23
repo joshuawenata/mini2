@@ -11,7 +11,7 @@ import SwiftData
 struct QuestView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.presentationMode) var presentationMode
-    @Query var quests: [Quest]
+    @Query(sort: \Quest.id) var quests: [Quest]
     
     var body: some View {
         ZStack {
