@@ -46,6 +46,7 @@
 		A661375C2C27FFE600B6AC3D /* QuestFinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375B2C27FFE600B6AC3D /* QuestFinishedView.swift */; };
 		A661375E2C284CB100B6AC3D /* skillAttackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */; };
 		A66137602C287D2700B6AC3D /* FoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375F2C287D2700B6AC3D /* FoundView.swift */; };
+		A68EE3932C29CCF200C74EE7 /* bossViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,7 @@
 		A661375B2C27FFE600B6AC3D /* QuestFinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFinishedView.swift; sourceTree = "<group>"; };
 		A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skillAttackViewModel.swift; sourceTree = "<group>"; };
 		A661375F2C287D2700B6AC3D /* FoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundView.swift; sourceTree = "<group>"; };
+		A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bossViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +196,7 @@
 				A62619722C19A01D00FF75F1 /* basicAttackViewModel.swift */,
 				8BC9BCB22C258B79002403ED /* characterViewModel.swift */,
 				A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */,
+				A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				A626196B2C19814D00FF75F1 /* SparksView.swift in Sources */,
 				A626196D2C199EBE00FF75F1 /* movementViewModel.swift in Sources */,
 				A661374C2C229D3A00B6AC3D /* BattleScene.swift in Sources */,
+				A68EE3932C29CCF200C74EE7 /* bossViewModel.swift in Sources */,
 				A661375E2C284CB100B6AC3D /* skillAttackViewModel.swift in Sources */,
 				8B8FF0682C1952B700BE749B /* Enum.swift in Sources */,
 				A626195E2C188C1500FF75F1 /* menuViewModel.swift in Sources */,
