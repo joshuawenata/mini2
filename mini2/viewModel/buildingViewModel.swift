@@ -8,10 +8,14 @@
 import Foundation
 import SpriteKit
 
-func addBuilding(at position: CGPoint, imageName: String) -> SKSpriteNode {
+func addBuilding(at position: CGPoint, imageName: String, isRectangle: Bool = false) -> SKSpriteNode {
     let building = SKSpriteNode(imageNamed: imageName)
-    let buildingTexture = SKTexture(imageNamed: imageName)
-    building.physicsBody = SKPhysicsBody(texture: buildingTexture, size: building.size)
+    if isRectangle {
+        building.physicsBody = SKPhysicsBody(rectangleOf: building.size)
+    } else {
+        let texture = SKTexture(imageNamed: imageName)
+        building.physicsBody = SKPhysicsBody(texture: texture, size: building.size)
+    }
     building.position = position
     building.name = imageName
     building.setScale(0.2)
