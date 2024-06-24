@@ -124,7 +124,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(river)
         startRiverAnimation(riverNode: river)
         
-        addChild(addBuilding(at: CGPoint(x: -2000, y: 300), imageName: "npcFish"))
+        addChild(addBuilding(at: CGPoint(x: -2000, y: 300), imageName: "npcFish", isRectangle: true))
         
         let horse = addBuilding(at: CGPoint(x: -2200, y: -100), imageName: "horse_00000")
         horse.setScale(0.35)
@@ -150,7 +150,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(addBuilding(at: CGPoint(x: -1150, y: -550), imageName: "npcHouse"))
         
         //right
-        addChild(addBuilding(at: CGPoint(x: -800, y: 100), imageName: "npcFlower"))
+        addChild(addBuilding(at: CGPoint(x: -800, y: 100), imageName: "npcFlower", isRectangle: true))
         let cat = addBuilding(at: CGPoint(x: -600, y: 100), imageName: "cat")
         addChild(cat)
         cat.setScale(0.7)
