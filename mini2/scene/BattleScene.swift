@@ -31,6 +31,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var isHitMelee = false
     var isHitProjectile = false
     var ghostAdded = false
+    var playerName: SKLabelNode?
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
     
@@ -155,6 +156,10 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
             
+            guard let playerName = self.playerName else {
+                return
+            }
+            
             let pVelocity = joystick.velocity
             let speed = CGFloat(0.12)
             
@@ -181,6 +186,9 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             
             hpBarInner.position.x += dx
             hpBarInner.position.y += dy
+            
+            playerName.position.x += dx
+            playerName.position.y += dy
             
             self.cameraNode.position = characterNode.position
         }
@@ -375,8 +383,16 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         let hpbarouter = SKSpriteNode(texture: hpbartextureouter)
         hpbarouter.position = CGPoint(x: -5, y: 50)
         
+        let playerName = SKLabelNode(text: "Aethel")
+        playerName.position = CGPoint(x: 0, y: 70)
+        playerName.fontColor = .white
+        playerName.fontSize = 18
+        playerName.fontName = "AveriaSerifLibre-Regular"
+        self.playerName = playerName
+        
         addChild(hpbarinner)
         addChild(hpbarouter)
+        addChild(playerName)
         
         hpBarInner = hpbarinner
         hpBarOuter = hpbarouter
