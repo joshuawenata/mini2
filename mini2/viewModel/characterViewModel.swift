@@ -27,3 +27,18 @@ func addCharacterPlayer(_ position: CGPoint) -> SKSpriteNode! {
     
     return character
 }
+
+func startGhostAnimation(ghostNode: SKSpriteNode?) {
+    guard let ghostNode = ghostNode else { return }
+    
+    var ghostTextures: [SKTexture] = []
+
+    for i in 0...29 {
+        let textureName = String(format: "death_%05d", i)
+        ghostTextures.append(SKTexture(imageNamed: textureName))
+    }
+    
+    let ghostAnimation = SKAction.animate(with: ghostTextures, timePerFrame: 0.05, resize: false, restore: true)
+    let repeatGhost = SKAction.repeat(ghostAnimation, count: 1)
+    ghostNode.run(repeatGhost, withKey: "ghost")
+}

@@ -61,5 +61,6 @@ struct VictoryView: View {
                 
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }

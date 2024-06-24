@@ -1,25 +1,26 @@
 import SpriteKit
 import GameKit
 import SwiftUI
+import SwiftData
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode!
-    //    var NPCNode: [SKSpriteNode] = []
+    var playerName: SKLabelNode!
+    var hpBarInner: SKSpriteNode!
+    var hpBarOuter: SKSpriteNode!
     var first = true
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
-    var isWallContact = false
     
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
     
-    let shopNode = SKSpriteNode(color: .clear, size: CGSize(width: 200, height: 200))
+    let blacksmithNode = SKSpriteNode(color: .clear, size: CGSize(width: 200, height: 200))
     let battleNode = SKSpriteNode(color: .clear, size: CGSize(width: 300, height: 300))
     let interactionThresholdDistance: CGFloat = 200
     
     var character: Character
     
-    let cameraNode = SKCameraNode()
-   
+    let cameraNode = SKCameraNode()   
     init(size: CGSize, character: Character) {
         self.character = character
         super.init(size: size)
@@ -50,7 +51,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //    }
     
     let gameCenter = GameCenterManager.shared
-//    let battleScene = BattleScene(size: UIScreen.main.bounds.size)
+    var hiddenTriggered = false
     
     var joystickStickImageEnabled = true {
         didSet {
@@ -62,44 +63,60 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        
-        if String(contact.bodyB.node?.name ?? "unknown") == "battleBuilding" {
-            gameCenter.startMatchmaking()
-        } else if String(contact.bodyB.node?.name ?? "unknown") == "shopBuilding"{
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "shopBuilding"
-        } else if String(contact.bodyB.node?.name ?? "unknown") == "dinerBuilding"{
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "shopBuilding"
-        } else if String(contact.bodyB.node?.name ?? "unknown") == "questBuilding"{
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "questBuilding"
+        guard let nodeName = contact.bodyA.node?.name ?? contact.bodyB.node?.name else {
+            return
         }
         
-
-//        switch String(contact.bodyB.node?.name ?? "Unknown") {
-//        case "battleBuilding":
-//            gameCenter.startMatchmaking()
-//        case "questBuilding":
-//            VariableManager.shared.interactionButtonHidden = false
-//            VariableManager.shared.touchBuilding = "questBuilding"
-//        case "shopBuilding":
-//            VariableManager.shared.interactionButtonHidden = false
-//            VariableManager.shared.touchBuilding = "shopBuilding"
-//        case "dinerBuilding":
-//            VariableManager.shared.interactionButtonHidden = false
-//            VariableManager.shared.touchBuilding = "shopBuilding"
-//        default:
-//            VariableManager.shared.interactionButtonHidden = true
-//            
-//        }
-        isWallContact = true
+        switch nodeName {
+            case "battleBuilding":
+                gameCenter.startMatchmaking()
+            case "blacksmith_00000", "blacksmith_00001", "blacksmith_00002", "blacksmith_00003", "blacksmith_00004", "blacksmith_00005", "blacksmith_00006", "blacksmith_00007", "blacksmith_00008", "blacksmith_00009", "blacksmith_00010", "blacksmith_00011", "blacksmith_00012", "blacksmith_00013", "blacksmith_00014", "blacksmith_00015", "blacksmith_00016", "blacksmith_00017", "blacksmith_00018", "blacksmith_00019", "blacksmith_00020", "blacksmith_00021", "blacksmith_00022", "blacksmith_00023", "blacksmith_00024", "blacksmith_00025", "blacksmith_00026", "blacksmith_00027", "blacksmith_00028", "blacksmith_00029":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "blacksmith"
+            case "dinerBuilding":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "dinerBuilding"
+            case "questBuilding":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "questBuilding"
+            case "horse_00000", "horse_0001", "horse_0002", "horse_0003", "horse_0004", "horse_0005", "horse_0006", "horse_0007", "horse_0008", "horse_0009", "horse_0010", "horse_0011", "horse_0012", "horse_0013", "horse_0014", "horse_0015", "horse_0016", "horse_0017", "horse_0018", "horse_0019", "horse_0020", "horse_0021", "horse_0022", "horse_0023", "horse_0024", "horse_0025", "horse_0026", "horse_0027", "horse_0028", "horse_0029":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "horse"
+            case "npcFish":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "npcFish"
+            case "npcFlower":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "npcFlower"
+            case "apple":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "apple"
+            case "cat":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "cat"
+            case "npcHouse":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "npcHouse"
+            case "sparks":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "sparks"
+            case "chest_opened":
+                VariableManager.shared.interactionButtonHidden = false
+                VariableManager.shared.touchBuilding = "chest_opened"
+            default:
+                break
+        }
+        
     }
-    
-    
+
     func didEnd(_ contact: SKPhysicsContact) {
-        isWallContact = false
-        VariableManager.shared.interactionButtonHidden = true
+        if(!hiddenTriggered){
+            self.hiddenTriggered = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                VariableManager.shared.interactionButtonHidden = true
+                self.hiddenTriggered = false
+            }
+        }
     }
     
     var joystickSubstrateImageEnabled = true {
@@ -129,29 +146,87 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         configureJoysticks()
         
         //top
-        addChild(addBuilding(at: CGPoint(x: -200, y: 300), imageName: "statueBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 0, y: 300), imageName: "battleBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 200, y: 250), imageName: "npcBattle"))
+        addChild(addBuilding(at: CGPoint(x: -1700, y: 300), imageName: "statueBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1500, y: 300), imageName: "battleBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1300, y: 250), imageName: "npcBattle"))
         
         //left
-        addChild(addBuilding(at: CGPoint(x: -1500, y: 500), imageName: "river"))
-        addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
-        addChild(addBuilding(at: CGPoint(x: -700, y: -100), imageName: "npcHorse"))
+        let river = addBuildingWithoutPhysics(at: CGPoint(x: -3300, y: 1000), imageName: "river1")
+        river.setScale(0.75)
+        addChild(river)
+        startRiverAnimation(riverNode: river)
+        
+        addChild(addBuilding(at: CGPoint(x: -2000, y: 300), imageName: "npcFish", isRectangle: true))
+        
+        let horse = addBuilding(at: CGPoint(x: -2200, y: -100), imageName: "horse_00000")
+        horse.setScale(0.35)
+        addChild(horse)
+        startHorseAnimation(horseNode: horse)
+        
+        addChild(addBuilding(at: CGPoint(x: -2100, y: -150), imageName: "apple"))
         
         //middle
-        addChild(addBuilding(at: CGPoint(x: -250, y: -100), imageName: "questBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 0, y: -100), imageName: "shopBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 300, y: -100), imageName: "dinerBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1750, y: -100), imageName: "questBuilding"))
+        
+        let blacksmith = addBuilding(at: CGPoint(x: -1500, y: -100), imageName: "blacksmith_00000")
+        blacksmith.setScale(0.35)
+        addChild(blacksmith)
+        startBlacksmithAnimation(blacksmithNode: blacksmith)
+        
+        addChild(addBuilding(at: CGPoint(x: -1200, y: -100), imageName: "dinerBuilding"))
         
         //bottom
-        addChild(addBuilding(at: CGPoint(x: -200, y: -500), imageName: "npcHouseOne"))
-        addChild(addBuilding(at: CGPoint(x: 0, y: -500), imageName: "npcHouseTwo"))
-        addChild(addBuilding(at: CGPoint(x: 200, y: -500), imageName: "npcHouseThree"))
-        addChild(addBuilding(at: CGPoint(x: 350, y: -550), imageName: "npcHouse"))
+        addChild(addBuilding(at: CGPoint(x: -1700, y: -500), imageName: "npcHouseOne"))
+        addChild(addBuilding(at: CGPoint(x: -1500, y: -500), imageName: "npcHouseTwo"))
+        addChild(addBuilding(at: CGPoint(x: -1300, y: -500), imageName: "npcHouseThree"))
+        addChild(addBuilding(at: CGPoint(x: -1150, y: -550), imageName: "npcHouse"))
         
         //right
-        addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
-//        gameCenter.startMatchmaking()
+        addChild(addBuilding(at: CGPoint(x: -800, y: 100), imageName: "npcFlower", isRectangle: true))
+        let cat = addBuilding(at: CGPoint(x: -600, y: 100), imageName: "cat")
+        addChild(cat)
+        cat.setScale(0.7)
+        startCatAnimation(catNode: cat)
+        
+        //down right
+        let boss = addBuilding(at: CGPoint(x: 3000, y: -700), imageName: "bossAttack_00000")
+        boss.setScale(0.4)
+        addChild(boss)
+        startBossAnimation(bossNode: boss)
+        
+        let waitSpark = SKAction.wait(forDuration: 36000)
+        let addRandomEventSpark = SKAction.run { [weak self] in
+            self?.addRandomSparks()
+        }
+        let sequenceSpark = SKAction.sequence([addRandomEventSpark, waitSpark])
+        let repeatActionSpark = SKAction.repeatForever(sequenceSpark)
+        self.run(repeatActionSpark)
+        
+        let waitChest = SKAction.wait(forDuration: 3600)
+        let addRandomEventChest = SKAction.run { [weak self] in
+            self?.addRandomChest()
+        }
+        let sequenceChest = SKAction.sequence([addRandomEventChest, waitChest])
+        let repeatActionChest = SKAction.repeatForever(sequenceChest)
+        self.run(repeatActionChest)
+    }
+    
+    func random(min: CGFloat, max: CGFloat) -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt32.max) * (max - min) + min
+    }
+    
+    func addRandomSparks() {
+        let sparksPosition = CGPoint(x: random(min: -1500, max: -500), y: random(min: -500, max: 500))
+        let sparks = addBuilding(at: sparksPosition, imageName: "sparks")
+        
+        addChild(sparks)
+    }
+    
+    func addRandomChest() {
+        let chestPosition = CGPoint(x: random(min: -1800, max: -1200), y: random(min: 100, max: 200))
+        let chest = addBuilding(at: chestPosition, imageName: "chest_opened")
+        
+        addChild(chest)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -177,6 +252,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
             
+            guard let hpBarInner = self.hpBarInner else {
+                return
+            }
+            
+            guard let hpBarOuter = self.hpBarOuter else {
+                return
+            }
+            
+            guard let playerName = self.playerName else {
+                return
+            }
+            
             let pVelocity = joystick.velocity
             let speed = CGFloat(0.12)
             
@@ -185,6 +272,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             characterNode.position.x += dx
             characterNode.position.y += dy
+            
+            hpBarInner.position.x = characterNode.position.x
+            hpBarInner.position.y = characterNode.position.y + 54
+        
+            hpBarOuter.position.x = characterNode.position.x - 5
+            hpBarOuter.position.y = characterNode.position.y + 50
+        
+            playerName.position.x = characterNode.position.x
+            playerName.position.y = characterNode.position.y + 70
             
             self.cameraNode.position = characterNode.position
         }
@@ -208,13 +304,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let character = SKSpriteNode(texture: texture)
         character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
         character.physicsBody?.affectedByGravity = false
-        character.position = CGPoint(x: 0, y: 0)
+        character.position = CGPoint(x: -1500, y: 0)
         character.physicsBody?.allowsRotation = false
         character.setScale(0.3)
         character.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue
         character.physicsBody?.collisionBitMask = CollisionCategory.building.rawValue
         character.physicsBody?.contactTestBitMask = CollisionCategory.building.rawValue
         character.physicsBody?.isDynamic = true
+        
+        guard let hpBarOuterImage = UIImage(named: "hpbarouter") else {
+            return
+        }
+        guard let hpBarInnerTexture = UIImage(named: "hpbarinner") else {
+            return
+        }
+        
+        let hpbartextureinner = SKTexture(image: hpBarInnerTexture)
+        let hpbarinner = SKSpriteNode(texture: hpbartextureinner)
+        hpbarinner.position = CGPoint(x: -1500, y: 54)
+        self.hpBarInner = hpbarinner
+        
+        let hpbartextureouter = SKTexture(image: hpBarOuterImage)
+        let hpbarouter = SKSpriteNode(texture: hpbartextureouter)
+        hpbarouter.position = CGPoint(x: -1505, y: 50)
+        self.hpBarOuter = hpbarouter
+        
+        let playerName = SKLabelNode(text: "Aethel")
+        playerName.position = CGPoint(x: -1500, y: 70)
+        playerName.fontColor = .white
+        playerName.fontSize = 18
+        playerName.fontName = "AveriaSerifLibre-Regular"
+        self.playerName = playerName
+        
+        addChild(hpbarinner)
+        addChild(hpbarouter)
+        addChild(playerName)
         
         addChild(character)
         characterNode = character

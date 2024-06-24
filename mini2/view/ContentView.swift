@@ -6,9 +6,35 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var context
+    @Query var allQuests: [Quest]
+    
     var body: some View {
         OnboardingView()
+            .onAppear {
+                initQuest(context: context, allQuests: allQuests)
+            }
+    }
+}
+
+func initQuest(context: ModelContext, allQuests: [Quest]) {
+    let quests = [
+        Quest(id: 1, title: "Deliver items to man with horse", reward: 50, completed: false),
+        Quest(id: 2, title: "Collect apple", reward: 100, completed: false),
+        Quest(id: 3, title: "Find the lost cat", reward: 150, completed: false),
+        Quest(id: 4, title: "Buy some fish", reward: 50, completed: false),
+        Quest(id: 5, title: "Buy some flower", reward: 50, completed: false),
+        Quest(id: 6, title: "Chat with villagers", reward: 100, completed: false),
+    ]
+    
+    for quest in quests {
+        if allQuests.contains(where: { $0.title == quest.title }) {
+            continue
+        }
+
+        context.insert(quest)
     }
 }

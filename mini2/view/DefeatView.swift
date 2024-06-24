@@ -61,5 +61,6 @@ struct DefeatView: View {
                 
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
