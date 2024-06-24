@@ -30,7 +30,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var hpEnemy = 100
     var isHitMelee = false
     var isHitProjectile = false
-    
+    var ghostAdded = false
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
     
@@ -103,12 +103,12 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none)
         
-        addDummyRobot(CGPoint(x: frame.midX+200, y: frame.midY), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
+        addDummyRobot(CGPoint(x: 200, y: 0), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
 
-        swordNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "defaultSword")
-        meleeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
-        rangeAreaNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "rangeArea",isPhysicsBody: false, category: PhysicsCategory.rangeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
-        slashNode = addItem(CGPoint(x: frame.midX, y: frame.midY), imageName: "slash_00000")
+        swordNode = addItem(CGPoint(x: -60, y: 0), imageName: "defaultSword")
+        meleeAreaNode = addItem(CGPoint(x: -60, y: 0), imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
+        rangeAreaNode = addItem(CGPoint(x: -60, y: 0), imageName: "rangeArea",isPhysicsBody: false, category: PhysicsCategory.rangeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
+        slashNode = addItem(CGPoint(x: -60, y: 0), imageName: "slash_00000")
         meleeAreaNode?.isHidden = true
         meleeAreaNode?.zPosition = -1
         rangeAreaNode?.isHidden = true
@@ -394,7 +394,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
         character.physicsBody?.affectedByGravity = false
         character.physicsBody?.allowsRotation = false
-        character.position = CGPoint(x: 200, y: 0)
+        character.position = position
         character.setScale(0.3)
         character.physicsBody?.categoryBitMask = category
         character.physicsBody?.contactTestBitMask = contact
@@ -419,7 +419,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             item.physicsBody?.contactTestBitMask = contact
             item.physicsBody?.collisionBitMask = collision
         }
-        item.position = CGPoint(x: -60, y: 0)
+        item.position = position
         item.setScale(0.3)
         addChild(item)
         
@@ -431,8 +431,16 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if hpEnemy <= 0 {
-            dummyRobot?.removeFromParent()
+        if hpEnemy <= 0 && !ghostAdded {
+            ghostAdded = true
+            
+            let ghostNode = addItem(CGPoint(x: 200, y: 70), imageName: "ghost_00000")
+            startGhostAnimation(ghostNode: ghostNode)
+            
+            let fadeOutAction = SKAction.fadeOut(withDuration: 1.0)
+            dummyRobot?.run(fadeOutAction) {
+                self.dummyRobot?.removeFromParent()
+            }
         }
         
         gameModel = GameModel(player: characterNode.position, name: gameCenter.player2Name)
@@ -449,7 +457,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
-
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
