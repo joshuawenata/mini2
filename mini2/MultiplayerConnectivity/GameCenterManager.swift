@@ -70,7 +70,7 @@ class GameCenterManager: NSObject, ObservableObject {
         
         rootViewController?.present(matchmakingVC!, animated: true)
     }
-
+    
     // STARTING GAME
     func startGame(newMatch: GKMatch) {
         match = newMatch
@@ -101,15 +101,37 @@ extension GameCenterManager: GKMatchDelegate {
             print(error)
         }
     }
-
-    // RECEIVING DATA FROM OTHER PLAYERS
-   func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-       guard let gameModel = GameModel.decode(data: data) else {
-           return print("Received data is not a valid GameModel")
-       }
-       receivedData(gameModel)
+    
+    // FETCH DATA
+    func loadGameData(game: GKSavedGame) async {
+        var data: Data
+        do {
+            // Load the game data from the file.
+            data = try await game.loadData()
+        } catch {
+            print("Error: \(error.localizedDescription).")
+            return
+        }
+        // Decode the game data and start the game.
     }
-
+    
+    // SAVE DATA
+    func saveGameData(data: Data, name: String) async {
+        do {
+            try await GKLocalPlayer.local.saveGameData(data, withName: name)
+        } catch {
+            print("Error: \(error.localizedDescription).")
+        }
+    }
+    
+    // RECEIVING DATA FROM OTHER PLAYERS
+    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+        guard let gameModel = GameModel.decode(data: data) else {
+            return print("Received data is not a valid GameModel")
+        }
+        receivedData(gameModel)
+    }
+    
     // HANDLING PLAYERS CONNECTION STATE
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
         guard state == .disconnected else { return }
@@ -122,7 +144,7 @@ extension GameCenterManager: GKMatchDelegate {
         DispatchQueue.main.async {
             self.rootViewController?.present(alert, animated: true)
         }
-
+        
     }
     
     // HANDLING LOCAL PLAYERS ERROR
