@@ -5,6 +5,9 @@ import SwiftData
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode!
+    var playerName: SKLabelNode!
+    var hpBarInner: SKSpriteNode!
+    var hpBarOuter: SKSpriteNode!
     var first = true
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
     
@@ -220,6 +223,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
             
+            guard let hpBarInner = self.hpBarInner else {
+                return
+            }
+            
+            guard let hpBarOuter = self.hpBarOuter else {
+                return
+            }
+            
+            guard let playerName = self.playerName else {
+                return
+            }
+            
             let pVelocity = joystick.velocity
             let speed = CGFloat(0.12)
             
@@ -228,6 +243,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             characterNode.position.x += dx
             characterNode.position.y += dy
+            
+            hpBarInner.position.x = characterNode.position.x
+            hpBarInner.position.y = characterNode.position.y + 54
+        
+            hpBarOuter.position.x = characterNode.position.x - 5
+            hpBarOuter.position.y = characterNode.position.y + 50
+        
+            playerName.position.x = characterNode.position.x
+            playerName.position.y = characterNode.position.y + 70
             
             self.cameraNode.position = characterNode.position
         }
@@ -258,6 +282,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         character.physicsBody?.collisionBitMask = CollisionCategory.building.rawValue
         character.physicsBody?.contactTestBitMask = CollisionCategory.building.rawValue
         character.physicsBody?.isDynamic = true
+        
+        guard let hpBarOuterImage = UIImage(named: "hpbarouter") else {
+            return
+        }
+        guard let hpBarInnerTexture = UIImage(named: "hpbarinner") else {
+            return
+        }
+        
+        let hpbartextureinner = SKTexture(image: hpBarInnerTexture)
+        let hpbarinner = SKSpriteNode(texture: hpbartextureinner)
+        hpbarinner.position = CGPoint(x: -1500, y: 54)
+        self.hpBarInner = hpbarinner
+        
+        let hpbartextureouter = SKTexture(image: hpBarOuterImage)
+        let hpbarouter = SKSpriteNode(texture: hpbartextureouter)
+        hpbarouter.position = CGPoint(x: -1505, y: 50)
+        self.hpBarOuter = hpbarouter
+        
+        let playerName = SKLabelNode(text: "Aethel")
+        playerName.position = CGPoint(x: -1500, y: 70)
+        playerName.fontColor = .white
+        playerName.fontSize = 18
+        playerName.fontName = "AveriaSerifLibre-Regular"
+        self.playerName = playerName
+        
+        addChild(hpbarinner)
+        addChild(hpbarouter)
+        addChild(playerName)
         
         addChild(character)
         characterNode = character
