@@ -13,19 +13,15 @@ struct ShopView: View {
     let weaponList: [WeaponModel] = [
         WeaponModel(
             weaponName: "Dagger   ",
-            weaponDescription: "Every knight needs a trusty steed, a shining suit of armor, and...a glorified letter opener? Don't underestimate the dagger, though! It's perfect for close calls, fancy finger flicking, and reminding everyone you're still dangerous even after you lose your sword in a particularly dramatic battle cry.",
             weaponPrice: 200,
             weaponAttack: 15,
-            weaponImage: "dagger",
-            weapomJoystickImage: "dagger_joystick"
+            weaponImage: "dagger"
         ),
         WeaponModel(
             weaponName: "Axe        ",
-            weaponDescription: "Forget the lute, the real crowd-pleaser is a well-placed axe swing! Sure, it might not be the most melodic, but the rhythmic \"thunk\" of an axe burying itself in a foe's armor is guaranteed to get a head (or two) bobbing.",
             weaponPrice: 300,
             weaponAttack: 25,
-            weaponImage: "Axe",
-            weapomJoystickImage: "axe_joystick"
+            weaponImage: "Axe"
         ),
     ]
     
@@ -35,27 +31,21 @@ struct ShopView: View {
             skillDamage: 20,
             skillCoolDown: 5,
             skillPrice: 300,
-            skillDescription: "Feel the power of the ocean (or at least a garden hose) with this refreshing (yet surprisingly forceful) water blast! Ideal for cooling down overheated enemies, or simply delivering a playful (but slightly embarrassing) surprise.",
-            skillImage: "water",
-            SkillJoystickImage: "water_joystick"
+            skillImage: "water"
         ),
         SkillModel(
             skillName: "Pistol     ",
             skillDamage: 30,
             skillCoolDown: 5,
             skillPrice: 700,
-            skillDescription: "A tool that converts money into noise very efficiently. Turns out, there's no better way to say \"I love spending money\" than launching tiny explosions out of a metal tube.",
-            skillImage: "pistol",
-            SkillJoystickImage: "pistol_joystick"
+            skillImage: "pistol"
         ),
         SkillModel(
             skillName: "Grenade",
             skillDamage: 50,
             skillCoolDown: 5,
             skillPrice: 900,
-            skillDescription: "A grenade? It's basically a one-way friendship bracelet. You pull the pin, toss it over, and yell \"Here comes a hug!\"  Except, instead of a hug, everyone gets a confetti explosion (made of shrapnel, not glitter, unfortunately). It's the ultimate party favor, guaranteed to liven things up... for a very short time.  Just remember, the only cool grenade throw is the one you never have to make.",
-            skillImage: "grenade",
-            SkillJoystickImage: "grenade_joystick"
+            skillImage: "grenade"
         ),
     ]
     

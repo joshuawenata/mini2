@@ -31,6 +31,8 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var gameModel: GameModel!
     var anotherPlayer: SKSpriteNode!
     
+    let character = Character()
+    
     var joystickStickImageEnabled = true {
         didSet {
             let jImage = UIImage(named: "jStick")
@@ -45,7 +47,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var joystickSubstrateImageEnabled = true {
         didSet {
             let jImage = UIImage(named: "jSubstrate")
-            let rImage = UIImage(named: "sword_joystick")
+            let rImage = UIImage(named: "rSubstrate")
             moveJoystick.baseImage = jImage
             rotateJoystick.baseImage = rImage
             skillJoystick.baseImage = jImage
@@ -236,7 +238,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
 
             swordNode.run(repeatRotation)
             if isHitMelee {
-                hpEnemy -= 10
+                hpEnemy -= character.EquipedWeapon.weaponAttack
             }
         }
         
@@ -353,7 +355,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             run(sequence)
             if isHitProjectile {
                 print("Mengurangi Health!")
-                hpEnemy -= 10
+                hpEnemy -= character.EquipedSkill.skillDamage
                 isHitProjectile = false
             }
         }

@@ -10,6 +10,8 @@ import SwiftUI
 struct CharacterView: View {
     @Environment(\.presentationMode) var presentationMode
     
+    let character = Character()
+    
     var body: some View {
         ZStack {
             Image("greenbg")
@@ -68,7 +70,7 @@ struct CharacterView: View {
                                 Image("dmg")
                                     .resizable()
                                     .frame(width: 40, height: 40)
-                                Text("5")
+                                Text("\(character.characterBaseAttack+character.EquipedWeapon.weaponAttack)")
                                     .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
@@ -79,7 +81,7 @@ struct CharacterView: View {
                                 Image(systemName: "heart.fill")
                                     .font(.system(size: 30))
                                     .foregroundColor(.white)
-                                Text("100")
+                                Text("\(character.characterBaseHP)")
                                     .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)

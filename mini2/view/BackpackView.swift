@@ -51,24 +51,36 @@ struct BackpackView: View {
                 Spacer()
                 
                 ScrollView {
-                    VStack(spacing: 20) {
-                        ForEach(0..<rows, id: \.self) { row in
-                            HStack(spacing: 20) {
-                                ForEach(0..<itemsPerRow, id: \.self) { column in
-                                    let index = row * itemsPerRow + column
-                                    if index < items.count {
-                                        Rectangle()
-                                            .fill(Color.white)
-                                            .frame(width: 80, height: 80)
-                                            .cornerRadius(20)
-                                            .padding(.horizontal, 10)
-                                            .overlay(Text("\(index + 1)")) // To show the item number for clarity
+                    if character.collectedSkill.count + character.collectedWeapon.count > 6 {
+                        VStack(spacing: 20) {
+                            ForEach(0..<rows, id: \.self) { row in
+                                HStack(spacing: 20) {
+                                    ForEach(0..<itemsPerRow, id: \.self) { column in
+                                        let index = row * itemsPerRow + column
+                                        if index < items.count {
+                                            Rectangle()
+                                                .fill(Color.white)
+                                                .frame(width: 80, height: 80)
+                                                .cornerRadius(20)
+                                                .padding(.horizontal, 10)
+                                                .overlay(Text("\(index + 1)")) // To show the item number for clarity
+                                        }
                                     }
                                 }
                             }
                         }
+                        .padding(.horizontal, 20)
+                    } else {
+                        HStack(spacing: 20) {
+                            ForEach(character.collectedWeapon) { weapon in
+                                Image(weapon.weaponImage)
+                            }
+                            ForEach(character.collectedSkill) { skill in
+                                Image(skill.skillImage)
+                            }
+                        }
+                        .padding(.horizontal, 20)
                     }
-                    .padding(.horizontal, 20)
                 }
                 
                 Spacer()

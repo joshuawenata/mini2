@@ -12,20 +12,16 @@ class SkillModel: CollectableItem {
     var skillDamage: Int
     var skillCoolDown: Int
     var skillPrice: Int
-    var skillDescription: String
     var skillImage: String
-    var SkillJoystickImage: String
     
-    init(skillName: String, skillDamage: Int, skillCoolDown: Int, skillPrice: Int, skillDescription: String, skillImage: String, SkillJoystickImage: String) {
+    init(skillName: String, skillDamage: Int, skillCoolDown: Int, skillPrice: Int, skillImage: String) {
         self.skillName = skillName
         self.skillDamage = skillDamage
         self.skillCoolDown = skillCoolDown
         self.skillPrice = skillPrice
-        self.skillDescription = skillDescription
         self.skillImage = skillImage
-        self.SkillJoystickImage = SkillJoystickImage
         
-        super.init(itemName: skillName, itemPrice: skillPrice, itemDescription: skillDescription, itemImage: skillImage, itemJoystickImage: SkillJoystickImage)
+        super.init(itemName: skillName, itemPrice: skillPrice, itemImage: skillImage)
     }
     
     required init(from decoder: any Decoder) throws {
