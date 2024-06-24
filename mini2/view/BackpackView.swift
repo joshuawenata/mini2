@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BackpackView: View {
     @Environment(\.presentationMode) var presentationMode
     private let itemsPerRow = 6
-    private let character = Character()
-    private let totalCollectedItem = Character().collectedWeapon.count + Character().collectedSkill.count
+    @Binding var character: Character
 
     private var rows: Int {
-        return (totalCollectedItem + itemsPerRow - 1) / itemsPerRow
+        return ( character.getTotalItem() + itemsPerRow - 1) / itemsPerRow
     }
 
     var body: some View {
@@ -51,13 +51,13 @@ struct BackpackView: View {
                 Spacer()
                 
                 ScrollView {
-                    if totalCollectedItem > 6 {
+                    if character.getTotalItem() > 6 {
                         VStack(alignment: .leading, spacing: 20) {
                             ForEach(0..<rows, id: \.self) { row in
                                 HStack(spacing: 20) {
                                     ForEach(0..<itemsPerRow, id: \.self) { column in
                                         let index = row * itemsPerRow + column
-                                        if index < totalCollectedItem {
+                                        if index < character.getTotalItem() {
                                             if index < character.collectedWeapon.count {
                                                 Image(character.collectedWeapon[index].weaponImage)
                                             } else {
@@ -91,6 +91,6 @@ struct BackpackView: View {
     }
 }
 
-#Preview {
-    BackpackView()
-}
+//#Preview {
+//    BackpackView(character: T##Binding<Character>)
+//}

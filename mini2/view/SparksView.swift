@@ -11,6 +11,7 @@ struct SparksView: View {
     @Environment(\.presentationMode) var presentationMode
     let items = Array(0..<120)
     let itemsPerRow = 4
+    @Binding var character: Character
     
     var rows: Int {
         return (items.count + itemsPerRow - 1) / itemsPerRow
@@ -27,7 +28,7 @@ struct SparksView: View {
                 
                 HStack {
                     
-                    NavigationLink(destination: CharacterView(), label: {
+                    NavigationLink(destination: CharacterView(character: $character), label: {
                         Text("Character")
                             .font(.custom("AveriaSerifLibre-Regular", size: 30))
                             .fontWeight(.bold)
@@ -197,6 +198,6 @@ struct SparksView: View {
     }
 }
 
-#Preview {
-    SparksView()
-}
+//#Preview {
+//    SparksView()
+//}

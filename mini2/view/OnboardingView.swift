@@ -38,17 +38,5 @@ struct OnboardingView: View {
             gameCenter.authenticatePlayer()
         })
     }
-    
-    func presentGameScene() {
-        let scene = GameScene(size: UIScreen.main.bounds.size)
-        let gameView = SpriteView(scene: scene).ignoresSafeArea()
-
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return
-        }
-
-        windowScene.windows.first?.rootViewController?.present(
-            UIHostingController(rootView: gameView), animated: true)
-    }
 }
 

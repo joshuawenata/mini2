@@ -10,13 +10,14 @@ struct InGameView: View {
 
     let gameCenter = GameCenterManager.shared
 
-    let scene = GameScene(size: UIScreen.main.bounds.size)
+    
+    @State var character: Character = Character()
     
     var body: some View {
         NavigationStack {
             ZStack {
                 if gameCenter.jungleView {
-                    SpriteView(scene: scene).ignoresSafeArea()
+                    SpriteView(scene: GameScene(size: UIScreen.main.bounds.size, character:character)).ignoresSafeArea()
                 }
 
                 VStack {
@@ -32,14 +33,14 @@ struct InGameView: View {
                                         .foregroundColor(.black)
                                 })
                                 
-                                NavigationLink(destination: CharacterView(), label: {
+                                NavigationLink(destination: CharacterView(character: $character), label: {
                                     Image("character")
                                         .resizable()
                                         .frame(width: 40, height: 40)
                                         .padding(.leading, 20)
                                 })
                                 
-                                NavigationLink(destination: BackpackView(), label: {
+                                NavigationLink(destination: BackpackView(character: $character), label: {
                                     Image("inventory")
                                         .resizable()
                                         .frame(width: 40, height: 40)
@@ -61,7 +62,7 @@ struct InGameView: View {
                 }
                 .padding(.top, 20)
                 
-                NavigationLink(destination: destinationView(), label: {
+                NavigationLink(destination: destinationView(character: $character), label: {
                     Image("InteractButton")
                         .resizable()
                         .frame(width: 105, height: 35)
@@ -75,12 +76,12 @@ struct InGameView: View {
 }
 
 @ViewBuilder
-    private func destinationView() -> some View {
+private func destinationView(character: Binding<Character>) -> some View {
         switch VariableManager.shared.touchBuilding {
         case "shopBuilding":
-            ShopView()
+            ShopView(character: character)
         case "dinerBuilding":
-            ShopView()
+            ShopView(character: character)
         case "questBuilding":
             QuestView()
         default:

@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CharacterView: View {
     @Environment(\.presentationMode) var presentationMode
-    
-    let character = Character()
+    @Environment(\.modelContext) private var modelWatch
+    @Binding var character: Character
     
     var body: some View {
         ZStack {
@@ -28,7 +28,7 @@ struct CharacterView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .scaledToFit()
-                    NavigationLink(destination: SparksView(), label: {
+                    NavigationLink(destination: SparksView(character: $character), label: {
                         Text("Sparks")
                             .font(.custom("AveriaSerifLibre-Regular", size: 30))
                             .fontWeight(.bold)
@@ -47,8 +47,6 @@ struct CharacterView: View {
                             .scaledToFit()
                     })
                 }
-                //                .padding()
-                //                .padding(.bottom, 20)
                 .padding(.horizontal, 15)
                 .padding(.top)
                 
@@ -70,7 +68,7 @@ struct CharacterView: View {
                                 Image("dmg")
                                     .resizable()
                                     .frame(width: 40, height: 40)
-                                Text("\(character.characterBaseAttack+character.EquipedWeapon.weaponAttack)")
+                                Text("\((character.characterBaseAttack ?? 0)+(character.EquipedWeapon.weaponAttack ?? 0))")
                                     .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
@@ -81,7 +79,7 @@ struct CharacterView: View {
                                 Image(systemName: "heart.fill")
                                     .font(.system(size: 30))
                                     .foregroundColor(.white)
-                                Text("\(character.characterBaseHP)")
+                                Text("\(character.characterBaseHP ?? 0)")
                                     .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
@@ -135,6 +133,6 @@ struct CharacterView: View {
     }
 }
 
-#Preview {
-    CharacterView()
-}
+//#Preview {
+//    CharacterView()
+//}

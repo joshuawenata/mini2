@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ShopView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -13,8 +14,9 @@ struct ShopView: View {
     @State private var isShowingSkillConfirmation = false
     @State private var tappedItem: WeaponModel = WeaponModel(weaponName: "", weaponPrice: 0, weaponAttack: 0, weaponImage: "")
     @State private var tappedSkillItem: SkillModel = SkillModel(skillName: "", skillDamage: 0, skillCoolDown: 0, skillPrice: 0, skillImage: "")
-    var character = Character()
     @State var haveNoMoney = false
+    
+    @Binding var character: Character
     
     private let weaponList: [WeaponModel] = [
         WeaponModel(
@@ -109,7 +111,7 @@ struct ShopView: View {
                     haveNoMoney.toggle()
                 } else {
                     character.collectedWeapon.append(tappedItem)
-                    character.characterMoney -= tappedItem.weaponPrice
+                    character.characterMoney  -= tappedItem.weaponPrice
                 }
             } label: {
                 Text("Buying \(tappedItem.weaponName)")
@@ -246,7 +248,7 @@ struct ShopView: View {
         
     }
 }
-
-#Preview {
-    ShopView(character: Character())
-}
+//
+//#Preview {
+//    ShopView(character: Character())
+//}

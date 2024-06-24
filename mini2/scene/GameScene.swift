@@ -16,9 +16,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let battleNode = SKSpriteNode(color: .clear, size: CGSize(width: 300, height: 300))
     let interactionThresholdDistance: CGFloat = 200
     
+    var character: Character
+    
     let cameraNode = SKCameraNode()
    
-        
+    init(size: CGSize, character: Character) {
+        self.character = character
+        super.init(size: size)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
     //    func addNPC(_ position: CGPoint, category: UInt32, contact: UInt32, imageName: String) {
     //        guard let characterImage = UIImage(named: imageName) else {
     //            return
@@ -41,7 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //    }
     
     let gameCenter = GameCenterManager.shared
-    let battleScene = BattleScene(size: UIScreen.main.bounds.size)
+//    let battleScene = BattleScene(size: UIScreen.main.bounds.size)
     
     var joystickStickImageEnabled = true {
         didSet {
@@ -148,7 +157,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         if gameCenter.battleView {
             let transition = SKTransition.flipHorizontal(withDuration: 1.0)
-            self.view?.presentScene(battleScene, transition: transition)
+            self.view?.presentScene(BattleScene(size: UIScreen.main.bounds.size,character: character), transition: transition)
         }
     }
     

@@ -1,5 +1,6 @@
 import SpriteKit
 import SwiftUI
+import SwiftData
 
 class BattleScene: SKScene, SKPhysicsContactDelegate {
     var characterNode: SKSpriteNode!
@@ -31,7 +32,19 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var gameModel: GameModel!
     var anotherPlayer: SKSpriteNode!
     
-    let character = Character()
+//    @Environment(\.modelContext) private var modelWatch
+//    @Query private var character: [Character]
+    var character: Character
+    
+    init(size: CGSize, character: Character) {
+       self.character = character
+       super.init(size: size)
+     }
+
+     // ... rest of your BattleScene code
+     required init?(coder aDecoder: NSCoder) {
+       fatalError("init(coder:) is not supported")
+     }
     
     var joystickStickImageEnabled = true {
         didSet {
