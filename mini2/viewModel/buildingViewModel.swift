@@ -10,11 +10,12 @@ import SpriteKit
 
 func addBuilding(at position: CGPoint, imageName: String) -> SKSpriteNode {
     let building = SKSpriteNode(imageNamed: imageName)
-    building.physicsBody = SKPhysicsBody(rectangleOf: building.size)
+    let buildingTexture = SKTexture(imageNamed: imageName)
+    building.physicsBody = SKPhysicsBody(texture: buildingTexture, size: building.size)
     building.position = position
     building.name = imageName
     building.setScale(0.2)
-    building.zPosition = -1    
+    building.zPosition = -1
     building.physicsBody?.affectedByGravity = false
     building.physicsBody?.allowsRotation = false
     building.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue
@@ -75,4 +76,18 @@ func startRiverAnimation(riverNode: SKSpriteNode?) {
     let riverAnimation = SKAction.animate(with: riverTexture, timePerFrame: 0.1, resize: false, restore: true)
     let repeatRiver = SKAction.repeatForever(riverAnimation)
     riverNode?.run(repeatRiver, withKey: "river")
+}
+
+func startCatAnimation(catNode: SKSpriteNode?) {
+    var catTexture: [SKTexture] = []
+    
+    for i in 0...44 {
+        let textureName = String(format: "cat_%05d", i)
+        let texture = SKTexture(imageNamed: textureName)
+        catTexture.append(texture)
+    }
+    
+    let catAnimation = SKAction.animate(with: catTexture, timePerFrame: 0.03, resize: false, restore: true)
+    let repeatCat = SKAction.repeatForever(catAnimation)
+    catNode?.run(repeatCat, withKey: "cat")
 }

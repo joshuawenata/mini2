@@ -151,10 +151,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //right
         addChild(addBuilding(at: CGPoint(x: -800, y: 100), imageName: "npcFlower"))
-        addChild(addBuilding(at: CGPoint(x: -600, y: 100), imageName: "cat"))
+        let cat = addBuilding(at: CGPoint(x: -600, y: 100), imageName: "cat")
+        addChild(cat)
+        cat.setScale(0.7)
+        startCatAnimation(catNode: cat)
         
         //down right
-        let boss = addBuildingWithoutPhysics(at: CGPoint(x: 3000, y: -700), imageName: "bossAttack_00000")
+        let boss = addBuilding(at: CGPoint(x: 3000, y: -700), imageName: "bossAttack_00000")
         boss.setScale(0.4)
         addChild(boss)
         startBossAnimation(bossNode: boss)
