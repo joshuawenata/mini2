@@ -114,44 +114,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         configureJoysticks()
         
         //top
-        addChild(addBuilding(at: CGPoint(x: -200, y: 300), imageName: "statueBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 0, y: 300), imageName: "battleBuilding"))
-        addChild(addBuilding(at: CGPoint(x: 200, y: 250), imageName: "npcBattle"))
+        addChild(addBuilding(at: CGPoint(x: -1700, y: 300), imageName: "statueBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1500, y: 300), imageName: "battleBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1300, y: 250), imageName: "npcBattle"))
         
         //left
-        let river = addBuilding(at: CGPoint(x: -1600, y: 650), imageName: "river2")
-        river.setScale(0.925)
+        let river = addBuildingWithoutPhysics(at: CGPoint(x: -3300, y: 1000), imageName: "river1")
+        river.setScale(0.75)
         addChild(river)
         startRiverAnimation(riverNode: river)
         
-        addChild(addBuilding(at: CGPoint(x: -500, y: 300), imageName: "npcFish"))
+        addChild(addBuilding(at: CGPoint(x: -2000, y: 300), imageName: "npcFish"))
         
-        let horse = addBuilding(at: CGPoint(x: -700, y: -100), imageName: "horse_00000")
+        let horse = addBuilding(at: CGPoint(x: -2200, y: -100), imageName: "horse_00000")
         horse.setScale(0.35)
         addChild(horse)
         startHorseAnimation(horseNode: horse)
         
-        addChild(addBuilding(at: CGPoint(x: -600, y: -150), imageName: "apple"))
+        addChild(addBuilding(at: CGPoint(x: -2100, y: -150), imageName: "apple"))
         
         //middle
-        addChild(addBuilding(at: CGPoint(x: -250, y: -100), imageName: "questBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1750, y: -100), imageName: "questBuilding"))
         
-        let blacksmith = addBuilding(at: CGPoint(x: 0, y: -100), imageName: "blacksmith_00000")
+        let blacksmith = addBuilding(at: CGPoint(x: -1500, y: -100), imageName: "blacksmith_00000")
         blacksmith.setScale(0.35)
         addChild(blacksmith)
         startBlacksmithAnimation(blacksmithNode: blacksmith)
         
-        addChild(addBuilding(at: CGPoint(x: 300, y: -100), imageName: "dinerBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1200, y: -100), imageName: "dinerBuilding"))
         
         //bottom
-        addChild(addBuilding(at: CGPoint(x: -200, y: -500), imageName: "npcHouseOne"))
-        addChild(addBuilding(at: CGPoint(x: 0, y: -500), imageName: "npcHouseTwo"))
-        addChild(addBuilding(at: CGPoint(x: 200, y: -500), imageName: "npcHouseThree"))
-        addChild(addBuilding(at: CGPoint(x: 350, y: -550), imageName: "npcHouse"))
+        addChild(addBuilding(at: CGPoint(x: -1700, y: -500), imageName: "npcHouseOne"))
+        addChild(addBuilding(at: CGPoint(x: -1500, y: -500), imageName: "npcHouseTwo"))
+        addChild(addBuilding(at: CGPoint(x: -1300, y: -500), imageName: "npcHouseThree"))
+        addChild(addBuilding(at: CGPoint(x: -1150, y: -550), imageName: "npcHouse"))
         
         //right
-        addChild(addBuilding(at: CGPoint(x: 700, y: 100), imageName: "npcFlower"))
-        addChild(addBuilding(at: CGPoint(x: 900, y: 100), imageName: "cat"))
+        addChild(addBuilding(at: CGPoint(x: -800, y: 100), imageName: "npcFlower"))
+        addChild(addBuilding(at: CGPoint(x: -600, y: 100), imageName: "cat"))
+        
+        //down right
+        let boss = addBuildingWithoutPhysics(at: CGPoint(x: 3000, y: -700), imageName: "bossAttack_00000")
+        boss.setScale(0.4)
+        addChild(boss)
+        startBossAnimation(bossNode: boss)
         
         let waitSpark = SKAction.wait(forDuration: 36000)
         let addRandomEventSpark = SKAction.run { [weak self] in
@@ -175,14 +181,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func addRandomSparks() {
-        let sparksPosition = CGPoint(x: random(min: 0, max: 1000), y: random(min: -500, max: 500))
+        let sparksPosition = CGPoint(x: random(min: -1500, max: -500), y: random(min: -500, max: 500))
         let sparks = addBuilding(at: sparksPosition, imageName: "sparks")
         
         addChild(sparks)
     }
     
     func addRandomChest() {
-        let chestPosition = CGPoint(x: random(min: -300, max: 300), y: random(min: 100, max: 200))
+        let chestPosition = CGPoint(x: random(min: -1800, max: -1200), y: random(min: 100, max: 200))
         let chest = addBuilding(at: chestPosition, imageName: "chest_opened")
         
         addChild(chest)
@@ -242,7 +248,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let character = SKSpriteNode(texture: texture)
         character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
         character.physicsBody?.affectedByGravity = false
-        character.position = CGPoint(x: 0, y: 0)
+        character.position = CGPoint(x: -1500, y: 0)
         character.physicsBody?.allowsRotation = false
         character.setScale(0.3)
         character.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue

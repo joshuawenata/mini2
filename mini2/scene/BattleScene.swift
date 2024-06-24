@@ -434,7 +434,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         if hpEnemy <= 0 && !ghostAdded {
             ghostAdded = true
             
-            let ghostNode = addItem(CGPoint(x: 200, y: 70), imageName: "ghost_00000")
+            let ghostNode = addItem(CGPoint(x: 200, y: 0), imageName: "death_00000")
             startGhostAnimation(ghostNode: ghostNode)
             
             let fadeOutAction = SKAction.fadeOut(withDuration: 1.0)

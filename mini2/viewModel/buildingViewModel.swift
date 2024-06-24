@@ -14,13 +14,23 @@ func addBuilding(at position: CGPoint, imageName: String) -> SKSpriteNode {
     building.position = position
     building.name = imageName
     building.setScale(0.2)
-    building.zPosition = -1
+    building.zPosition = -1    
     building.physicsBody?.affectedByGravity = false
     building.physicsBody?.allowsRotation = false
     building.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue
     building.physicsBody?.collisionBitMask = CollisionCategory.building.rawValue
     building.physicsBody?.contactTestBitMask = CollisionCategory.building.rawValue
     building.physicsBody?.isDynamic = false
+    
+    return building
+}
+
+func addBuildingWithoutPhysics(at position: CGPoint, imageName: String) -> SKSpriteNode {
+    let building = SKSpriteNode(imageNamed: imageName)
+    building.position = position
+    building.name = imageName
+    building.setScale(0.2)
+    building.zPosition = -1
     
     return building
 }
@@ -56,7 +66,7 @@ func startHorseAnimation(horseNode: SKSpriteNode?) {
 func startRiverAnimation(riverNode: SKSpriteNode?) {
     var riverTexture: [SKTexture] = []
     
-    for i in 2...4 {
+    for i in 1...4 {
         let textureName = String(format: "river%d", i)
         let texture = SKTexture(imageNamed: textureName)
         riverTexture.append(texture)
