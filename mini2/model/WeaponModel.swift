@@ -13,12 +13,14 @@ class WeaponModel: Identifiable, Codable {
     var weaponPrice: Int
     var weaponAttack: Int
     var weaponImage: String
+    var weaponJoystickImage: String
     
-    init(id: UUID = UUID(), weaponName: String, weaponPrice: Int, weaponAttack: Int, weaponImage: String) {
+    init(id: UUID = UUID(), weaponName: String, weaponPrice: Int, weaponAttack: Int, weaponImage: String, weaponJoystickImage: String) {
         self.id = id
         self.weaponName = weaponName
         self.weaponPrice = weaponPrice
         self.weaponAttack = weaponAttack
         self.weaponImage = weaponImage
+        self.weaponJoystickImage = weaponJoystickImage
     }
 }

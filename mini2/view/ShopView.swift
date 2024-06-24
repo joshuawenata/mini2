@@ -12,8 +12,8 @@ struct ShopView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingConfirmation = false
     @State private var isShowingSkillConfirmation = false
-    @State private var tappedItem: WeaponModel = WeaponModel(weaponName: "", weaponPrice: 0, weaponAttack: 0, weaponImage: "")
-    @State private var tappedSkillItem: SkillModel = SkillModel(skillName: "", skillDamage: 0, skillCoolDown: 0, skillPrice: 0, skillImage: "")
+    @State private var tappedItem: WeaponModel = WeaponModel(weaponName: "", weaponPrice: 0, weaponAttack: 0, weaponImage: "",weaponJoystickImage: "")
+    @State private var tappedSkillItem: SkillModel = SkillModel(skillName: "", skillDamage: 0, skillCoolDown: 0, skillPrice: 0, skillImage: "",skillJoystickImage: "")
     @State var haveNoMoney = false
     
     @Binding var character: Character
@@ -23,13 +23,15 @@ struct ShopView: View {
             weaponName: "Dagger",
             weaponPrice: 200,
             weaponAttack: 15,
-            weaponImage: "dagger"
+            weaponImage: "dagger",
+            weaponJoystickImage: "dagger_joystick"
         ),
         WeaponModel(
             weaponName: "Axe",
             weaponPrice: 300,
             weaponAttack: 25,
-            weaponImage: "Axe"
+            weaponImage: "Axe",
+            weaponJoystickImage: "axe_joystick"
         ),
     ]
     
@@ -39,21 +41,24 @@ struct ShopView: View {
             skillDamage: 20,
             skillCoolDown: 5,
             skillPrice: 300,
-            skillImage: "water"
+            skillImage: "water",
+            skillJoystickImage: "water_joystick"
         ),
         SkillModel(
             skillName: "Pistol",
             skillDamage: 30,
             skillCoolDown: 5,
             skillPrice: 700,
-            skillImage: "pistol"
+            skillImage: "pistol",
+            skillJoystickImage: "pistol_joystick"
         ),
         SkillModel(
             skillName: "Grenade",
             skillDamage: 50,
             skillCoolDown: 5,
             skillPrice: 900,
-            skillImage: "grenade"
+            skillImage: "grenade",
+            skillJoystickImage: "grenade_joystick"
         ),
     ]
     

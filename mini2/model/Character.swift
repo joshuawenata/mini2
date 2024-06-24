@@ -6,16 +6,16 @@ class Character: Codable, Identifiable, ObservableObject {
     var characterBaseHP: Int = 100
     var characterBaseAttack: Int = 5
     var characterMoney: Int = 1000
-    var EquipedWeapon: WeaponModel = WeaponModel(weaponName: "Sword", weaponPrice: 0, weaponAttack: 10, weaponImage: "")
-    var EquipedSkill: SkillModel = SkillModel(skillName: "Fireball", skillDamage: 15, skillCoolDown: 5, skillPrice: 0, skillImage: "")
+    var EquipedWeapon: WeaponModel = WeaponModel(weaponName: "Sword", weaponPrice: 0, weaponAttack: 10, weaponImage: "sword 1",weaponJoystickImage: "sword_joystick")
+    var EquipedSkill: SkillModel = SkillModel(skillName: "Fireball", skillDamage: 15, skillCoolDown: 5, skillPrice: 0, skillImage: "fireball",skillJoystickImage: "fireballIcon")
     var collectedWeapon: [WeaponModel] = [
-        WeaponModel(weaponName: "Sword", weaponPrice: 0, weaponAttack: 10, weaponImage: "sword 1"),
+        WeaponModel(weaponName: "Sword", weaponPrice: 0, weaponAttack: 10, weaponImage: "sword 1",weaponJoystickImage: "sword_joystick"),
     ]
     var collectedSkill: [SkillModel] = [
-        SkillModel(skillName: "Fireball", skillDamage: 15, skillCoolDown: 5, skillPrice: 0, skillImage: "fireball"),
+        SkillModel(skillName: "Fireball", skillDamage: 15, skillCoolDown: 5, skillPrice: 0, skillImage: "fireball",skillJoystickImage: "fireballIcon"),
     ]
     
     func getTotalItem() -> Int{
-        return collectedSkill.count ?? 0 + collectedWeapon.count
+        return collectedSkill.count + collectedWeapon.count
     }
 }

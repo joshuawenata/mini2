@@ -11,7 +11,7 @@ struct InGameView: View {
     let gameCenter = GameCenterManager.shared
 
     
-    @State var character: Character = Character()
+    @Binding var character: Character
     
     var body: some View {
         NavigationStack {
@@ -104,6 +104,6 @@ struct HiddenModifier: ViewModifier {
     }
 }
 
-#Preview {
-    InGameView()
-}
+//#Preview {
+//    InGameView()
+//}

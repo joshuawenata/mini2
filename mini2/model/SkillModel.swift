@@ -14,13 +14,15 @@ class SkillModel: Codable, Identifiable {
     var skillCoolDown: Int
     var skillPrice: Int
     var skillImage: String
+    var skillJoystickImage: String
     
-    init(id: UUID = UUID(), skillName: String, skillDamage: Int, skillCoolDown: Int, skillPrice: Int, skillImage: String) {
+    init(id: UUID = UUID(), skillName: String, skillDamage: Int, skillCoolDown: Int, skillPrice: Int, skillImage: String, skillJoystickImage: String) {
         self.id = id
         self.skillName = skillName
         self.skillDamage = skillDamage
         self.skillCoolDown = skillCoolDown
         self.skillPrice = skillPrice
         self.skillImage = skillImage
+        self.skillJoystickImage = skillJoystickImage
     }
 }

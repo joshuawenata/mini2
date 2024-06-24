@@ -13,7 +13,6 @@
 		2B3598E62C11C47600EDBA3C /* InGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3598E52C11C47600EDBA3C /* InGameView.swift */; };
 		2B35999E2C283A2C00EDBA3C /* WeaponModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B35999D2C283A2C00EDBA3C /* WeaponModel.swift */; };
 		2B3599A02C283A3600EDBA3C /* SkillModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B35999F2C283A3600EDBA3C /* SkillModel.swift */; };
-		2B3599A22C28426500EDBA3C /* CollectableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3599A12C28426500EDBA3C /* CollectableItem.swift */; };
 		8B8FF0612C19450500BE749B /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0602C19450500BE749B /* GameCenterManager.swift */; };
 		8B8FF0682C1952B700BE749B /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0672C1952B700BE749B /* Enum.swift */; };
 		8B8FF06B2C19596F00BE749B /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -72,7 +71,6 @@
 		2B3598E52C11C47600EDBA3C /* InGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InGameView.swift; sourceTree = "<group>"; };
 		2B35999D2C283A2C00EDBA3C /* WeaponModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeaponModel.swift; sourceTree = "<group>"; };
 		2B35999F2C283A3600EDBA3C /* SkillModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillModel.swift; sourceTree = "<group>"; };
-		2B3599A12C28426500EDBA3C /* CollectableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectableItem.swift; sourceTree = "<group>"; };
 		8B8FF0602C19450500BE749B /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
 		8B8FF0662C1950CE00BE749B /* mini2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mini2.entitlements; sourceTree = "<group>"; };
 		8B8FF0672C1952B700BE749B /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
@@ -202,7 +200,6 @@
 				A66137592C25333100B6AC3D /* Quest.swift */,
 				2B35999D2C283A2C00EDBA3C /* WeaponModel.swift */,
 				8BC9BCB02C25502B002403ED /* GameModel.swift */,
-				2B3599A12C28426500EDBA3C /* CollectableItem.swift */,
 				2B35999F2C283A3600EDBA3C /* SkillModel.swift */,
 			);
 			path = model;
@@ -446,7 +443,6 @@
 				A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */,
 				A66137502C23D09500B6AC3D /* DefeatView.swift in Sources */,
 				A660D2842C0ECB6400D3A74F /* mini2App.swift in Sources */,
-				2B3599A22C28426500EDBA3C /* CollectableItem.swift in Sources */,
 				A66137522C23E13700B6AC3D /* QuestView.swift in Sources */,
 				962D988E2C19655E00E38C85 /* ShopView.swift in Sources */,
 				A62619672C19690A00FF75F1 /* OptionView.swift in Sources */,

@@ -38,7 +38,7 @@ struct CharacterView: View {
                             .scaledToFit()
                     })
                     Spacer()
-                    NavigationLink(destination: InGameView(), label: {
+                    NavigationLink(destination: InGameView(character: $character), label: {
                         Image("cancel")
                             .resizable()
                             .frame(width: 40, height: 40)

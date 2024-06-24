@@ -12,7 +12,3 @@ struct ContentView: View {
         OnboardingView()
     }
 }
-
-#Preview {
-    InGameView()
-}

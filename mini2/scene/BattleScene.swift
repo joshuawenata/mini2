@@ -251,7 +251,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
 
             swordNode.run(repeatRotation)
             if isHitMelee {
-                hpEnemy -= character.EquipedWeapon.weaponAttack
+                hpEnemy -= 10
             }
         }
         
@@ -368,7 +368,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             run(sequence)
             if isHitProjectile {
                 print("Mengurangi Health!")
-                hpEnemy -= character.EquipedSkill.skillDamage
+                hpEnemy -= 10
                 isHitProjectile = false
             }
         }

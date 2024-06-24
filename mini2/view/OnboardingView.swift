@@ -10,6 +10,7 @@ import SpriteKit
 
 struct OnboardingView: View {
     let gameCenter = GameCenterManager.shared
+    @State var character: Character = Character()
     var body: some View {
         NavigationStack {
             ZStack {
@@ -27,7 +28,7 @@ struct OnboardingView: View {
                         .padding(.top, 50)
                         .padding(.bottom, 20)
                     
-                    NavigationLink(destination: InGameView(), label: {
+                    NavigationLink(destination: InGameView(character: $character), label: {
                         Image("startbutton")
                             .resizable()
                             .frame(width: 250, height: 70)
