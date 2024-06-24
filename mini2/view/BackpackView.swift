@@ -9,12 +9,12 @@ import SwiftUI
 
 struct BackpackView: View {
     @Environment(\.presentationMode) var presentationMode
-    let items = Array(0..<120)
-    let itemsPerRow = 6
-    let character = Character()
+    private let itemsPerRow = 6
+    private let character = Character()
+    private let totalCollectedItem = Character().collectedWeapon.count + Character().collectedSkill.count
 
-    var rows: Int {
-        return (items.count + itemsPerRow - 1) / itemsPerRow
+    private var rows: Int {
+        return (totalCollectedItem + itemsPerRow - 1) / itemsPerRow
     }
 
     var body: some View {
@@ -51,19 +51,19 @@ struct BackpackView: View {
                 Spacer()
                 
                 ScrollView {
-                    if character.collectedSkill.count + character.collectedWeapon.count > 6 {
-                        VStack(spacing: 20) {
+                    if totalCollectedItem > 6 {
+                        VStack(alignment: .leading, spacing: 20) {
                             ForEach(0..<rows, id: \.self) { row in
                                 HStack(spacing: 20) {
                                     ForEach(0..<itemsPerRow, id: \.self) { column in
                                         let index = row * itemsPerRow + column
-                                        if index < items.count {
-                                            Rectangle()
-                                                .fill(Color.white)
-                                                .frame(width: 80, height: 80)
-                                                .cornerRadius(20)
-                                                .padding(.horizontal, 10)
-                                                .overlay(Text("\(index + 1)")) // To show the item number for clarity
+                                        if index < totalCollectedItem {
+                                            if index < character.collectedWeapon.count {
+                                                Image(character.collectedWeapon[index].weaponImage)
+                                            } else {
+                                                let skillIndex = index - character.collectedWeapon.count
+                                                Image(character.collectedSkill[skillIndex].skillImage)
+                                            }
                                         }
                                     }
                                 }

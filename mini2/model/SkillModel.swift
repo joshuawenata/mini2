@@ -7,25 +7,20 @@
 
 import Foundation
 
-class SkillModel: CollectableItem {
+class SkillModel: Codable, Identifiable {
+    var id = UUID()
     var skillName: String
     var skillDamage: Int
     var skillCoolDown: Int
     var skillPrice: Int
     var skillImage: String
     
-    init(skillName: String, skillDamage: Int, skillCoolDown: Int, skillPrice: Int, skillImage: String) {
+    init(id: UUID = UUID(), skillName: String, skillDamage: Int, skillCoolDown: Int, skillPrice: Int, skillImage: String) {
+        self.id = id
         self.skillName = skillName
         self.skillDamage = skillDamage
         self.skillCoolDown = skillCoolDown
         self.skillPrice = skillPrice
         self.skillImage = skillImage
-        
-        super.init(itemName: skillName, itemPrice: skillPrice, itemImage: skillImage)
     }
-    
-    required init(from decoder: any Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
-    
 }
