@@ -49,6 +49,7 @@
 		A661375E2C284CB100B6AC3D /* skillAttackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */; };
 		A66137602C287D2700B6AC3D /* FoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375F2C287D2700B6AC3D /* FoundView.swift */; };
 		A68EE3932C29CCF200C74EE7 /* bossViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */; };
+		A68EE3952C2B1F3900C74EE7 /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = A68EE3942C2B1F3900C74EE7 /* intro.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skillAttackViewModel.swift; sourceTree = "<group>"; };
 		A661375F2C287D2700B6AC3D /* FoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundView.swift; sourceTree = "<group>"; };
 		A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bossViewModel.swift; sourceTree = "<group>"; };
+		A68EE3942C2B1F3900C74EE7 /* intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +253,7 @@
 				A660D2832C0ECB6400D3A74F /* mini2App.swift */,
 				2B3598E72C11CD8D00EDBA3C /* view */,
 				A660D2872C0ECB6500D3A74F /* Assets.xcassets */,
+				A68EE3942C2B1F3900C74EE7 /* intro.mp4 */,
 				A660D2892C0ECB6500D3A74F /* Preview Content */,
 			);
 			path = mini2;
@@ -404,6 +407,7 @@
 			files = (
 				A660D28B2C0ECB6500D3A74F /* Preview Assets.xcassets in Resources */,
 				A660D2C52C13202200D3A74F /* JollyLodger.ttf in Resources */,
+				A68EE3952C2B1F3900C74EE7 /* intro.mp4 in Resources */,
 				969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */,
 				A660D2882C0ECB6500D3A74F /* Assets.xcassets in Resources */,
 			);
