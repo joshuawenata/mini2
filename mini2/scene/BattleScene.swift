@@ -79,6 +79,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+        
         counterDidBegin += 1
         let bodyA = contact.bodyA
         let bodyB = contact.bodyB
@@ -277,6 +278,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             swordNode.run(repeatRotation)
             if isHitMelee {
                 hpEnemy -= 10
+                startGetHitAnimation(characterNode: self.dummyRobot)
             }
         }
         
@@ -357,6 +359,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
                 print("Mengurangi Health!")
                 hpEnemy -= 10
                 isHitProjectile = false
+                startGetHitAnimation(characterNode: self.dummyRobot)
             }
         }
         
@@ -433,7 +436,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(character)
         
-        dummyRobot = character
+        self.dummyRobot = character
     }
     
     func addItem(_ position: CGPoint, imageName: String, isPhysicsBody: Bool = false, category: UInt32 = 0, contact: UInt32 = 0, collision: UInt32 = 0) -> SKSpriteNode {

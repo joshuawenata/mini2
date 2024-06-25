@@ -6,8 +6,7 @@ struct InGameView: View {
     @StateObject var varManager: VariableManager = VariableManager.shared
     @State private var isHidden: Bool = VariableManager.shared.interactionButtonHidden
     @State private var interactionButtonDestination: String = VariableManager.shared.touchBuilding
-    let gameCenter = GameCenterManager.shared
-    
+    let gameCenter = GameCenterManager.shared    
     @Binding var character: Character
 
     let scene = GameScene(size: UIScreen.main.bounds.size)
