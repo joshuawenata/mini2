@@ -28,6 +28,21 @@ func addCharacterPlayer(_ position: CGPoint) -> SKSpriteNode! {
     return character
 }
 
+func startGetHitAnimation(characterNode: SKSpriteNode?) {
+    guard let characterNode = characterNode else { return }
+    
+    var getHitTextures: [SKTexture] = []
+    
+    for i in 0...7 {
+        let getHitTexture = String(format: "red_%05d", i)
+        getHitTextures.append(SKTexture(imageNamed: getHitTexture))
+    }
+    
+    let getHitAnimation = SKAction.animate(with: getHitTextures, timePerFrame: 0.05, resize: false, restore: true)
+    let repeatGetHit = SKAction.repeat(getHitAnimation, count: 1)
+    characterNode.run(repeatGetHit, withKey: "getHit")
+}
+
 func startGhostAnimation(ghostNode: SKSpriteNode?) {
     guard let ghostNode = ghostNode else { return }
     
@@ -42,3 +57,4 @@ func startGhostAnimation(ghostNode: SKSpriteNode?) {
     let repeatGhost = SKAction.repeat(ghostAnimation, count: 1)
     ghostNode.run(repeatGhost, withKey: "ghost")
 }
+
