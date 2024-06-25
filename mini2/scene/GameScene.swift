@@ -20,7 +20,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var character: Character
     
-    let cameraNode = SKCameraNode()   
+    let cameraNode = SKCameraNode()
     init(size: CGSize, character: Character) {
         self.character = character
         super.init(size: size)
@@ -29,26 +29,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
-    //    func addNPC(_ position: CGPoint, category: UInt32, contact: UInt32, imageName: String) {
-    //        guard let characterImage = UIImage(named: imageName) else {
-    //            return
-    //        }
-    //
-    //        let texture = SKTexture(image: characterImage)
-    //        let character = SKSpriteNode(texture: texture)
-    //        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
-    //        character.physicsBody?.affectedByGravity = false
-    //        character.physicsBody?.allowsRotation = false
-    //        character.position = CGPoint(x: 200, y: 0)
-    //        character.setScale(0.3)
-    //        character.physicsBody?.categoryBitMask = category
-    //        character.physicsBody?.contactTestBitMask = contact
-    //        character.physicsBody?.isDynamic = false
-    //
-    //        addChild(character)
-    //
-    //        NPCNode.append(character)
-    //    }
     
     let gameCenter = GameCenterManager.shared
     var hiddenTriggered = false
@@ -135,80 +115,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
-        self.backgroundColor = .clear
-        let background = SKSpriteNode(imageNamed: "mainIsland")
-        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background.zPosition = -1
-        addChild(background)
-        
+        addBackground()
         addCharacter(CGPoint(x: frame.midX, y: frame.midY))
-        
         configureJoysticks()
-        
-        //top
-        addChild(addBuilding(at: CGPoint(x: -1700, y: 300), imageName: "statueBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -1500, y: 300), imageName: "battleBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -1300, y: 250), imageName: "npcBattle"))
-        
-        //left
-        let river = addBuildingWithoutPhysics(at: CGPoint(x: -3300, y: 1000), imageName: "river1")
-        river.setScale(0.75)
-        addChild(river)
-        startRiverAnimation(riverNode: river)
-        
-        addChild(addBuilding(at: CGPoint(x: -2000, y: 300), imageName: "npcFish", isRectangle: true))
-        
-        let horse = addBuilding(at: CGPoint(x: -2200, y: -100), imageName: "horse_00000")
-        horse.setScale(0.35)
-        addChild(horse)
-        startHorseAnimation(horseNode: horse)
-        
-        addChild(addBuilding(at: CGPoint(x: -2100, y: -150), imageName: "apple"))
-        
-        //middle
-        addChild(addBuilding(at: CGPoint(x: -1750, y: -100), imageName: "questBuilding"))
-        
-        let blacksmith = addBuilding(at: CGPoint(x: -1500, y: -100), imageName: "blacksmith_00000")
-        blacksmith.setScale(0.35)
-        addChild(blacksmith)
-        startBlacksmithAnimation(blacksmithNode: blacksmith)
-        
-        addChild(addBuilding(at: CGPoint(x: -1200, y: -100), imageName: "dinerBuilding"))
-        
-        //bottom
-        addChild(addBuilding(at: CGPoint(x: -1700, y: -500), imageName: "npcHouseOne"))
-        addChild(addBuilding(at: CGPoint(x: -1500, y: -500), imageName: "npcHouseTwo"))
-        addChild(addBuilding(at: CGPoint(x: -1300, y: -500), imageName: "npcHouseThree"))
-        addChild(addBuilding(at: CGPoint(x: -1150, y: -550), imageName: "npcHouse"))
-        
-        //right
-        addChild(addBuilding(at: CGPoint(x: -800, y: 100), imageName: "npcFlower", isRectangle: true))
-        let cat = addBuilding(at: CGPoint(x: -600, y: 100), imageName: "cat")
-        addChild(cat)
-        cat.setScale(0.7)
-        startCatAnimation(catNode: cat)
-        
-        //down right
-        let boss = addBuilding(at: CGPoint(x: 3000, y: -700), imageName: "bossAttack_00000")
-        boss.setScale(0.4)
-        addChild(boss)
-        startBossAnimation(bossNode: boss)
-        
-        let waitSpark = SKAction.wait(forDuration: 36000)
-        let addRandomEventSpark = SKAction.run { [weak self] in
-            self?.addRandomSparks()
-        }
-        let sequenceSpark = SKAction.sequence([addRandomEventSpark, waitSpark])
-        let repeatActionSpark = SKAction.repeatForever(sequenceSpark)
-        self.run(repeatActionSpark)
-        
-        let waitChest = SKAction.wait(forDuration: 3600)
-        let addRandomEventChest = SKAction.run { [weak self] in
-            self?.addRandomChest()
-        }
-        let sequenceChest = SKAction.sequence([addRandomEventChest, waitChest])
-        let repeatActionChest = SKAction.repeatForever(sequenceChest)
-        self.run(repeatActionChest)
+        addBuildings()
     }
     
     func random(min: CGFloat, max: CGFloat) -> CGFloat {
@@ -295,6 +205,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         view?.isMultipleTouchEnabled = true
     }
     
+    func addBackground() {
+        self.backgroundColor = .clear
+        let background = SKSpriteNode(imageNamed: "mainIsland")
+        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        background.zPosition = -1
+        addChild(background)
+    }
+    
     func addCharacter(_ position: CGPoint) {
         guard let characterImage = UIImage(named: "charaIdle") else {
             return
@@ -344,6 +262,73 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         characterNode = character
                 
         startIdleAnimation(characterNode: characterNode)
+    }
+    
+    func addBuildings() {
+        //top
+        addChild(addBuilding(at: CGPoint(x: -1700, y: 300), imageName: "statueBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1500, y: 300), imageName: "battleBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1300, y: 250), imageName: "npcBattle"))
+        
+        //left
+        let river = addBuildingWithoutPhysics(at: CGPoint(x: -3300, y: 1000), imageName: "river1")
+        river.setScale(0.5)
+        addChild(river)
+        startRiverAnimation(riverNode: river)
+        
+        addChild(addBuilding(at: CGPoint(x: -2000, y: 300), imageName: "npcFish", isRectangle: true))
+        
+        let horse = addBuilding(at: CGPoint(x: -2200, y: -100), imageName: "horse_00000")
+        horse.setScale(0.35)
+        addChild(horse)
+        startHorseAnimation(horseNode: horse)
+        
+        addChild(addBuilding(at: CGPoint(x: -2100, y: -150), imageName: "apple"))
+        
+        //middle
+        addChild(addBuilding(at: CGPoint(x: -1750, y: -100), imageName: "questBuilding"))
+        
+        let blacksmith = addBuilding(at: CGPoint(x: -1500, y: -100), imageName: "blacksmith_00000", isRectangle: true)
+        blacksmith.setScale(0.35)
+        addChild(blacksmith)
+        startBlacksmithAnimation(blacksmithNode: blacksmith)
+        
+        addChild(addBuilding(at: CGPoint(x: -1200, y: -100), imageName: "dinerBuilding"))
+        
+        //bottom
+        addChild(addBuilding(at: CGPoint(x: -1700, y: -500), imageName: "npcHouseOne"))
+        addChild(addBuilding(at: CGPoint(x: -1500, y: -500), imageName: "npcHouseTwo"))
+        addChild(addBuilding(at: CGPoint(x: -1300, y: -500), imageName: "npcHouseThree"))
+        addChild(addBuilding(at: CGPoint(x: -1150, y: -550), imageName: "npcHouse"))
+        
+        //right
+        addChild(addBuilding(at: CGPoint(x: -800, y: 100), imageName: "npcFlower", isRectangle: true))
+        let cat = addBuilding(at: CGPoint(x: -600, y: 100), imageName: "cat")
+        addChild(cat)
+        cat.setScale(0.7)
+        startCatAnimation(catNode: cat)
+        
+        //down right
+        let boss = addBuilding(at: CGPoint(x: 3000, y: -700), imageName: "bossAttack_00000")
+        boss.setScale(0.4)
+        addChild(boss)
+        startBossAnimation(bossNode: boss)
+        
+        let waitSpark = SKAction.wait(forDuration: 36000)
+        let addRandomEventSpark = SKAction.run { [weak self] in
+            self?.addRandomSparks()
+        }
+        let sequenceSpark = SKAction.sequence([addRandomEventSpark, waitSpark])
+        let repeatActionSpark = SKAction.repeatForever(sequenceSpark)
+        self.run(repeatActionSpark)
+        
+        let waitChest = SKAction.wait(forDuration: 3600)
+        let addRandomEventChest = SKAction.run { [weak self] in
+            self?.addRandomChest()
+        }
+        let sequenceChest = SKAction.sequence([addRandomEventChest, waitChest])
+        let repeatActionChest = SKAction.repeatForever(sequenceChest)
+        self.run(repeatActionChest)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
