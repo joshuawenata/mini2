@@ -90,7 +90,3 @@ struct BackpackView: View {
         .navigationBarBackButtonHidden(true)
     }
 }
-
-//#Preview {
-//    BackpackView(character: T##Binding<Character>)
-//}
