@@ -9,6 +9,9 @@ import SwiftUI
 
 struct DefeatView: View {
     
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     var items = Array(0...9)
     
     var body: some View {
@@ -53,6 +56,12 @@ struct DefeatView: View {
                             }
                         })
                         .padding(.top, 20)
+                        .simultaneousGesture(TapGesture().onEnded {
+                            if let url = Bundle.main.url(forResource: "interaction", withExtension: "wav") {
+                                audioManager.loadAudioFiles(urls: [url])
+                                audioManager.play()
+                            }
+                        })
                     }
                 }
                 .padding(.horizontal, 20)
@@ -60,6 +69,13 @@ struct DefeatView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+                if let url = Bundle.main.url(forResource: "lose", withExtension: "wav") {
+                    audioManager.loadAudioFiles(urls: [url])
+                    audioManager.play()
+            }
+
+        }
     }
 }
 

@@ -56,6 +56,13 @@ struct FoundView: View {
                             }
                         })
                         .padding(.top, 20)
+                        .simultaneousGesture(TapGesture().onEnded {
+                            if let url = Bundle.main.url(forResource: "interaction", withExtension: "wav") {
+                                audioManager.loadAudioFiles(urls: [url])
+                                audioManager.play()
+                            }
+                        })
+
                     }
                 }
                 .padding(.horizontal, 20)
@@ -63,6 +70,12 @@ struct FoundView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            if let url = Bundle.main.url(forResource: "bleep", withExtension: "wav") {
+                audioManager.loadAudioFiles(urls: [url])
+                audioManager.play()
+            }
+        }
     }
 }
 
