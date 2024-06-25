@@ -11,33 +11,32 @@ import SpriteKit
 struct OnboardingView: View {
     let gameCenter = GameCenterManager.shared
     @State var character: Character = Character()
-    var body: some View {
-        NavigationStack {
-            ZStack {
-                Image("bgLandingPage")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                
-                VStack {
-                    Text("Fall of Aethel")
-                .font(.custom("JollyLodger", size: 80))
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(height: 50)
-                        .padding(.top, 50)
-                        .padding(.bottom, 20)
-                    
+    @State private var currentFrame: Int = 0
+        private let totalFrames = 16
+
+        var body: some View {
+            NavigationStack {
+                ZStack {
                     NavigationLink(destination: InGameView(character: $character), label: {
-                        Image("startbutton")
+                        Image("onboarding_\(String(format: "%05d", currentFrame))")
                             .resizable()
-                            .frame(width: 250, height: 70)
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .edgesIgnoringSafeArea(.all)
                     })
                 }
             }
-        }.onAppear(perform: {
-            gameCenter.authenticatePlayer()
-        })
-    }
+            .onAppear {
+                // Start animating frames
+                animateFrames()
+            }
+        }
+        
+        private func animateFrames() {
+            // Create a repeating timer to advance frames
+            Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+                self.currentFrame = (self.currentFrame + 1) % self.totalFrames
+            }
+        }
 }
 
