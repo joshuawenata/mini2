@@ -116,7 +116,7 @@ struct SparksView: View {
                                                     } else {
                                                         let skillIndex = index - character.collectedWeapon.count
                                                         Button {
-                                                            newSkill = character.collectedSkill[index]
+                                                            newSkill = character.collectedSkill[skillIndex]
                                                         } label: {
                                                             Image(character.collectedSkill[skillIndex].skillImage)
                                                                 .scaledToFit()
