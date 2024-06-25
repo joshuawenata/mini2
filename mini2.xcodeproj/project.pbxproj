@@ -274,11 +274,8 @@
 				A66137592C25333100B6AC3D /* Quest.swift */,
 				2B35999D2C283A2C00EDBA3C /* WeaponModel.swift */,
 				8BC9BCB02C25502B002403ED /* GameModel.swift */,
-<<<<<<< HEAD
 				969C3DDD2C29DFB5007117C4 /* Sound.swift */,
-=======
 				2B35999F2C283A3600EDBA3C /* SkillModel.swift */,
->>>>>>> main
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -478,15 +475,12 @@
 				A660D28B2C0ECB6500D3A74F /* Preview Assets.xcassets in Resources */,
 				969C3DFB2C2A7827007117C4 /* swoosh1.mp3 in Resources */,
 				A660D2C52C13202200D3A74F /* JollyLodger.ttf in Resources */,
-<<<<<<< HEAD
 				969C3DF12C29F6D5007117C4 /* impact1.wav in Resources */,
 				969C3DE32C29F1F2007117C4 /* quest_complete.wav in Resources */,
 				969C3DFD2C2A92EE007117C4 /* fast_riser.wav in Resources */,
 				969C3DE42C29F1F2007117C4 /* lose.wav in Resources */,
 				969C3DE92C29F642007117C4 /* interaction.wav in Resources */,
-=======
 				A68EE3952C2B1F3900C74EE7 /* intro.mp4 in Resources */,
->>>>>>> main
 				969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */,
 				969C3DF42C29F70C007117C4 /* song_battle.wav in Resources */,
 				969C3DEF2C29F6D5007117C4 /* fireball.wav in Resources */,
