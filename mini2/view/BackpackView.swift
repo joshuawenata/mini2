@@ -28,7 +28,7 @@ struct BackpackView: View {
                 
                 HStack {
                     Text("Backpack")
-                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 35))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .scaledToFit()
@@ -45,8 +45,9 @@ struct BackpackView: View {
                             .scaledToFit()
                     }
                 }
+                .padding(.top, 10)
                 .padding(.bottom, 20)
-                .padding(.horizontal, 15)
+                .padding(.leading, 10)
                 
                 Spacer()
                 
@@ -85,7 +86,8 @@ struct BackpackView: View {
                 
                 Spacer()
             }
-            .padding(.horizontal, 50)
+            .padding(.horizontal, 80)
+            .padding(.trailing, -20)
         }
         .navigationBarBackButtonHidden(true)
     }

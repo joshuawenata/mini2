@@ -49,28 +49,29 @@ struct SparksView: View {
     
     var body: some View {
         ZStack {
-            Image("greenbg")
+            Image("greenbgSparks")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
             
-            VStack(alignment: .leading) {
+            VStack {
                 
                 HStack {
                     
                     NavigationLink(destination: CharacterView(character: $character), label: {
                         Text("Character")
-                            .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                            .font(.custom("AveriaSerifLibre-Regular", size: 25))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                             .opacity(0.5)
                             .scaledToFit()
                     })
                     Text("Sparks")
-                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 35))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.horizontal, 20)
+                        .padding(.leading, 10)
                         .scaledToFit()
                     Spacer()
                     
@@ -83,9 +84,6 @@ struct SparksView: View {
                             .scaledToFit()
                     })
                 }
-                .padding(.bottom, 20)
-                .padding(.top, 20)
-                
                 Spacer()
                 
                 HStack {
@@ -101,15 +99,21 @@ struct SparksView: View {
                                 .frame(height: 50)
                             
                             Image(character.EquipedWeapon.weaponImage)
+                                .resizable()
                                 .frame(width: 50, height: 50)
                                 .cornerRadius(5)
-                                .padding(.horizontal)
+                                .padding(.horizontal, 5)
+                                .padding(.leading, 5)
+                                .shadow(radius: 3)
                             
                             Image(character.EquipedSkill.skillImage)
+                                .resizable()
                                 .frame(width: 50, height: 50)
                                 .cornerRadius(5)
+                                .shadow(radius: 3)
                         }
-                        .padding(.vertical, 30)
+                        .padding(.vertical, 20)
+                        .padding(.top, 30)
                         
                         Spacer()
                         
@@ -125,6 +129,7 @@ struct SparksView: View {
                                                 }) {
                                                     Image(character.collectedWeapon[index].weaponImage)
                                                         .frame(width: 80, height: 80)
+                                                        .shadow(radius: 3)
                                                         .padding(.horizontal, 5)
                                                 }
                                             } else if index - character.collectedWeapon.count < character.collectedSkill.count {
@@ -133,6 +138,7 @@ struct SparksView: View {
                                                 }) {
                                                     Image(character.collectedSkill[index - character.collectedWeapon.count].skillImage)
                                                         .frame(width: 80, height: 80)
+                                                        .shadow(radius: 3)
                                                         .padding(.horizontal, 5)
                                                 }
                                             }
@@ -149,21 +155,18 @@ struct SparksView: View {
                     
                     VStack (alignment: .center) {
                         
-                        HStack {
-                            
+                        HStack(spacing: 6) {
                             if let weapon = currentItem as? WeaponModel {
                                 Text(weapon.weaponName)
                                     .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
-                                    .padding(.horizontal)
-                                    .frame(height: 50)
+                                    .frame(maxWidth: 200, maxHeight: 100)
                             } else if let skill = currentItem as? SkillModel {
                                 Text(skill.skillName)
                                     .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
-                                    .padding(.horizontal)
                                     .frame(height: 50)
                             }
     
@@ -176,16 +179,17 @@ struct SparksView: View {
                                     .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
-                                    .frame(height: 50)
                             } else if let skill = currentItem as? SkillModel {
                                 Text("+"+String(skill.skillDamage))
                                     .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
-                                    .frame(height: 50)
+
                             }
                             
                         }
+                        .padding(.top)
+                        .frame(width: 400)
                         
                         if let weapon = currentItem as? WeaponModel {
                             Image(weapon.weaponImage)
@@ -193,15 +197,17 @@ struct SparksView: View {
                                 .frame(width: 100, height: 100)
                                 .padding()
                                 .scaledToFit()
+                                .padding(.top, -40)
                         } else if let skill = currentItem as? SkillModel {
                             Image(skill.skillImage)
                                 .resizable()
                                 .frame(width: 100, height: 100)
                                 .padding()
                                 .scaledToFit()
+                                .padding(.top, -40)
                         }
                         
-                        HStack {
+                        HStack(spacing: 10) {
                             
                             ZStack(alignment: .center) {
                                 
@@ -210,6 +216,7 @@ struct SparksView: View {
                                     .frame(width: 140, height: 70)
                                     .scaledToFit()
                                     .padding(.leading, 10)
+                                    .shadow(radius: 3)
                                 
                                 Text("Equip")
                                     .font(.custom("AveriaSerifLibre-Regular", size: 25))
@@ -224,8 +231,9 @@ struct SparksView: View {
                                 
                                 Image("button")
                                     .resizable()
-                                    .frame(width: 140, height: 70)
+                                    .frame(width: 170, height: 70)
                                     .scaledToFit()
+                                    .shadow(radius: 3)
                                 
                                 HStack {
                                     
@@ -252,13 +260,13 @@ struct SparksView: View {
                         }
                         
                     }
-                    .padding()
-                    
+                    .offset(x: 35, y: -7)
                 }
                     
             }
+            .padding(.top, 24)
             .padding(.horizontal, 50)
-            
+            .padding(.leading, 30)
         }
         .navigationBarBackButtonHidden(true)
     }
