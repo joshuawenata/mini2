@@ -38,7 +38,3 @@ func initQuest(context: ModelContext, allQuests: [Quest]) {
         context.insert(quest)
     }
 }
-
-#Preview {
-    InGameView()
-}

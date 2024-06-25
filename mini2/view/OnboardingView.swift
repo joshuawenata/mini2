@@ -10,6 +10,7 @@ import SpriteKit
 
 struct OnboardingView: View {
     let gameCenter = GameCenterManager.shared
+    @State var character: Character = Character()
     var body: some View {
         NavigationStack {
             ZStack {
@@ -27,7 +28,7 @@ struct OnboardingView: View {
                         .padding(.top, 50)
                         .padding(.bottom, 20)
                     
-                    NavigationLink(destination: InGameView(), label: {
+                    NavigationLink(destination: InGameView(character: $character), label: {
                         Image("startbutton")
                             .resizable()
                             .frame(width: 250, height: 70)
@@ -37,18 +38,6 @@ struct OnboardingView: View {
         }.onAppear(perform: {
             gameCenter.authenticatePlayer()
         })
-    }
-    
-    func presentGameScene() {
-        let scene = GameScene(size: UIScreen.main.bounds.size)
-        let gameView = SpriteView(scene: scene).ignoresSafeArea()
-
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return
-        }
-
-        windowScene.windows.first?.rootViewController?.present(
-            UIHostingController(rootView: gameView), animated: true)
     }
 }
 

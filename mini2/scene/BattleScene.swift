@@ -1,5 +1,6 @@
 import SpriteKit
 import SwiftUI
+import SwiftData
 
 struct PhysicsCategory {
     static let none: UInt32 = 0
@@ -40,6 +41,20 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     let gameCenter = GameCenterManager.shared
     var gameModel: GameModel!
     var anotherPlayer: SKSpriteNode!
+    
+//    @Environment(\.modelContext) private var modelWatch
+//    @Query private var character: [Character]
+    var character: Character
+    
+    init(size: CGSize, character: Character) {
+       self.character = character
+       super.init(size: size)
+     }
+
+     // ... rest of your BattleScene code
+     required init?(coder aDecoder: NSCoder) {
+       fatalError("init(coder:) is not supported")
+     }
     
     var joystickStickImageEnabled = true {
         didSet {

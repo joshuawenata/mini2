@@ -6,8 +6,10 @@ struct InGameView: View {
     @StateObject var varManager: VariableManager = VariableManager.shared
     @State private var isHidden: Bool = VariableManager.shared.interactionButtonHidden
     @State private var interactionButtonDestination: String = VariableManager.shared.touchBuilding
-    let gameCenter = GameCenterManager.shared
-    let scene = BattleScene(size: UIScreen.main.bounds.size)
+    let gameCenter = GameCenterManager.shared    
+    @Binding var character: Character
+
+    let scene = GameScene(size: UIScreen.main.bounds.size)
     @Environment (\.presentationMode) var presentationMode
     @Query var quest: [Quest]
     
@@ -16,13 +18,12 @@ struct InGameView: View {
         return questIDs.map { id in
             quest.first(where: { $0.id == id })?.completed ?? false
         }
-    }
-    
+    }    
     var body: some View {
         NavigationStack {
             ZStack {
                 if gameCenter.jungleView {
-                    SpriteView(scene: scene).ignoresSafeArea()
+                    SpriteView(scene: GameScene(size: UIScreen.main.bounds.size, character:character)).ignoresSafeArea()
                 }
 
                 VStack {
@@ -38,14 +39,14 @@ struct InGameView: View {
                                         .foregroundColor(.black)
                                 })
                                 
-                                NavigationLink(destination: CharacterView(), label: {
+                                NavigationLink(destination: CharacterView(character: $character), label: {
                                     Image("character")
                                         .resizable()
                                         .frame(width: 40, height: 40)
                                         .padding(.leading, 20)
                                 })
                                 
-                                NavigationLink(destination: BackpackView(), label: {
+                                NavigationLink(destination: BackpackView(character: $character), label: {
                                     Image("inventory")
                                         .resizable()
                                         .frame(width: 40, height: 40)
@@ -89,7 +90,7 @@ struct InGameView: View {
 }
 
 @ViewBuilder
-    private func destinationView() -> some View {
+private func destinationView(character: Binding<Character>) -> some View {
         switch VariableManager.shared.touchBuilding {
             case "blacksmith":
                 ShopView()

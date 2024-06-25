@@ -18,10 +18,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let battleNode = SKSpriteNode(color: .clear, size: CGSize(width: 300, height: 300))
     let interactionThresholdDistance: CGFloat = 200
     
-    let cameraNode = SKCameraNode()
+    var character: Character
+    
+    let cameraNode = SKCameraNode()   
+    init(size: CGSize, character: Character) {
+        self.character = character
+        super.init(size: size)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
+    //    func addNPC(_ position: CGPoint, category: UInt32, contact: UInt32, imageName: String) {
+    //        guard let characterImage = UIImage(named: imageName) else {
+    //            return
+    //        }
+    //
+    //        let texture = SKTexture(image: characterImage)
+    //        let character = SKSpriteNode(texture: texture)
+    //        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
+    //        character.physicsBody?.affectedByGravity = false
+    //        character.physicsBody?.allowsRotation = false
+    //        character.position = CGPoint(x: 200, y: 0)
+    //        character.setScale(0.3)
+    //        character.physicsBody?.categoryBitMask = category
+    //        character.physicsBody?.contactTestBitMask = contact
+    //        character.physicsBody?.isDynamic = false
+    //
+    //        addChild(character)
+    //
+    //        NPCNode.append(character)
+    //    }
     
     let gameCenter = GameCenterManager.shared
-    let battleScene = BattleScene(size: UIScreen.main.bounds.size)
     var hiddenTriggered = false
     
     var joystickStickImageEnabled = true {
@@ -203,7 +232,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         if gameCenter.battleView {
             let transition = SKTransition.flipHorizontal(withDuration: 1.0)
-            self.view?.presentScene(battleScene, transition: transition)
+            self.view?.presentScene(BattleScene(size: UIScreen.main.bounds.size,character: character), transition: transition)
         }
     }
     

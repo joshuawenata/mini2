@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BackpackView: View {
     @Environment(\.presentationMode) var presentationMode
-    let items = Array(0..<120)
-    let itemsPerRow = 6
+    private let itemsPerRow = 6
+    @Binding var character: Character
 
-    var rows: Int {
-        return (items.count + itemsPerRow - 1) / itemsPerRow
+    private var rows: Int {
+        return ( character.getTotalItem() + itemsPerRow - 1) / itemsPerRow
     }
 
     var body: some View {
@@ -50,24 +51,36 @@ struct BackpackView: View {
                 Spacer()
                 
                 ScrollView {
-                    VStack(spacing: 20) {
-                        ForEach(0..<rows, id: \.self) { row in
-                            HStack(spacing: 20) {
-                                ForEach(0..<itemsPerRow, id: \.self) { column in
-                                    let index = row * itemsPerRow + column
-                                    if index < items.count {
-                                        Rectangle()
-                                            .fill(Color.white)
-                                            .frame(width: 80, height: 80)
-                                            .cornerRadius(20)
-                                            .padding(.horizontal, 10)
-                                            .overlay(Text("\(index + 1)")) // To show the item number for clarity
+                    if character.getTotalItem() > 6 {
+                        VStack(alignment: .leading, spacing: 20) {
+                            ForEach(0..<rows, id: \.self) { row in
+                                HStack(spacing: 20) {
+                                    ForEach(0..<itemsPerRow, id: \.self) { column in
+                                        let index = row * itemsPerRow + column
+                                        if index < character.getTotalItem() {
+                                            if index < character.collectedWeapon.count {
+                                                Image(character.collectedWeapon[index].weaponImage)
+                                            } else {
+                                                let skillIndex = index - character.collectedWeapon.count
+                                                Image(character.collectedSkill[skillIndex].skillImage)
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
+                        .padding(.horizontal, 20)
+                    } else {
+                        HStack(spacing: 20) {
+                            ForEach(character.collectedWeapon) { weapon in
+                                Image(weapon.weaponImage)
+                            }
+                            ForEach(character.collectedSkill) { skill in
+                                Image(skill.skillImage)
+                            }
+                        }
+                        .padding(.horizontal, 20)
                     }
-                    .padding(.horizontal, 20)
                 }
                 
                 Spacer()
@@ -78,6 +91,6 @@ struct BackpackView: View {
     }
 }
 
-#Preview {
-    BackpackView()
-}
+//#Preview {
+//    BackpackView(character: T##Binding<Character>)
+//}
