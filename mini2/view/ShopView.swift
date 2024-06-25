@@ -84,14 +84,15 @@ struct ShopView: View {
                     Image(weapon.weaponImage)
                         .resizable(capInsets: EdgeInsets(), resizingMode: .stretch)
                         .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: 140, maxHeight: 80)
+                        .frame(width: 140, height: 80)
                         .scaledToFill()
                         .cornerRadius(15)
                         .offset(x: -5)
                     Text(weapon.weaponName)
                         .foregroundStyle(.white)
-                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
                         .padding(10)
+                    Spacer()
                     Image("sword")
                         .resizable()
                         .frame(maxWidth: 30, maxHeight: 30)
@@ -108,6 +109,7 @@ struct ShopView: View {
                         .resizable()
                         .frame(maxWidth: 40, maxHeight: 40)
                 }
+                .frame(width: 550)
             }
         }
         .confirmationDialog("", isPresented: $isShowingConfirmation) {
@@ -148,14 +150,15 @@ struct ShopView: View {
                     Image(skill.skillImage)
                         .resizable(capInsets: EdgeInsets(), resizingMode: .stretch)
                         .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: 140, maxHeight: 80)
+                        .frame(width: 140, height: 80)
                         .scaledToFill()
                         .cornerRadius(15)
                         .offset(x: -5)
                     Text(skill.skillName)
                         .foregroundStyle(.white)
-                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
                         .padding(10)
+                    Spacer()
                     Image("sword")
                         .resizable()
                         .frame(maxWidth: 30, maxHeight: 30)
@@ -172,6 +175,7 @@ struct ShopView: View {
                         .resizable()
                         .frame(maxWidth: 40, maxHeight: 40)
                 }
+                .frame(width: 550)
             }
         }
         .confirmationDialog("", isPresented: $isShowingSkillConfirmation) {

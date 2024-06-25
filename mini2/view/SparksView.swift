@@ -9,11 +9,39 @@ import SwiftUI
 
 struct SparksView: View {
     @Environment(\.presentationMode) var presentationMode
-    let itemsPerRow = 4
-    @State var isChoosingSkill = false
-    @State var newWeapon = WeaponModel(weaponName: "Sword", weaponPrice: 0, weaponAttack: 10, weaponImage: "sword 1",weaponJoystickImage: "sword_joystick")
-    @State var newSkill  = SkillModel(skillName: "Fireball", skillDamage: 15, skillCoolDown: 5, skillPrice: 0, skillImage: "fireball",skillJoystickImage: "fireballIcon")
     @Binding var character: Character
+    @State private var currentItem: Any?
+        
+    var weapons: [WeaponModel] {
+        character.getCollectedWeapons()
+    }
+    var skills: [SkillModel] {
+        character.getCollectedSkills()
+    }
+    
+    init(character: Binding<Character>) {
+        self._character = character
+        // Initialize currentItem based on collected items
+        if let firstWeapon = character.wrappedValue.getCollectedWeapons().first {
+            self._currentItem = State(initialValue: firstWeapon)
+        } else if let firstSkill = character.wrappedValue.getCollectedSkills().first {
+            self._currentItem = State(initialValue: firstSkill)
+        } else {
+            fatalError("No items collected")
+        }
+    }
+    
+    var updateCurrentItem: (Any) -> Void {
+        return { item in
+            if let weapon = item as? WeaponModel {
+                character.EquipedWeapon = weapon
+            } else if let skill = item as? SkillModel {
+                character.EquipedSkill = skill
+            }
+        }
+    }
+    
+    let itemsPerRow = 4
     
     var rows: Int {
         return (character.getTotalItem() + itemsPerRow - 1) / itemsPerRow
@@ -56,7 +84,7 @@ struct SparksView: View {
                     })
                 }
                 .padding(.bottom, 20)
-                .padding(.horizontal, 15)
+                .padding(.top, 20)
                 
                 Spacer()
                 
@@ -70,155 +98,126 @@ struct SparksView: View {
                                 .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
-                                .padding(.horizontal)
                                 .frame(height: 50)
                             
-                            Button {
-                                isChoosingSkill = false
-                            } label: {
-                                Image(character.EquipedWeapon.weaponImage)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50, height: 50)
-                                    .padding(.horizontal)
-                            }
+                            Image(character.EquipedWeapon.weaponImage)
+                                .frame(width: 50, height: 50)
+                                .cornerRadius(5)
+                                .padding(.horizontal)
                             
-                            Button {
-                                isChoosingSkill = true
-                            } label: {
-                                Image(character.EquipedSkill.skillImage)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50, height: 50)
-                            }
+                            Image(character.EquipedSkill.skillImage)
+                                .frame(width: 50, height: 50)
+                                .cornerRadius(5)
                         }
-                        .padding(.vertical, 20)
+                        .padding(.vertical, 30)
                         
                         Spacer()
                         
                         ScrollView {
-                            if character.getTotalItem() > 4 {
-                                VStack(alignment: .leading, spacing: 20) {
-                                    ForEach(0..<rows, id: \.self) { row in
-                                        HStack(spacing: 20) {
-                                            ForEach(0..<itemsPerRow, id: \.self) { column in
-                                                let index = row * itemsPerRow + column
-                                                if index < character.getTotalItem() {
-                                                    if index < character.collectedWeapon.count {
-                                                        Button {
-                                                            newWeapon = character.collectedWeapon[index]
-                                                        } label: {
-                                                            Image(character.collectedWeapon[index].weaponImage)
-                                                                .scaledToFit()
-                                                                .frame(width: 80, height: 80)
-                                                                .padding(.horizontal, 5)
-                                                        }
-                                                    } else {
-                                                        let skillIndex = index - character.collectedWeapon.count
-                                                        Button {
-                                                            newSkill = character.collectedSkill[skillIndex]
-                                                        } label: {
-                                                            Image(character.collectedSkill[skillIndex].skillImage)
-                                                                .scaledToFit()
-                                                                .frame(width: 80, height: 80)
-                                                                .padding(.horizontal, 5)
-                                                        }
-                                                    }
+                            VStack(spacing: 20) {
+                                ForEach(0..<rows, id: \.self) { row in
+                                    HStack(spacing: 20) {
+                                        ForEach(0..<itemsPerRow, id: \.self) { column in
+                                            let index = row * itemsPerRow + column
+                                            if index < character.collectedWeapon.count {
+                                                Button(action: {
+                                                    updateCurrentItem(character.collectedWeapon[index])
+                                                }) {
+                                                    Image(character.collectedWeapon[index].weaponImage)
+                                                        .frame(width: 80, height: 80)
+                                                        .padding(.horizontal, 5)
+                                                }
+                                            } else if index - character.collectedWeapon.count < character.collectedSkill.count {
+                                                Button(action: {
+                                                    updateCurrentItem(character.collectedSkill[index - character.collectedWeapon.count])
+                                                }) {
+                                                    Image(character.collectedSkill[index - character.collectedWeapon.count].skillImage)
+                                                        .frame(width: 80, height: 80)
+                                                        .padding(.horizontal, 5)
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                .padding(.horizontal, 20)
-                            } else {
-                                HStack(spacing: 20) {
-                                    ForEach(character.collectedWeapon) { weapon in
-                                        Button {
-                                            newWeapon = weapon
-                                        } label: {
-                                            Image(weapon.weaponImage)
-                                                .scaledToFit()
-                                                .frame(width: 80, height: 80)
-                                                .padding(.horizontal, 5)
-                                        }
-                                    }
-                                    ForEach(character.collectedSkill) { skill in
-                                        Button {
-                                            newSkill = skill
-                                        } label: {
-                                            Image(skill.skillImage)
-                                                .scaledToFit()
-                                                .frame(width: 80, height: 80)
-                                                .padding(.horizontal, 5)
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal, 20)
                             }
+                            .padding(.vertical, 10)
                         }
                         
                     }
+                    
+                    Spacer()
                     
                     VStack (alignment: .center) {
                         
                         HStack {
                             
-                            Text("sword")
-                                .font(.custom("AveriaSerifLibre-Regular", size: 20))
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.horizontal)
-                                .frame(height: 50)
+                            if let weapon = currentItem as? WeaponModel {
+                                Text(weapon.weaponName)
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal)
+                                    .frame(height: 50)
+                            } else if let skill = currentItem as? SkillModel {
+                                Text(skill.skillName)
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal)
+                                    .frame(height: 50)
+                            }
     
                             Image("dmg")
                                 .resizable()
                                 .frame(width: 50, height: 50)
                             
-                            Text("+\(isChoosingSkill ? newWeapon.weaponAttack : newSkill.skillDamage)")
-                                .font(.custom("AveriaSerifLibre-Regular", size: 30))
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .frame(height: 50)
+                            if let weapon = currentItem as? WeaponModel {
+                                Text("+"+String(weapon.weaponAttack))
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .frame(height: 50)
+                            } else if let skill = currentItem as? SkillModel {
+                                Text("+"+String(skill.skillDamage))
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .frame(height: 50)
+                            }
                             
                         }
                         
-                        if isChoosingSkill {
-                            Image(newSkill.skillJoystickImage)
+                        if let weapon = currentItem as? WeaponModel {
+                            Image(weapon.weaponImage)
                                 .resizable()
                                 .frame(width: 100, height: 100)
                                 .padding()
                                 .scaledToFit()
-                        } else {
-                            Image(newWeapon.weaponJoystickImage)
+                        } else if let skill = currentItem as? SkillModel {
+                            Image(skill.skillImage)
                                 .resizable()
                                 .frame(width: 100, height: 100)
                                 .padding()
                                 .scaledToFit()
                         }
                         
-                        
-                        
                         HStack {
-                            Button {
-                                if isChoosingSkill {
-                                    character.EquipedSkill = newSkill
-                                } else {
-                                    character.EquipedWeapon = newWeapon
-                                }
+                            
+                            ZStack(alignment: .center) {
                                 
-                            } label: {
-                                ZStack(alignment: .center) {
-                                    Image("button")
-                                        .resizable()
-                                        .frame(width: 140, height: 70)
-                                        .scaledToFit()
-                                        .padding(.leading, 10)
-                                    
-                                    Text("Equip")
-                                        .font(.custom("AveriaSerifLibre-Regular", size: 20))
-                                        .fontWeight(.bold)
-                                        .foregroundColor(.white)
-                                }
+                                Image("button")
+                                    .resizable()
+                                    .frame(width: 140, height: 70)
+                                    .scaledToFit()
+                                    .padding(.leading, 10)
+                                
+                                Text("Equip")
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 25))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.bottom, 10)
+                                    .padding(.leading, 10)
+                                
                             }
                             
                             ZStack(alignment: .center) {
@@ -230,13 +229,12 @@ struct SparksView: View {
                                 
                                 HStack {
                                     
-                                    Image(systemName: "arrowshape.up.fill")
+                                    Image("upgrade")
                                         .resizable()
-                                        .frame(width: 20, height: 40)
+                                        .frame(width: 30, height: 20)
                                         .scaledToFit()
-                                        .padding(.horizontal, 5)
                                     
-                                    Text("100")
+                                    Text("1000")
                                         .font(.custom("AveriaSerifLibre-Regular", size: 20))
                                         .fontWeight(.bold)
                                         .foregroundColor(.white)
@@ -247,6 +245,7 @@ struct SparksView: View {
                                         .scaledToFit()
                                     
                                 }
+                                .padding()
                                 
                             }
                             
@@ -264,7 +263,3 @@ struct SparksView: View {
         .navigationBarBackButtonHidden(true)
     }
 }
-
-//#Preview {
-//    SparksView()
-//}
