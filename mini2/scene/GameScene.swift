@@ -247,7 +247,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         hpbarouter.position = CGPoint(x: -1505, y: 50)
         self.hpBarOuter = hpbarouter
         
-        let playerName = SKLabelNode(text: "Aethel")
+        let playerName = SKLabelNode(text: gameCenter.localPlayer.displayName)
         playerName.position = CGPoint(x: -1500, y: 70)
         playerName.fontColor = .white
         playerName.fontSize = 18
