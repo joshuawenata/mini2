@@ -4,6 +4,8 @@ import SwiftUI
 import SwiftData
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
+//    @ObservedObject var audioManager = AudioManager()
+    
     var characterNode: SKSpriteNode!
     var first = true
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
@@ -211,8 +213,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode.addChild(moveJoystick)
         moveJoystick.position = CGPoint(x: -300, y: -100)
         
+        let footstepsSound = SKAudioNode(fileNamed: "footsteps.mp3")
+        
         moveJoystick.on(.begin) { [unowned self] _ in
             startWalkingAnimation(characterNode: characterNode)
+            addChild(footstepsSound)
         }
         
         moveJoystick.on(.move) { [unowned self] joystick in
@@ -234,6 +239,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         moveJoystick.on(.end) { [unowned self] _ in
             stopWalkingAnimation(characterNode: characterNode)
+            footstepsSound.removeFromParent()
         }
         
         joystickStickImageEnabled = true

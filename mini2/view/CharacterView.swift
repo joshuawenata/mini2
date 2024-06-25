@@ -10,6 +10,9 @@ import SwiftUI
 struct CharacterView: View {
     @Environment(\.presentationMode) var presentationMode
     
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     var body: some View {
         ZStack {
             Image("greenbg")
@@ -43,6 +46,12 @@ struct CharacterView: View {
                             .scaledToFit()
                             .padding(.horizontal, 20)
                             .scaledToFit()
+                    })
+                    .simultaneousGesture(TapGesture().onEnded {
+                        if let url = Bundle.main.url(forResource: "exit", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     })
                 }
                 //                .padding()

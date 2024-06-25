@@ -9,6 +9,10 @@ import SwiftUI
 
 struct ShopView: View {
     @Environment(\.presentationMode) var presentationMode
+    
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     var body: some View {
         ZStack {
             Image("greenbg")
@@ -38,6 +42,10 @@ struct ShopView: View {
 
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
+                        if let url = Bundle.main.url(forResource: "exit", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     }) {
                         Image("cancel")
                             .resizable()

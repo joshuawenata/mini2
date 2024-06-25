@@ -11,6 +11,7 @@ struct PhysicsCategory {
 }
 
 class BattleScene: SKScene, SKPhysicsContactDelegate {
+    @ObservedObject var audioManager = AudioManager()
     var characterNode: SKSpriteNode!
     var hpBarInner: SKSpriteNode?
     var hpBarOuter: SKSpriteNode?
@@ -67,21 +68,35 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         let bodyA = contact.bodyA
         let bodyB = contact.bodyB
         
+        let hit = SKAudioNode(fileNamed: "impact1.wav")
+        hit.autoplayLooped = false
+        let removeAction = SKAction.sequence([
+            SKAction.play(),
+            SKAction.wait(forDuration: 1.0), // Adjust duration to the length of your sound
+            SKAction.removeFromParent()
+        ])
+        
         // Check for melee hit
         if (bodyA.categoryBitMask == PhysicsCategory.meleeArea && bodyB.categoryBitMask == PhysicsCategory.enemy) ||
-           (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.meleeArea) {
+            (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.meleeArea) {
             print("Is Hit!!!")
             print("current HP: \(hpEnemy)")
             isHitMelee = true
+            
+            addChild(hit)
+            hit.run(removeAction)
         }
         
         // Check for projectile hit
         if (bodyA.categoryBitMask == PhysicsCategory.projectile && bodyB.categoryBitMask == PhysicsCategory.enemy) ||
-           (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.projectile) {
+            (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.projectile) {
             print("Is FIRE!!!")
             print("current HP: \(hpEnemy)")
             projectileNode?.removeFromParent()
             isHitProjectile = true
+            
+            addChild(hit)
+            hit.run(removeAction)
         }
         
         // If neither, not a hit
@@ -104,7 +119,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none)
         
         addDummyRobot(CGPoint(x: 200, y: 0), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
-
+        
         swordNode = addItem(CGPoint(x: -60, y: 0), imageName: "defaultSword")
         meleeAreaNode = addItem(CGPoint(x: -60, y: 0), imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
         rangeAreaNode = addItem(CGPoint(x: -60, y: 0), imageName: "rangeArea",isPhysicsBody: false, category: PhysicsCategory.rangeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
@@ -126,6 +141,9 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func configureJoysticks() {
+        
+        let footstepsSound = SKAudioNode(fileNamed: "footsteps.mp3")
+        
         addChild(cameraNode)
         camera = cameraNode
         
@@ -140,6 +158,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         moveJoystick.on(.begin) { [unowned self] _ in
             startWalkingAnimationBattle(characterNode: characterNode)
+            addChild(footstepsSound)
         }
         
         moveJoystick.on(.move) { [unowned self] joystick in
@@ -183,10 +202,12 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             hpBarInner.position.y += dy
             
             self.cameraNode.position = characterNode.position
+            
         }
         
         moveJoystick.on(.end) { [unowned self] _ in
             stopWalkingAnimationBattle(characterNode: characterNode)
+            footstepsSound.removeFromParent()
         }
         
         rotateJoystick.on(.begin) { [unowned self] _ in
@@ -250,10 +271,15 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             let rotateLeft = SKAction.rotate(byAngle: -60 * (.pi / 180), duration: 0.2)
             let rotateSequence = SKAction.sequence([rotateRight, rotateLeft])
             let repeatRotation = SKAction.repeat(rotateSequence, count: 1)
-
+            
             swordNode.run(repeatRotation)
             if isHitMelee {
                 hpEnemy -= 10
+            }
+            
+            if let url = Bundle.main.url(forResource: "swoosh1", withExtension: "mp3") {
+                audioManager.loadAudioFiles(urls: [url])
+                audioManager.play()
             }
         }
         
@@ -335,6 +361,11 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
                 hpEnemy -= 10
                 isHitProjectile = false
             }
+            
+            if let url = Bundle.main.url(forResource: "fireball", withExtension: "wav") {
+                audioManager.loadAudioFiles(urls: [url])
+                audioManager.play()
+            }
         }
         
         joystickStickImageEnabled = true
@@ -366,7 +397,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         guard let hpBarInnerTexture = UIImage(named: "hpbarinner") else {
             return
         }
-
+        
         let hpbartextureinner = SKTexture(image: hpBarInnerTexture)
         let hpbarinner = SKSpriteNode(texture: hpbartextureinner)
         hpbarinner.position = CGPoint(x: 0, y: 54)
@@ -490,10 +521,10 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func calculateProjectilePosition(degree: CGPoint, from applePosition: CGPoint, projectile: SKSpriteNode) -> CGPoint {
-
+        
         let x = Float(applePosition.x) + Float(degree.x)
         let y = Float(applePosition.y) + Float(degree.y)
-
+        
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
 }

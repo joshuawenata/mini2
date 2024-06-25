@@ -9,6 +9,10 @@ import SwiftUI
 import SpriteKit
 
 struct OnboardingView: View {
+    
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     let gameCenter = GameCenterManager.shared
     var body: some View {
         NavigationStack {
@@ -31,6 +35,12 @@ struct OnboardingView: View {
                         Image("startbutton")
                             .resizable()
                             .frame(width: 250, height: 70)
+                    })
+                    .simultaneousGesture(TapGesture().onEnded {
+                        if let url = Bundle.main.url(forResource: "bleep", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     })
                 }
             }

@@ -9,6 +9,10 @@ import SwiftUI
 
 struct BackpackView: View {
     @Environment(\.presentationMode) var presentationMode
+    
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     let items = Array(0..<120)
     let itemsPerRow = 6
 
@@ -35,6 +39,10 @@ struct BackpackView: View {
                     Spacer()
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
+                        if let url = Bundle.main.url(forResource: "exit", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     }) {
                         Image("cancel")
                             .resizable()

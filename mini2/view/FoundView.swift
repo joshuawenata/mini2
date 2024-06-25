@@ -9,6 +9,9 @@ import SwiftUI
 
 struct FoundView: View {
     
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     var items = Array(0...9)
     
     var body: some View {
