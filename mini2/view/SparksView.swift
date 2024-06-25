@@ -12,12 +12,43 @@ struct SparksView: View {
     
     @StateObject private var audioManager = AudioManager()
     @State private var audioFiles: [URL] = []
+
+    @Binding var character: Character
+    @State private var currentItem: Any?
+        
+    var weapons: [WeaponModel] {
+        character.getCollectedWeapons()
+    }
+    var skills: [SkillModel] {
+        character.getCollectedSkills()
+    }
     
-    let items = Array(0..<120)
+    init(character: Binding<Character>) {
+        self._character = character
+        // Initialize currentItem based on collected items
+        if let firstWeapon = character.wrappedValue.getCollectedWeapons().first {
+            self._currentItem = State(initialValue: firstWeapon)
+        } else if let firstSkill = character.wrappedValue.getCollectedSkills().first {
+            self._currentItem = State(initialValue: firstSkill)
+        } else {
+            fatalError("No items collected")
+        }
+    }
+    
+    var updateCurrentItem: (Any) -> Void {
+        return { item in
+            if let weapon = item as? WeaponModel {
+                character.EquipedWeapon = weapon
+            } else if let skill = item as? SkillModel {
+                character.EquipedSkill = skill
+            }
+        }
+    }
+    
     let itemsPerRow = 4
     
     var rows: Int {
-        return (items.count + itemsPerRow - 1) / itemsPerRow
+        return (character.getTotalItem() + itemsPerRow - 1) / itemsPerRow
     }
     
     var body: some View {
@@ -31,7 +62,7 @@ struct SparksView: View {
                 
                 HStack {
                     
-                    NavigationLink(destination: CharacterView(), label: {
+                    NavigationLink(destination: CharacterView(character: $character), label: {
                         Text("Character")
                             .font(.custom("AveriaSerifLibre-Regular", size: 30))
                             .fontWeight(.bold)
@@ -47,7 +78,7 @@ struct SparksView: View {
                         .scaledToFit()
                     Spacer()
                     
-                    NavigationLink(destination: InGameView(), label: {
+                    NavigationLink(destination: InGameView(character: $character), label: {
                         Image("cancel")
                             .resizable()
                             .frame(width: 40, height: 40)
@@ -63,7 +94,7 @@ struct SparksView: View {
                     })
                 }
                 .padding(.bottom, 20)
-                .padding(.horizontal, 15)
+                .padding(.top, 20)
                 
                 Spacer()
                 
@@ -77,21 +108,18 @@ struct SparksView: View {
                                 .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
-                                .padding(.horizontal)
                                 .frame(height: 50)
                             
-                            Rectangle()
-                                .fill(Color.white)
+                            Image(character.EquipedWeapon.weaponImage)
                                 .frame(width: 50, height: 50)
                                 .cornerRadius(5)
                                 .padding(.horizontal)
                             
-                            Rectangle()
-                                .fill(Color.white)
+                            Image(character.EquipedSkill.skillImage)
                                 .frame(width: 50, height: 50)
                                 .cornerRadius(5)
                         }
-                        .padding(.vertical, 20)
+                        .padding(.vertical, 30)
                         
                         Spacer()
                         
@@ -101,50 +129,87 @@ struct SparksView: View {
                                     HStack(spacing: 20) {
                                         ForEach(0..<itemsPerRow, id: \.self) { column in
                                             let index = row * itemsPerRow + column
-                                            if index < items.count {
-                                                Rectangle()
-                                                    .fill(Color.white)
-                                                    .frame(width: 80, height: 80)
-                                                    .cornerRadius(20)
-                                                    .padding(.horizontal, 5)
-                                                    .overlay(Text("\(index + 1)")) // To show the item number for clarity
+                                            if index < character.collectedWeapon.count {
+                                                Button(action: {
+                                                    updateCurrentItem(character.collectedWeapon[index])
+                                                }) {
+                                                    Image(character.collectedWeapon[index].weaponImage)
+                                                        .frame(width: 80, height: 80)
+                                                        .padding(.horizontal, 5)
+                                                }
+                                            } else if index - character.collectedWeapon.count < character.collectedSkill.count {
+                                                Button(action: {
+                                                    updateCurrentItem(character.collectedSkill[index - character.collectedWeapon.count])
+                                                }) {
+                                                    Image(character.collectedSkill[index - character.collectedWeapon.count].skillImage)
+                                                        .frame(width: 80, height: 80)
+                                                        .padding(.horizontal, 5)
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+                            .padding(.vertical, 10)
                         }
                         
                     }
+                    
+                    Spacer()
                     
                     VStack (alignment: .center) {
                         
                         HStack {
                             
-                            Text("Crystal Sword")
-                                .font(.custom("AveriaSerifLibre-Regular", size: 20))
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.horizontal)
-                                .frame(height: 50)
+                            if let weapon = currentItem as? WeaponModel {
+                                Text(weapon.weaponName)
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal)
+                                    .frame(height: 50)
+                            } else if let skill = currentItem as? SkillModel {
+                                Text(skill.skillName)
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal)
+                                    .frame(height: 50)
+                            }
     
                             Image("dmg")
                                 .resizable()
                                 .frame(width: 50, height: 50)
                             
-                            Text("+10")
-                                .font(.custom("AveriaSerifLibre-Regular", size: 30))
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .frame(height: 50)
+                            if let weapon = currentItem as? WeaponModel {
+                                Text("+"+String(weapon.weaponAttack))
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .frame(height: 50)
+                            } else if let skill = currentItem as? SkillModel {
+                                Text("+"+String(skill.skillDamage))
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .frame(height: 50)
+                            }
                             
                         }
                         
-                        Image("crystalSword")
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                            .scaledToFit()
-                        
+                        if let weapon = currentItem as? WeaponModel {
+                            Image(weapon.weaponImage)
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .padding()
+                                .scaledToFit()
+                        } else if let skill = currentItem as? SkillModel {
+                            Image(skill.skillImage)
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .padding()
+                                .scaledToFit()
+                        }
                         
                         HStack {
                             
@@ -157,9 +222,11 @@ struct SparksView: View {
                                     .padding(.leading, 10)
                                 
                                 Text("Equip")
-                                    .font(.custom("AveriaSerifLibre-Regular", size: 20))
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 25))
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
+                                    .padding(.bottom, 10)
+                                    .padding(.leading, 10)
                                 
                             }
                             
@@ -176,7 +243,6 @@ struct SparksView: View {
                                         .resizable()
                                         .frame(width: 30, height: 20)
                                         .scaledToFit()
-                                        .padding(.horizontal, 5)
                                     
                                     Text("1000")
                                         .font(.custom("AveriaSerifLibre-Regular", size: 20))
@@ -189,6 +255,7 @@ struct SparksView: View {
                                         .scaledToFit()
                                     
                                 }
+                                .padding()
                                 
                             }
                             
@@ -205,8 +272,4 @@ struct SparksView: View {
         }
         .navigationBarBackButtonHidden(true)
     }
-}
-
-#Preview {
-    SparksView()
 }

@@ -13,6 +13,7 @@ struct VictoryView: View {
     @State private var audioFiles: [URL] = []
     
     var items = Array(0...9)
+    @Binding var character: Character
     
     var body: some View {
         NavigationStack {
@@ -46,7 +47,7 @@ struct VictoryView: View {
                         .frame(width: 260, height: 50)
                         .padding(.vertical, 20)
                         
-                        NavigationLink(destination: InGameView(), label: {
+                        NavigationLink(destination: InGameView(character: $character), label: {
                             ZStack {
                                 Image("button")
                                     .resizable()
@@ -78,8 +79,4 @@ struct VictoryView: View {
 
         }
     }
-}
-
-#Preview {
-    VictoryView()
 }

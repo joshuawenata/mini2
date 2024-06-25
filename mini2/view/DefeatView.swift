@@ -14,6 +14,8 @@ struct DefeatView: View {
     
     var items = Array(0...9)
     
+    @Binding var character: Character
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -45,7 +47,7 @@ struct DefeatView: View {
                         .frame(width: 260, height: 50)
                         .padding(20)
                         
-                        NavigationLink(destination: InGameView(), label: {
+                        NavigationLink(destination: InGameView(character: $character), label: {
                             ZStack {
                                 Image("button")
                                     .resizable()
@@ -77,8 +79,4 @@ struct DefeatView: View {
 
         }
     }
-}
-
-#Preview {
-    DefeatView()
 }

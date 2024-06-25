@@ -1,5 +1,6 @@
 import SpriteKit
 import SwiftUI
+import SwiftData
 
 struct PhysicsCategory {
     static let none: UInt32 = 0
@@ -32,6 +33,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var isHitMelee = false
     var isHitProjectile = false
     var ghostAdded = false
+    var playerName: SKLabelNode?
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
     
@@ -40,6 +42,20 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     let gameCenter = GameCenterManager.shared
     var gameModel: GameModel!
     var anotherPlayer: SKSpriteNode!
+    
+//    @Environment(\.modelContext) private var modelWatch
+//    @Query private var character: [Character]
+    var character: Character
+    
+    init(size: CGSize, character: Character) {
+       self.character = character
+       super.init(size: size)
+     }
+
+     // ... rest of your BattleScene code
+     required init?(coder aDecoder: NSCoder) {
+       fatalError("init(coder:) is not supported")
+     }
     
     var joystickStickImageEnabled = true {
         didSet {
@@ -64,6 +80,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+        
         counterDidBegin += 1
         let bodyA = contact.bodyA
         let bodyB = contact.bodyB
@@ -174,6 +191,10 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
                 return
             }
             
+            guard let playerName = self.playerName else {
+                return
+            }
+            
             let pVelocity = joystick.velocity
             let speed = CGFloat(0.12)
             
@@ -200,6 +221,9 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             
             hpBarInner.position.x += dx
             hpBarInner.position.y += dy
+            
+            playerName.position.x += dx
+            playerName.position.y += dy
             
             self.cameraNode.position = characterNode.position
             
@@ -275,6 +299,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             swordNode.run(repeatRotation)
             if isHitMelee {
                 hpEnemy -= 10
+                startGetHitAnimation(characterNode: self.dummyRobot)
             }
             
             if let url = Bundle.main.url(forResource: "swoosh1", withExtension: "mp3") {
@@ -360,6 +385,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
                 print("Mengurangi Health!")
                 hpEnemy -= 10
                 isHitProjectile = false
+                startGetHitAnimation(characterNode: self.dummyRobot)
             }
             
             if let url = Bundle.main.url(forResource: "fireball", withExtension: "wav") {
@@ -406,8 +432,16 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         let hpbarouter = SKSpriteNode(texture: hpbartextureouter)
         hpbarouter.position = CGPoint(x: -5, y: 50)
         
+        let playerName = SKLabelNode(text: "Aethel")
+        playerName.position = CGPoint(x: 0, y: 70)
+        playerName.fontColor = .white
+        playerName.fontSize = 18
+        playerName.fontName = "AveriaSerifLibre-Regular"
+        self.playerName = playerName
+        
         addChild(hpbarinner)
         addChild(hpbarouter)
+        addChild(playerName)
         
         hpBarInner = hpbarinner
         hpBarOuter = hpbarouter
@@ -433,7 +467,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(character)
         
-        dummyRobot = character
+        self.dummyRobot = character
     }
     
     func addItem(_ position: CGPoint, imageName: String, isPhysicsBody: Bool = false, category: UInt32 = 0, contact: UInt32 = 0, collision: UInt32 = 0) -> SKSpriteNode {

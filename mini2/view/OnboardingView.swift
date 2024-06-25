@@ -1,12 +1,5 @@
-//
-//  OnboardingView.swift
-//  mini2
-//
-//  Created by Timothy Andrian on 06/06/24.
-//
-
 import SwiftUI
-import SpriteKit
+import AVKit
 
 struct OnboardingView: View {
     
@@ -14,27 +7,25 @@ struct OnboardingView: View {
     @State private var audioFiles: [URL] = []
     
     let gameCenter = GameCenterManager.shared
+    @State var character: Character = Character()
+    @State private var currentFrame: Int = 0
+    private let totalFrames = 45
+    @State private var videoFinished = false
+
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("bgLandingPage")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                
-                VStack {
-                    Text("Fall of Aethel")
-                .font(.custom("JollyLodger", size: 80))
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(height: 50)
-                        .padding(.top, 50)
-                        .padding(.bottom, 20)
-                    
-                    NavigationLink(destination: InGameView(), label: {
-                        Image("startbutton")
+                if !videoFinished {
+                    VideoPlayerView(onVideoFinished: {
+                        videoFinished = true
+                    })
+                } else {
+                    NavigationLink(destination: InGameView(character: $character), label: {
+                        Image("onboarding_\(String(format: "%05d", currentFrame))")
                             .resizable()
-                            .frame(width: 250, height: 70)
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .edgesIgnoringSafeArea(.all)
                     })
                     .simultaneousGesture(TapGesture().onEnded {
                         if let url = Bundle.main.url(forResource: "bleep", withExtension: "wav") {
@@ -44,21 +35,51 @@ struct OnboardingView: View {
                     })
                 }
             }
-        }.onAppear(perform: {
+        }
+        .onAppear {
             gameCenter.authenticatePlayer()
-        })
+            animateFrames()
+        }
     }
     
-    func presentGameScene() {
-        let scene = GameScene(size: UIScreen.main.bounds.size)
-        let gameView = SpriteView(scene: scene).ignoresSafeArea()
-
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return
+    private func animateFrames() {
+        // Create a repeating timer to advance frames
+        Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { timer in
+            self.currentFrame = (self.currentFrame + 1) % self.totalFrames
         }
-
-        windowScene.windows.first?.rootViewController?.present(
-            UIHostingController(rootView: gameView), animated: true)
     }
 }
 
+struct VideoPlayerView: View {
+    let onVideoFinished: () -> Void
+    @State private var player: AVPlayer?
+
+    init(onVideoFinished: @escaping () -> Void) {
+        self.onVideoFinished = onVideoFinished
+    }
+
+    var body: some View {
+        Group {
+            if let player = player {
+                VideoPlayer(player: player)
+                    .onAppear {
+                        player.play()
+                        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: .main) { _ in
+                            onVideoFinished()
+                        }
+                    }
+            } else {
+                Text("Loading video...")
+            }
+        }
+        .edgesIgnoringSafeArea(.all)
+        .onAppear {
+            if player == nil, let url = Bundle.main.url(forResource: "intro", withExtension: "mp4") {
+                player = AVPlayer(url: url)
+                print("Video file found.")
+            } else {
+                print("Video file not found or player already initialized.")
+            }
+        }
+    }
+}

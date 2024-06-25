@@ -11,6 +11,8 @@ import SwiftData
 struct QuestFinishedView: View {
     @Query var allQuests: [Quest]
     
+    @Binding var character:Character
+    
     var id: Int
     var items = Array(0...9)
     
@@ -49,7 +51,7 @@ struct QuestFinishedView: View {
                         .frame(width: 260, height: 50)
                         .padding(.vertical, 20)
                         
-                        NavigationLink(destination: InGameView(), label: {
+                        NavigationLink(destination: InGameView(character: $character), label: {
                             ZStack {
                                 Image("button")
                                     .resizable()
@@ -84,8 +86,4 @@ struct QuestFinishedView: View {
         .navigationBarBackButtonHidden(true)
     }
     
-}
-
-#Preview {
-    QuestFinishedView(id: 1)
 }

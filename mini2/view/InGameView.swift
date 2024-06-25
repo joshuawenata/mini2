@@ -6,9 +6,9 @@ struct InGameView: View {
     @StateObject var varManager: VariableManager = VariableManager.shared
     @State private var isHidden: Bool = VariableManager.shared.interactionButtonHidden
     @State private var interactionButtonDestination: String = VariableManager.shared.touchBuilding
-    let gameCenter = GameCenterManager.shared
-    //change to battlescene for testing
-    let scene = GameScene(size: UIScreen.main.bounds.size)
+    let gameCenter = GameCenterManager.shared    
+    @Binding var character: Character
+
     @Environment (\.presentationMode) var presentationMode
     @Query var quest: [Quest]
     
@@ -20,13 +20,12 @@ struct InGameView: View {
         return questIDs.map { id in
             quest.first(where: { $0.id == id })?.completed ?? false
         }
-    }
-    
+    }    
     var body: some View {
         NavigationStack {
             ZStack {
                 if gameCenter.jungleView {
-                    SpriteView(scene: scene).ignoresSafeArea()
+                    SpriteView(scene: GameScene(size: UIScreen.main.bounds.size, character:character)).ignoresSafeArea()
                 }
                 
                 VStack {
@@ -48,7 +47,7 @@ struct InGameView: View {
                                     
                                 })
                                 
-                                NavigationLink(destination: CharacterView(), label: {
+                                NavigationLink(destination: CharacterView(character: $character), label: {
                                     Image("character")
                                         .resizable()
                                         .frame(width: 40, height: 40)
@@ -59,7 +58,7 @@ struct InGameView: View {
                                     audioManager.play()
                                 })
                                 
-                                NavigationLink(destination: BackpackView(), label: {
+                                NavigationLink(destination: BackpackView(character: $character), label: {
                                     Image("inventory")
                                         .resizable()
                                         .frame(width: 40, height: 40)
@@ -89,7 +88,7 @@ struct InGameView: View {
                 }
                 .padding(.top, 20)
                 
-                NavigationLink(destination: destinationView(), label: {
+                NavigationLink(destination: destinationView(character: $character), label: {
                     Image(imageButton())
                         .resizable()
                         .frame(width: 105, height: 35)
@@ -120,30 +119,33 @@ struct InGameView: View {
 }
 
 @ViewBuilder
-private func destinationView() -> some View {
-    switch VariableManager.shared.touchBuilding {
-    case "blacksmith":
-        ShopView()
-    case "dinerBuilding":
-        ShopView()
-    case "questBuilding":
-        QuestView()
-    case "horse":
-        QuestFinishedView(id: 1)
-    case "apple":
-        QuestFinishedView(id: 2)
-    case "cat":
-        QuestFinishedView(id: 3)
-    case "npcFish":
-        QuestFinishedView(id: 4)
-    case "npcFlower":
-        QuestFinishedView(id: 5)
-    case "npcHouse":
-        QuestFinishedView(id: 6)
-    case "sparks", "chest_opened":
-        FoundView()
-    default:
-        EmptyView()
+
+private func destinationView(character: Binding<Character>) -> some View {
+        switch VariableManager.shared.touchBuilding {
+            case "blacksmith":
+                ShopView(character: character)
+            case "dinerBuilding":
+                ShopView(character: character)
+            case "questBuilding":
+                QuestView()
+            case "horse":
+            QuestFinishedView(character: character, id: 1)
+            case "apple":
+                QuestFinishedView(character: character, id: 2)
+            case "cat":
+                QuestFinishedView(character: character, id: 3)
+            case "npcFish":
+                QuestFinishedView(character: character, id: 4)
+            case "npcFlower":
+                QuestFinishedView(character: character, id: 5)
+            case "npcHouse":
+                QuestFinishedView(character: character, id: 6)
+            case "sparks", "chest_opened":
+                FoundView(character: character)
+            default:
+                EmptyView()
+        }
+>>>>>>> main
     }
 }
 

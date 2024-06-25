@@ -7,6 +7,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //    @ObservedObject var audioManager = AudioManager()
     
     var characterNode: SKSpriteNode!
+    var playerName: SKLabelNode!
+    var hpBarInner: SKSpriteNode!
+    var hpBarOuter: SKSpriteNode!
     var first = true
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
     
@@ -17,10 +20,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let battleNode = SKSpriteNode(color: .clear, size: CGSize(width: 300, height: 300))
     let interactionThresholdDistance: CGFloat = 200
     
+    var character: Character
+    
     let cameraNode = SKCameraNode()
+    init(size: CGSize, character: Character) {
+        self.character = character
+        super.init(size: size)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
     
     let gameCenter = GameCenterManager.shared
-    let battleScene = BattleScene(size: UIScreen.main.bounds.size)
     var hiddenTriggered = false
     
     var joystickStickImageEnabled = true {
@@ -105,16 +117,156 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
+        addBackground()
+        addCharacter(CGPoint(x: frame.midX, y: frame.midY))
+        configureJoysticks()
+        addBuildings()
+    }
+    
+    func random(min: CGFloat, max: CGFloat) -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt32.max) * (max - min) + min
+    }
+    
+    func addRandomSparks() {
+        let sparksPosition = CGPoint(x: random(min: -1500, max: -500), y: random(min: -500, max: 500))
+        let sparks = addBuilding(at: sparksPosition, imageName: "sparks")
+        
+        addChild(sparks)
+    }
+    
+    func addRandomChest() {
+        let chestPosition = CGPoint(x: random(min: -1800, max: -1200), y: random(min: 100, max: 200))
+        let chest = addBuilding(at: chestPosition, imageName: "chest_opened")
+        
+        addChild(chest)
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if gameCenter.battleView {
+            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
+            self.view?.presentScene(BattleScene(size: UIScreen.main.bounds.size,character: character), transition: transition)
+        }
+    }
+    
+    func configureJoysticks() {
+        addChild(cameraNode)
+        camera = cameraNode
+        
+        cameraNode.addChild(moveJoystick)
+        moveJoystick.position = CGPoint(x: -300, y: -100)
+        
+        moveJoystick.on(.begin) { [unowned self] _ in
+            startWalkingAnimation(characterNode: characterNode)
+        }
+        
+        moveJoystick.on(.move) { [unowned self] joystick in
+            guard let characterNode = self.characterNode else {
+                return
+            }
+            
+            guard let hpBarInner = self.hpBarInner else {
+                return
+            }
+            
+            guard let hpBarOuter = self.hpBarOuter else {
+                return
+            }
+            
+            guard let playerName = self.playerName else {
+                return
+            }
+            
+            let pVelocity = joystick.velocity
+            let speed = CGFloat(0.12)
+            
+            let dx = pVelocity.x * speed
+            let dy = pVelocity.y * speed
+            
+            characterNode.position.x += dx
+            characterNode.position.y += dy
+            
+            hpBarInner.position.x = characterNode.position.x
+            hpBarInner.position.y = characterNode.position.y + 54
+        
+            hpBarOuter.position.x = characterNode.position.x - 5
+            hpBarOuter.position.y = characterNode.position.y + 50
+        
+            playerName.position.x = characterNode.position.x
+            playerName.position.y = characterNode.position.y + 70
+            
+            self.cameraNode.position = characterNode.position
+        }
+        
+        moveJoystick.on(.end) { [unowned self] _ in
+            stopWalkingAnimation(characterNode: characterNode)
+        }
+        
+        joystickStickImageEnabled = true
+        joystickSubstrateImageEnabled = true
+        
+        view?.isMultipleTouchEnabled = true
+    }
+    
+    func addBackground() {
         self.backgroundColor = .clear
         let background = SKSpriteNode(imageNamed: "mainIsland")
         background.position = CGPoint(x: size.width / 2, y: size.height / 2)
         background.zPosition = -1
         addChild(background)
+    }
+    
+    func addCharacter(_ position: CGPoint) {
+        guard let characterImage = UIImage(named: "charaIdle") else {
+            return
+        }
         
-        addCharacter(CGPoint(x: frame.midX, y: frame.midY))
+        let texture = SKTexture(image: characterImage)
+        let character = SKSpriteNode(texture: texture)
+        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
+        character.physicsBody?.affectedByGravity = false
+        character.position = CGPoint(x: -1500, y: 0)
+        character.physicsBody?.allowsRotation = false
+        character.setScale(0.3)
+        character.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue
+        character.physicsBody?.collisionBitMask = CollisionCategory.building.rawValue
+        character.physicsBody?.contactTestBitMask = CollisionCategory.building.rawValue
+        character.physicsBody?.isDynamic = true
         
-        configureJoysticks()
+        guard let hpBarOuterImage = UIImage(named: "hpbarouter") else {
+            return
+        }
+        guard let hpBarInnerTexture = UIImage(named: "hpbarinner") else {
+            return
+        }
         
+        let hpbartextureinner = SKTexture(image: hpBarInnerTexture)
+        let hpbarinner = SKSpriteNode(texture: hpbartextureinner)
+        hpbarinner.position = CGPoint(x: -1500, y: 54)
+        self.hpBarInner = hpbarinner
+        
+        let hpbartextureouter = SKTexture(image: hpBarOuterImage)
+        let hpbarouter = SKSpriteNode(texture: hpbartextureouter)
+        hpbarouter.position = CGPoint(x: -1505, y: 50)
+        self.hpBarOuter = hpbarouter
+        
+        let playerName = SKLabelNode(text: "Aethel")
+        playerName.position = CGPoint(x: -1500, y: 70)
+        playerName.fontColor = .white
+        playerName.fontSize = 18
+        playerName.fontName = "AveriaSerifLibre-Regular"
+        self.playerName = playerName
+        
+        addChild(hpbarinner)
+        addChild(hpbarouter)
+        addChild(playerName)
+        
+        addChild(character)
+        characterNode = character
+                
+        startIdleAnimation(characterNode: characterNode)
+    }
+    
+    func addBuildings() {
         //top
         addChild(addBuilding(at: CGPoint(x: -1700, y: 300), imageName: "statueBuilding"))
         addChild(addBuilding(at: CGPoint(x: -1500, y: 300), imageName: "battleBuilding"))
@@ -122,7 +274,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //left
         let river = addBuildingWithoutPhysics(at: CGPoint(x: -3300, y: 1000), imageName: "river1")
-        river.setScale(0.75)
+        river.setScale(0.5)
         addChild(river)
         startRiverAnimation(riverNode: river)
         
@@ -138,7 +290,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //middle
         addChild(addBuilding(at: CGPoint(x: -1750, y: -100), imageName: "questBuilding"))
         
-        let blacksmith = addBuilding(at: CGPoint(x: -1500, y: -100), imageName: "blacksmith_00000")
+        let blacksmith = addBuilding(at: CGPoint(x: -1500, y: -100), imageName: "blacksmith_00000", isRectangle: true)
         blacksmith.setScale(0.35)
         addChild(blacksmith)
         startBlacksmithAnimation(blacksmithNode: blacksmith)
@@ -181,96 +333,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.run(repeatActionChest)
     }
     
-    func random(min: CGFloat, max: CGFloat) -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt32.max) * (max - min) + min
-    }
-    
-    func addRandomSparks() {
-        let sparksPosition = CGPoint(x: random(min: -1500, max: -500), y: random(min: -500, max: 500))
-        let sparks = addBuilding(at: sparksPosition, imageName: "sparks")
-        
-        addChild(sparks)
-    }
-    
-    func addRandomChest() {
-        let chestPosition = CGPoint(x: random(min: -1800, max: -1200), y: random(min: 100, max: 200))
-        let chest = addBuilding(at: chestPosition, imageName: "chest_opened")
-        
-        addChild(chest)
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        if gameCenter.battleView {
-            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
-            self.view?.presentScene(battleScene, transition: transition)
-        }
-    }
-    
-    func configureJoysticks() {
-        addChild(cameraNode)
-        camera = cameraNode
-        
-        cameraNode.addChild(moveJoystick)
-        moveJoystick.position = CGPoint(x: -300, y: -100)
-        
-        let footstepsSound = SKAudioNode(fileNamed: "footsteps.mp3")
-        
-        moveJoystick.on(.begin) { [unowned self] _ in
-            startWalkingAnimation(characterNode: characterNode)
-            addChild(footstepsSound)
-        }
-        
-        moveJoystick.on(.move) { [unowned self] joystick in
-            guard let characterNode = self.characterNode else {
-                return
-            }
-            
-            let pVelocity = joystick.velocity
-            let speed = CGFloat(0.12)
-            
-            let dx = pVelocity.x * speed
-            let dy = pVelocity.y * speed
-            
-            characterNode.position.x += dx
-            characterNode.position.y += dy
-            
-            self.cameraNode.position = characterNode.position
-        }
-        
-        moveJoystick.on(.end) { [unowned self] _ in
-            stopWalkingAnimation(characterNode: characterNode)
-            footstepsSound.removeFromParent()
-        }
-        
-        joystickStickImageEnabled = true
-        joystickSubstrateImageEnabled = true
-        
-        view?.isMultipleTouchEnabled = true
-    }
-    
-    func addCharacter(_ position: CGPoint) {
-        guard let characterImage = UIImage(named: "charaIdle") else {
-            return
-        }
-        
-        let texture = SKTexture(image: characterImage)
-        let character = SKSpriteNode(texture: texture)
-        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
-        character.physicsBody?.affectedByGravity = false
-        character.position = CGPoint(x: -1500, y: 0)
-        character.physicsBody?.allowsRotation = false
-        character.setScale(0.3)
-        character.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue
-        character.physicsBody?.collisionBitMask = CollisionCategory.building.rawValue
-        character.physicsBody?.contactTestBitMask = CollisionCategory.building.rawValue
-        character.physicsBody?.isDynamic = true
-        
-        addChild(character)
-        characterNode = character
-                
-        startIdleAnimation(characterNode: characterNode)
-    }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self)
