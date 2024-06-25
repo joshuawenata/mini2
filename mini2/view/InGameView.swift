@@ -9,7 +9,6 @@ struct InGameView: View {
     let gameCenter = GameCenterManager.shared    
     @Binding var character: Character
 
-    let scene = GameScene(size: UIScreen.main.bounds.size)
     @Environment (\.presentationMode) var presentationMode
     @Query var quest: [Quest]
     
@@ -68,7 +67,7 @@ struct InGameView: View {
                 }
                 .padding(.top, 20)
                 
-                NavigationLink(destination: destinationView(), label: {
+                NavigationLink(destination: destinationView(character: $character), label: {
                     Image(imageButton())
                         .resizable()
                         .frame(width: 105, height: 35)
@@ -93,25 +92,25 @@ struct InGameView: View {
 private func destinationView(character: Binding<Character>) -> some View {
         switch VariableManager.shared.touchBuilding {
             case "blacksmith":
-                ShopView()
+                ShopView(character: character)
             case "dinerBuilding":
-                ShopView()
+                ShopView(character: character)
             case "questBuilding":
                 QuestView()
             case "horse":
-                QuestFinishedView(id: 1)
+            QuestFinishedView(character: character, id: 1)
             case "apple":
-                QuestFinishedView(id: 2)
+                QuestFinishedView(character: character, id: 2)
             case "cat":
-                QuestFinishedView(id: 3)
+                QuestFinishedView(character: character, id: 3)
             case "npcFish":
-                QuestFinishedView(id: 4)
+                QuestFinishedView(character: character, id: 4)
             case "npcFlower":
-                QuestFinishedView(id: 5)
+                QuestFinishedView(character: character, id: 5)
             case "npcHouse":
-                QuestFinishedView(id: 6)
+                QuestFinishedView(character: character, id: 6)
             case "sparks", "chest_opened":
-                FoundView()
+                FoundView(character: character)
             default:
                 EmptyView()
         }

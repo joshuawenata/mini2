@@ -132,7 +132,3 @@ struct CharacterView: View {
         .navigationBarBackButtonHidden(true)
     }
 }
-
-//#Preview {
-//    CharacterView()
-//}
