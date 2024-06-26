@@ -44,15 +44,11 @@ func startGetHitAnimation(characterNode: SKSpriteNode?) {
     characterNode.run(repeatGetHit, withKey: "getHit")
 }
 
-func startGhostAnimation(ghostNode: SKSpriteNode?) {
-    guard let ghostNode = ghostNode else { return }
-    
-    var ghostTextures: [SKTexture] = []
     func startGhostAnimation(ghostNode: SKSpriteNode?) {
         guard let ghostNode = ghostNode else { return }
         
         var ghostTextures: [SKTexture] = []
-
+        
         for i in 0...29 {
             let textureName = String(format: "death_%05d", i)
             ghostTextures.append(SKTexture(imageNamed: textureName))
@@ -91,4 +87,3 @@ func startGhostAnimation(ghostNode: SKSpriteNode?) {
         return playerName
     }
 }
-
