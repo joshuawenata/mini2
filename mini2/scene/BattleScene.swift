@@ -57,7 +57,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var anotherPlayerProjectileNode: SKSpriteNode!
     var anotherPlayerSwordNode: SKSpriteNode!
     var anotherPlayerRange: SKSpriteNode!
-    let footstepsSound = SKAudioNode(fileNamed: "footsteps.mp3")
     
 //    @Environment(\.modelContext) private var modelWatch
 //    @Query private var character: [Character]
@@ -105,7 +104,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         hit.autoplayLooped = false
         let removeAction = SKAction.sequence([
             SKAction.play(),
-            SKAction.wait(forDuration: 1.0), // Adjust duration to the length of your sound
+            SKAction.wait(forDuration: 1.0),
             SKAction.removeFromParent()
         ])
         
@@ -130,29 +129,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             
             addChild(hit)
             hit.run(removeAction)
-        }
-        
-        // Check for melee hit
-        if (bodyA.categoryBitMask == PhysicsCategory.meleeArea && bodyB.categoryBitMask == PhysicsCategory.otherPlayer) ||
-           (bodyA.categoryBitMask == PhysicsCategory.otherPlayer && bodyB.categoryBitMask == PhysicsCategory.meleeArea) {
-            print("Is Hit!!!")
-            print("current HP: \(hpEnemy)")
-        }
-        
-        // Check for projectile hit
-        if (bodyA.categoryBitMask == PhysicsCategory.projectile && bodyB.categoryBitMask == PhysicsCategory.otherPlayer) ||
-           (bodyA.categoryBitMask == PhysicsCategory.otherPlayer && bodyB.categoryBitMask == PhysicsCategory.projectile) {
-            print("Is FIRE!!!")
-            print("current HP: \(hpEnemy)")
-            projectileNode?.removeFromParent()
-            anotherProjectileNode?.removeFromParent()
-        }
-        
-        // If neither, not a hit
-        if !(isHitMelee || isHitProjectile) {
-            print("Is NOT Hit!!!")
-            isHitMelee = false
-            isHitProjectile = false
         }
     }
     

@@ -11,8 +11,11 @@ import SpriteKit
 extension BattleScene {
     
     func moveJoystickConfig() {
+        let footstepSound = SKAudioNode(fileNamed: "footsteps.mp3")
+        
         moveJoystick.on(.begin) { [unowned self] _ in
             startWalkingAnimationBattle(characterNode: characterNode)
+            addChild(footstepSound)
         }
         
         moveJoystick.on(.move) { [unowned self] joystick in
@@ -47,18 +50,19 @@ extension BattleScene {
             moveNode(node: rangeAreaNode, label: nil, dx: dx, dy: dy)
             
             moveNode(node: slashNode, label: nil, dx: dx, dy: dy)
-           
+            
             moveNode(node: hpBarOuter, label: nil, dx: dx, dy: dy)
             
             moveNode(node: hpBarInner, label: nil, dx: dx, dy: dy)
             
             moveNode(node: nil, label: playerName, dx: dx, dy: dy)
-                        
+            
             self.cameraNode.position = characterNode.position
         }
         
         moveJoystick.on(.end) { [unowned self] _ in
             stopWalkingAnimationBattle(characterNode: characterNode)
+            footstepSound.removeFromParent()
         }
     }
     
@@ -73,6 +77,8 @@ extension BattleScene {
     }
     
     func rotateJoystickConfig() {
+        let swordSound = SKAudioNode(fileNamed: "swoosh1.mp3")
+        
         rotateJoystick.on(.begin) { [unowned self] _ in
             guard let meleeAreaNode = self.meleeAreaNode else {
                 return
@@ -87,6 +93,8 @@ extension BattleScene {
             
             slashNode.position.x = meleeAreaNode.position.x
             slashNode.position.y = meleeAreaNode.position.y
+            
+            
         }
         
         rotateJoystick.on(.move) { [unowned self] joystick in
@@ -134,15 +142,27 @@ extension BattleScene {
             let rotateLeft = SKAction.rotate(byAngle: -60 * (.pi / 180), duration: 0.2)
             let rotateSequence = SKAction.sequence([rotateRight, rotateLeft])
             let repeatRotation = SKAction.repeat(rotateSequence, count: 1)
-
+            
             swordNode.run(repeatRotation)
             if isHitMelee {
                 hpEnemy -= 10
+            }
+            
+            if let url = Bundle.main.url(forResource: "swoosh1", withExtension: "mp3") {
+                audioManager.loadAudioFiles(urls: [url])
+                audioManager.play()
             }
         }
     }
     
     func skillJoystickConfig() {
+//        let fireballSound = SKAudioNode(fileNamed: "fireball.wav")
+//        let removeAction = SKAction.sequence([
+//            SKAction.play(),
+//            SKAction.wait(forDuration: 1.0),
+//            SKAction.removeFromParent()
+//        ])
+        
         skillJoystick.on(.begin) { [unowned self] _ in
             guard let rangeAreaNode = self.rangeAreaNode else {
                 return
@@ -201,7 +221,7 @@ extension BattleScene {
             self.angle = CGFloat(joystick.angular)
             
             projectile = projectileMove(angle: self.angle, projectile: projectile)
-
+            
             self.isOtherHit = false
             
             addChild(projectile)
@@ -216,6 +236,11 @@ extension BattleScene {
                 hpEnemy -= 10
                 isHitProjectile = false
             }
+            
+//            if let url = Bundle.main.url(forResource: "fireball", withExtension: "wav") {
+//                audioManager.loadAudioFiles(urls: [url])
+//                audioManager.play()
+//            }
         }
     }
     
