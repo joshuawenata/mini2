@@ -11,6 +11,14 @@ import GameKit
 struct GameModel: Codable {
     var player: CGPoint
     var name: String
+    var hpBar: [CGPoint]
+    var labelName: CGPoint
+    var sword: CGPoint
+    var melee: CGPoint
+    var slash: CGPoint
+    var rangeArea: CGPoint
+    var angleProjectile: CGFloat
+    var isotherHit: Bool
     
     func encode() -> Data? {
         return try? JSONEncoder().encode(self)

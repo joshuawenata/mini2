@@ -13,6 +13,9 @@ struct QuestView: View {
     @Environment(\.presentationMode) var presentationMode
     @Query(sort: \Quest.id) var quests: [Quest]
     
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     var body: some View {
         ZStack {
             Image("greenbg")
@@ -31,6 +34,10 @@ struct QuestView: View {
                     Spacer()
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
+                        if let url = Bundle.main.url(forResource: "exit", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     }) {
                         Image("cancel")
                             .resizable()

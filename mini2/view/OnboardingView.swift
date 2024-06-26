@@ -2,6 +2,10 @@ import SwiftUI
 import AVKit
 
 struct OnboardingView: View {
+    
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     let gameCenter = GameCenterManager.shared
     @State var character: Character = Character()
     @State private var currentFrame: Int = 0
@@ -22,6 +26,12 @@ struct OnboardingView: View {
                             .scaledToFill()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .edgesIgnoringSafeArea(.all)
+                    })
+                    .simultaneousGesture(TapGesture().onEnded {
+                        if let url = Bundle.main.url(forResource: "bleep", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     })
                 }
             }

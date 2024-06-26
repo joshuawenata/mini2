@@ -27,7 +27,6 @@ class GameCenterManager: NSObject, ObservableObject {
     @Published var battleView = false
     @Published var jungleView = true
     @Published var dataModel:  GameModel?
-    @Published var player2Name: String = ""
     
     var rootViewController: UIViewController? {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -76,7 +75,6 @@ class GameCenterManager: NSObject, ObservableObject {
         match = newMatch
         match?.delegate = self
         otherPlayer = match?.players.first
-        player2Name = match?.players.first?.displayName ?? ""
         battleView = true
         jungleView = false
     }

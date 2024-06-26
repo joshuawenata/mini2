@@ -9,19 +9,22 @@ struct PhysicsCategory {
     static let rangeArea: UInt32 = 0x1 << 2
     static let projectile: UInt32 = 0x1 << 3
     static let enemy: UInt32 = 0x1 << 4
+    static let otherPlayer: UInt32 = 0x1 << 5
 }
 
 class BattleScene: SKScene, SKPhysicsContactDelegate {
+    @ObservedObject var audioManager = AudioManager()
     var characterNode: SKSpriteNode!
-    var hpBarInner: SKSpriteNode?
-    var hpBarOuter: SKSpriteNode?
+    var hpBarInner: SKSpriteNode!
+    var hpBarOuter: SKSpriteNode!
     var dummyRobot: SKSpriteNode?
     var first = true
-    var swordNode: SKSpriteNode?
-    var meleeAreaNode: SKSpriteNode?
-    var rangeAreaNode: SKSpriteNode?
-    var slashNode: SKSpriteNode?
-    var projectileNode: SKSpriteNode?
+    var swordNode: SKSpriteNode!
+    var meleeAreaNode: SKSpriteNode!
+    var rangeAreaNode: SKSpriteNode!
+    var slashNode: SKSpriteNode!
+    var projectileNode: SKSpriteNode!
+    var anotherProjectileNode: SKSpriteNode!
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
     let rotateJoystick = TLAnalogJoystick(withDiameter: 200)
     let skillJoystick = TLAnalogJoystick(withDiameter: 120)
@@ -32,15 +35,28 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var isHitMelee = false
     var isHitProjectile = false
     var ghostAdded = false
-    var playerName: SKLabelNode?
+    var playerName: SKLabelNode!
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
+    var isOtherHit = false
     
     let cameraNode = SKCameraNode()
     
     let gameCenter = GameCenterManager.shared
     var gameModel: GameModel!
+    var angle = CGFloat()
+    
+    // COMPONENT FOR OTHER PLAYER
     var anotherPlayer: SKSpriteNode!
+    var anotherPlayerNameLabel: SKLabelNode!
+    var anotherPlayerHpBarInner: SKSpriteNode!
+    var anotherPlayerHpBarOuter: SKSpriteNode!
+    var anotherPlayerSword: SKSpriteNode!
+    var anotherPlayerMeleeArea: SKSpriteNode!
+    var anotherPlayerSlash: SKSpriteNode!
+    var anotherPlayerProjectileNode: SKSpriteNode!
+    var anotherPlayerSwordNode: SKSpriteNode!
+    var anotherPlayerRange: SKSpriteNode!
     
 //    @Environment(\.modelContext) private var modelWatch
 //    @Query private var character: [Character]
@@ -84,336 +100,100 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         let bodyA = contact.bodyA
         let bodyB = contact.bodyB
         
+        let hit = SKAudioNode(fileNamed: "impact1.wav")
+        hit.autoplayLooped = false
+        let removeAction = SKAction.sequence([
+            SKAction.play(),
+            SKAction.wait(forDuration: 1.0),
+            SKAction.removeFromParent()
+        ])
+        
         // Check for melee hit
         if (bodyA.categoryBitMask == PhysicsCategory.meleeArea && bodyB.categoryBitMask == PhysicsCategory.enemy) ||
-           (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.meleeArea) {
+            (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.meleeArea) {
             print("Is Hit!!!")
             print("current HP: \(hpEnemy)")
             isHitMelee = true
+            
+            addChild(hit)
+            hit.run(removeAction)
         }
         
         // Check for projectile hit
         if (bodyA.categoryBitMask == PhysicsCategory.projectile && bodyB.categoryBitMask == PhysicsCategory.enemy) ||
-           (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.projectile) {
+            (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.projectile) {
             print("Is FIRE!!!")
             print("current HP: \(hpEnemy)")
             projectileNode?.removeFromParent()
             isHitProjectile = true
-        }
-        
-        // If neither, not a hit
-        if !(isHitMelee || isHitProjectile) {
-            print("Is NOT Hit!!!")
-            isHitMelee = false
-            isHitProjectile = false
+            
+            addChild(hit)
+            hit.run(removeAction)
         }
     }
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
-        self.backgroundColor = .clear
-        let background = SKSpriteNode(imageNamed: "battleIsland")
-        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background.zPosition = -1
-        addChild(background)
+        let _ = addBackground()
         
-        addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none)
+        addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.localPlayer.displayName, version: "self")
         
         addDummyRobot(CGPoint(x: 200, y: 0), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
-
+        
         swordNode = addItem(CGPoint(x: -60, y: 0), imageName: "defaultSword")
+        
         meleeAreaNode = addItem(CGPoint(x: -60, y: 0), imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
+        
         rangeAreaNode = addItem(CGPoint(x: -60, y: 0), imageName: "rangeArea",isPhysicsBody: false, category: PhysicsCategory.rangeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
+        
         slashNode = addItem(CGPoint(x: -60, y: 0), imageName: "slash_00000")
-        meleeAreaNode?.isHidden = true
-        meleeAreaNode?.zPosition = -1
-        rangeAreaNode?.isHidden = true
-        rangeAreaNode?.zPosition = -1
-        slashNode?.isHidden = true
         
-        swordNode?.zRotation = -20
-        swordNode?.position.x = -40
-        
-        slashNode?.setScale(0.5)
-        slashNode?.position.x = 0
+        configureAttackProperties(mele: meleeAreaNode, range: rangeAreaNode, slash: slashNode, sword: swordNode)
         
         configureJoysticks()
+        
         physicsWorld.contactDelegate = self
     }
     
-    func configureJoysticks() {
-        addChild(cameraNode)
-        camera = cameraNode
-        
-        cameraNode.addChild(moveJoystick)
-        moveJoystick.position = CGPoint(x: -300, y: -100)
-        
-        cameraNode.addChild(rotateJoystick)
-        rotateJoystick.position = CGPoint(x: 300, y: -100)
-        
-        cameraNode.addChild(skillJoystick)
-        skillJoystick.position = CGPoint(x: 200, y: -25)
-        
-        moveJoystick.on(.begin) { [unowned self] _ in
-            startWalkingAnimationBattle(characterNode: characterNode)
-        }
-        
-        moveJoystick.on(.move) { [unowned self] joystick in
-            guard let characterNode = self.characterNode else {
-                return
-            }
-            
-            guard let hpBarInner = self.hpBarInner else {
-                return
-            }
-            
-            guard let hpBarOuter = self.hpBarOuter else {
-                return
-            }
-            
-            guard let playerName = self.playerName else {
-                return
-            }
-            
-            let pVelocity = joystick.velocity
-            let speed = CGFloat(0.12)
-            
-            let dx = pVelocity.x * speed
-            let dy = pVelocity.y * speed
-            
-            characterNode.position.x += dx
-            characterNode.position.y += dy
-            
-            swordNode?.position.x += dx
-            swordNode?.position.y += dy
-            
-            meleeAreaNode?.position.x += dx
-            meleeAreaNode?.position.y += dy
-            
-            rangeAreaNode?.position.x += dx
-            rangeAreaNode?.position.y += dy
-            
-            slashNode?.position.x += dx
-            slashNode?.position.y += dy
-            
-            hpBarOuter.position.x += dx
-            hpBarOuter.position.y += dy
-            
-            hpBarInner.position.x += dx
-            hpBarInner.position.y += dy
-            
-            playerName.position.x += dx
-            playerName.position.y += dy
-            
-            self.cameraNode.position = characterNode.position
-        }
-        
-        moveJoystick.on(.end) { [unowned self] _ in
-            stopWalkingAnimationBattle(characterNode: characterNode)
-        }
-        
-        rotateJoystick.on(.begin) { [unowned self] _ in
-            guard let meleeAreaNode = self.meleeAreaNode else {
-                return
-            }
-            guard let slashNode = self.slashNode else {
-                return
-            }
-            meleeAreaNode.isHidden = false
-            meleeAreaNode.position.x += 60
-            meleeAreaNode.setScale(0.5)
-            meleeAreaNode.anchorPoint = CGPoint(x: 1.0, y: 0)
-            
-            slashNode.position.x = meleeAreaNode.position.x
-            slashNode.position.y = meleeAreaNode.position.y
-        }
-        
-        rotateJoystick.on(.move) { [unowned self] joystick in
-            guard let meleeAreaNode = self.meleeAreaNode else {
-                return
-            }
-            guard let slashNode = self.slashNode else {
-                return
-            }
-            
-            let margin: CGFloat = 50.0
-            self.xOffset = cos(joystick.angular - 0.5) * margin
-            self.yOffset = sin(joystick.angular - 0.5) * margin
-            
-            meleeAreaNode.zRotation = joystick.angular
-            slashNode.zRotation = joystick.angular
-        }
-        
-        rotateJoystick.on(.end) { [unowned self] _ in
-            startAttackAnimationBattle(characterNode: characterNode)
-            guard let swordNode = self.swordNode else {
-                return
-            }
-            guard let meleeAreaNode = self.meleeAreaNode else {
-                return
-            }
-            guard let slashNode = self.slashNode else {
-                return
-            }
-            slashNode.position.x -= xOffset
-            slashNode.position.y -= yOffset
-            slashNode.isHidden = false
-            startSlashAnimation(slashNode: slashNode)
-            meleeAreaNode.isHidden = true
-            meleeAreaNode.position.x -= 60
-            self.meleeAreaNode?.zRotation = 0
-            
-            if(first){
-                swordNode.position.y -= 25
-                first = false
-            }
-            
-            swordNode.anchorPoint = CGPoint(x: 1.0, y: 0)
-            let rotateRight = SKAction.rotate(byAngle: 60 * (.pi / 180), duration: 0.2)
-            let rotateLeft = SKAction.rotate(byAngle: -60 * (.pi / 180), duration: 0.2)
-            let rotateSequence = SKAction.sequence([rotateRight, rotateLeft])
-            let repeatRotation = SKAction.repeat(rotateSequence, count: 1)
 
-            swordNode.run(repeatRotation)
-            if isHitMelee {
-                hpEnemy -= 10
-                startGetHitAnimation(characterNode: self.dummyRobot)
-            }
-        }
+    func configureAttackProperties(mele: SKSpriteNode?, range: SKSpriteNode?, slash: SKSpriteNode?, sword: SKSpriteNode?) {
+        mele?.isHidden = true
+        mele?.zPosition = -1
         
-        skillJoystick.on(.begin) { [unowned self] _ in
-            guard let rangeAreaNode = self.rangeAreaNode else {
-                return
-            }
-            
-            rangeAreaNode.isHidden = false
-            rangeAreaNode.position.x += 60
-            rangeAreaNode.setScale(0.5)
-            rangeAreaNode.anchorPoint = CGPoint(x: 1.0, y: 0.5)
-        }
+        range?.isHidden = true
+        range?.zPosition = -1
         
-        skillJoystick.on(.move) { [unowned self] joystick in
-            guard let characterNode = self.characterNode else {
-                return
-            }
-            guard let rangeAreaNode = self.rangeAreaNode else {
-                return
-            }
-            
-            let margin: CGFloat = 70.0
-            self.xOffset = cos(joystick.angular - 1.57) * margin
-            self.yOffset = sin(joystick.angular - 1.57) * margin
-            rangeAreaNode.position.x = characterNode.position.x - xOffset
-            rangeAreaNode.position.y = characterNode.position.y - yOffset
-            rangeAreaNode.zRotation = joystick.angular-1.57
-        }
+        slash?.isHidden = true
         
-        skillJoystick.on(.end) { [unowned self] joystick in
-            guard let characterNode = self.characterNode else { return }
-            guard let rangeAreaNode = self.rangeAreaNode else { return }
-            
-            rangeAreaNode.isHidden = true
-            rangeAreaNode.position.x -= 60
-            
-            guard let projectileImage = UIImage(named: "fire_1") else { return }
-            
-            let texture = SKTexture(image: projectileImage)
-            let projectile = SKSpriteNode(texture: texture)
-            projectile.setScale(0.2)
-            
-            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width / 2)
-            projectile.physicsBody?.affectedByGravity = false
-            projectile.physicsBody?.linearDamping = 0
-            
-            startSkillAnimation(projectileNode: projectile, imageSet: ["fire_1", "fire_2", "fire_3", "fire_4", "fire_5"], timePerFrame: 0.1)
-            
-            projectile.position = characterNode.position
-            projectile.zPosition = -1
-            
-            projectile.physicsBody?.categoryBitMask = PhysicsCategory.projectile
-            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.enemy
-            projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
-            
-            let velocityOfMoving: CGFloat = 200
-            let angle = CGFloat(joystick.angular)
-            let dy = cos(angle) * velocityOfMoving
-            let dx = sin(angle) * velocityOfMoving
-            
-            projectile.zRotation = angle + CGFloat.pi
-            
-            let nextPosition = CGPoint(x: projectile.position.x - dx, y: projectile.position.y + dy)
-            let path = createPath(from: projectile.position, to: nextPosition)
-            
-            let moveAction = SKAction.follow(path, asOffset: false, orientToPath: false, speed: 300)
-            let updatePosition = SKAction.run {
-                projectile.removeFromParent()
-            }
-            let sequence = SKAction.sequence([moveAction, updatePosition])
-            
-            projectile.run(sequence)
-            addChild(projectile)
-            projectileNode = projectile
-            
-            if isHitProjectile {
-                print("Mengurangi Health!")
-                hpEnemy -= 10
-                isHitProjectile = false
-                startGetHitAnimation(characterNode: self.dummyRobot)
-            }
-        }
+        sword?.zRotation = -20
+        sword?.position.x = -40
         
-        joystickStickImageEnabled = true
-        joystickSubstrateImageEnabled = true
-        
-        view?.isMultipleTouchEnabled = true
+
+        slash?.setScale(0.5)
+        slash?.position.x = 0
     }
     
-    func addCharacterBattle(_ position: CGPoint, category: UInt32, contact: UInt32, collision: UInt32) {
-        guard let characterImage = UIImage(named: "charaIdleBattle") else {
-            return
+    func addCharacterBattle(_ position: CGPoint, category: UInt32, contact: UInt32, collision: UInt32, name: String, version: String) {
+        
+        let character = characterBattle(position, category: category, contact: contact, collision: collision)
+        
+        let (hpbarinner, hpbarouter) = hpBarCharacterBattle()
+        let playerName = playerNameLabel(name: name)
+        
+        if version == "another" {
+            anotherPlayer = character
+            anotherPlayerHpBarInner = hpbarinner
+            anotherPlayerHpBarOuter = hpbarouter
+            self.anotherPlayerNameLabel = playerName
+        } else {
+            characterNode = character
+            hpBarInner = hpbarinner
+            hpBarOuter = hpbarouter
+            self.playerName = playerName
         }
         
-        let texture = SKTexture(image: characterImage)
-        let character = SKSpriteNode(texture: texture)
-        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
-        character.physicsBody?.affectedByGravity = false
-        character.position = CGPoint(x: 0, y: 0)
-        character.setScale(0.3)
-        character.physicsBody?.categoryBitMask = category
-        character.physicsBody?.contactTestBitMask = contact
-        character.physicsBody?.collisionBitMask = collision
-        addChild(character)
-        characterNode = character
-        
-        guard let hpBarOuterImage = UIImage(named: "hpbarouter") else {
-            return
-        }
-        guard let hpBarInnerTexture = UIImage(named: "hpbarinner") else {
-            return
-        }
 
-        let hpbartextureinner = SKTexture(image: hpBarInnerTexture)
-        let hpbarinner = SKSpriteNode(texture: hpbartextureinner)
-        hpbarinner.position = CGPoint(x: 0, y: 54)
-        
-        let hpbartextureouter = SKTexture(image: hpBarOuterImage)
-        let hpbarouter = SKSpriteNode(texture: hpbartextureouter)
-        hpbarouter.position = CGPoint(x: -5, y: 50)
-        
-        let playerName = SKLabelNode(text: "Aethel")
-        playerName.position = CGPoint(x: 0, y: 70)
-        playerName.fontColor = .white
-        playerName.fontSize = 18
-        playerName.fontName = "AveriaSerifLibre-Regular"
-        self.playerName = playerName
-        
-        addChild(hpbarinner)
-        addChild(hpbarouter)
-        addChild(playerName)
-        
-        hpBarInner = hpbarinner
-        hpBarOuter = hpbarouter
         
         startIdleAnimationBattle(characterNode: characterNode)
     }
@@ -439,27 +219,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         self.dummyRobot = character
     }
     
-    func addItem(_ position: CGPoint, imageName: String, isPhysicsBody: Bool = false, category: UInt32 = 0, contact: UInt32 = 0, collision: UInt32 = 0) -> SKSpriteNode {
-        guard let itemImage = UIImage(named: imageName) else {
-            return SKSpriteNode()
-        }
-        
-        let texture = SKTexture(image: itemImage)
-        let item = SKSpriteNode(texture: texture)
-        if(isPhysicsBody){
-            item.physicsBody = SKPhysicsBody(texture: texture, size: item.size)
-            item.physicsBody?.affectedByGravity = false
-            item.physicsBody?.categoryBitMask = category
-            item.physicsBody?.contactTestBitMask = contact
-            item.physicsBody?.collisionBitMask = collision
-        }
-        item.position = position
-        item.setScale(0.3)
-        addChild(item)
-        
-        return item
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         return
     }
@@ -477,17 +236,44 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        gameModel = GameModel(player: characterNode.position, name: gameCenter.player2Name)
+        gameModel = GameModel(player: characterNode.position, name: gameCenter.localPlayer.displayName, hpBar: [hpBarInner.position, hpBarOuter.position], labelName: playerName.position, sword: swordNode.position, melee: meleeAreaNode.position, slash: slashNode.position, rangeArea: rangeAreaNode.position, angleProjectile: self.angle,  isotherHit: isOtherHit)
+
         gameCenter.sendGameModel(gameModel)
-        
+                
         if gameCenter.dataModel != nil {
-            print("game center model", gameCenter.dataModel!)
             if anotherPlayer != nil {
-                print("another player")
                 anotherPlayer.position = gameCenter.dataModel!.player
+                anotherPlayerNameLabel.position = gameCenter.dataModel!.labelName
+                anotherPlayerHpBarInner.position = gameCenter.dataModel!.hpBar[0]
+                anotherPlayerHpBarOuter.position = gameCenter.dataModel!.hpBar[1]
+                anotherPlayerSword.position = gameCenter.dataModel!.sword
+                anotherPlayerSlash.position = gameCenter.dataModel!.slash
+                anotherPlayerMeleeArea.position = gameCenter.dataModel!.melee
+                anotherPlayerRange.position = gameCenter.dataModel!.rangeArea
+                
+                anotherProjectileNode = addProjectile()
+                anotherProjectileNode.position = gameCenter.dataModel!.player
+                
+                if gameCenter.dataModel!.isotherHit {
+                    startSkillAnimation(projectileNode: anotherProjectileNode, imageSet: ["fire_1", "fire_2", "fire_3", "fire_4", "fire_5"], timePerFrame: 0.1)
+                    
+                    anotherProjectileNode = projectileMove(angle: gameCenter.dataModel!.angleProjectile, projectile: anotherProjectileNode)
+                    
+                    addChild(anotherProjectileNode)
+                }
+                
             } else {
-                anotherPlayer = addCharacterPlayer(gameCenter.dataModel!.player)
-                addChild(anotherPlayer)
+                addCharacterBattle(gameCenter.dataModel!.player, category: PhysicsCategory.otherPlayer, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.dataModel!.name, version: "another")
+                anotherPlayerSword = addItem(CGPoint(), imageName: "defaultSword")
+                
+                anotherPlayerMeleeArea = addItem(CGPoint(), imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
+                
+                anotherPlayerRange = addItem(CGPoint(), imageName: "rangeArea",isPhysicsBody: false, category: PhysicsCategory.rangeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
+                
+                anotherPlayerSlash = addItem(CGPoint(), imageName: "slash_00000")
+
+                configureAttackProperties(mele: anotherPlayerMeleeArea, range: anotherPlayerRange, slash: anotherPlayerSlash, sword: anotherPlayerSword)
+                
             }
         }
     }
@@ -524,10 +310,10 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func calculateProjectilePosition(degree: CGPoint, from applePosition: CGPoint, projectile: SKSpriteNode) -> CGPoint {
-
+        
         let x = Float(applePosition.x) + Float(degree.x)
         let y = Float(applePosition.y) + Float(degree.y)
-
+        
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
 }

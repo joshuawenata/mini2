@@ -10,6 +10,10 @@ import SwiftData
 
 struct BackpackView: View {
     @Environment(\.presentationMode) var presentationMode
+    
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+
     private let itemsPerRow = 6
     @Binding var character: Character
 
@@ -36,6 +40,10 @@ struct BackpackView: View {
                     Spacer()
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
+                        if let url = Bundle.main.url(forResource: "exit", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     }) {
                         Image("cancel")
                             .resizable()

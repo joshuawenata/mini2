@@ -10,6 +10,10 @@ import SwiftData
 
 struct ShopView: View {
     @Environment(\.presentationMode) var presentationMode
+    
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+
     @State private var isShowingConfirmation = false
     @State private var isShowingSkillConfirmation = false
     @State private var tappedItem: WeaponModel = WeaponModel(weaponName: "", weaponPrice: 0, weaponAttack: 0, weaponImage: "",weaponJoystickImage: "")
@@ -45,7 +49,7 @@ struct ShopView: View {
             skillJoystickImage: "water_joystick"
         ),
         SkillModel(
-            skillName: "Pistol",
+            skillName: "9mm",
             skillDamage: 30,
             skillCoolDown: 5,
             skillPrice: 700,
@@ -225,6 +229,10 @@ struct ShopView: View {
 
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
+                        if let url = Bundle.main.url(forResource: "exit", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     }) {
                         Image("cancel")
                             .resizable()

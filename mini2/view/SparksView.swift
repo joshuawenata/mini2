@@ -9,6 +9,10 @@ import SwiftUI
 
 struct SparksView: View {
     @Environment(\.presentationMode) var presentationMode
+    
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+
     @Binding var character: Character
     @State private var currentItem: Any?
         
@@ -82,6 +86,12 @@ struct SparksView: View {
                             .scaledToFit()
                             .padding(.horizontal, 20)
                             .scaledToFit()
+                    })
+                    .simultaneousGesture(TapGesture().onEnded {
+                        if let url = Bundle.main.url(forResource: "exit", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     })
                 }
                 Spacer()
