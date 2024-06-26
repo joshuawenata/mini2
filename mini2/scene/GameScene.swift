@@ -7,6 +7,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //    @ObservedObject var audioManager = AudioManager()
     //    let villageSongNode = SKSpriteNode(color: .red, size: CGSize(width: 200, height: 200))
     //    let riverSound = SKSpriteNode(color: .red, size: CGSize(width: 200, height: 200))
+    //    let interactionThresholdDistance: CGFloat = 200
     
     var characterNode: SKSpriteNode!
     var playerName: SKLabelNode!
@@ -14,26 +15,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var hpBarOuter: SKSpriteNode!
     var first = true
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
-    
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
-    
     let blacksmithNode = SKSpriteNode(color: .clear, size: CGSize(width: 200, height: 200))
     let battleNode = SKSpriteNode(color: .clear, size: CGSize(width: 300, height: 300))
-    //    let interactionThresholdDistance: CGFloat = 200
-    
     var character: Character
-    
     let cameraNode = SKCameraNode()
-    init(size: CGSize, character: Character) {
-        self.character = character
-        super.init(size: size)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) is not supported")
-    }
-    
     let gameCenter = GameCenterManager.shared
     var hiddenTriggered = false
     
@@ -46,51 +33,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    var joystickSubstrateImageEnabled = true {
+        didSet {
+            let image = UIImage(named: "jSubstrate")
+            moveJoystick.baseImage = image
+            moveJoystick.baseImage = image
+            
+            setJoystickSubstrateImageBtn.text = "\(joystickSubstrateImageEnabled ? "Remove" : "Set") substrate image"
+        }
+    }
+    
+    init(size: CGSize, character: Character) {
+        self.character = character
+        super.init(size: size)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
+    
     func didBegin(_ contact: SKPhysicsContact) {
         guard let nodeName = contact.bodyA.node?.name ?? contact.bodyB.node?.name else {
             return
         }
         
-        switch nodeName {
-        case "battleBuilding":
-            gameCenter.startMatchmaking()
-        case "blacksmith_00000", "blacksmith_00001", "blacksmith_00002", "blacksmith_00003", "blacksmith_00004", "blacksmith_00005", "blacksmith_00006", "blacksmith_00007", "blacksmith_00008", "blacksmith_00009", "blacksmith_00010", "blacksmith_00011", "blacksmith_00012", "blacksmith_00013", "blacksmith_00014", "blacksmith_00015", "blacksmith_00016", "blacksmith_00017", "blacksmith_00018", "blacksmith_00019", "blacksmith_00020", "blacksmith_00021", "blacksmith_00022", "blacksmith_00023", "blacksmith_00024", "blacksmith_00025", "blacksmith_00026", "blacksmith_00027", "blacksmith_00028", "blacksmith_00029":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "blacksmith"
-        case "dinerBuilding":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "dinerBuilding"
-        case "questBuilding":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "questBuilding"
-        case "horse_00000", "horse_0001", "horse_0002", "horse_0003", "horse_0004", "horse_0005", "horse_0006", "horse_0007", "horse_0008", "horse_0009", "horse_0010", "horse_0011", "horse_0012", "horse_0013", "horse_0014", "horse_0015", "horse_0016", "horse_0017", "horse_0018", "horse_0019", "horse_0020", "horse_0021", "horse_0022", "horse_0023", "horse_0024", "horse_0025", "horse_0026", "horse_0027", "horse_0028", "horse_0029":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "horse"
-        case "npcFish":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "npcFish"
-        case "npcFlower":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "npcFlower"
-        case "apple":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "apple"
-        case "cat":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "cat"
-        case "npcHouse":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "npcHouse"
-        case "sparks":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "sparks"
-        case "chest_opened":
-            VariableManager.shared.interactionButtonHidden = false
-            VariableManager.shared.touchBuilding = "chest_opened"
-        default:
-            break
-        }
+        touchBuilding(nodeName: nodeName, gameCenter: gameCenter)
+    }
+    
+    override func sceneDidLoad() {
+        physicsWorld.contactDelegate = self
+    }
+    
+    override func didMove(to view: SKView) {
+        super.didMove(to: view)
         
+        addBackgroundMainIsland(size: size, addChild: addChild)
+        let (character, hpbarinner, hpbarouter, playerName) = addCharacter(CGPoint(x: -2000, y: 600), addChild: self.addChild, category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.localPlayer.displayName, isBattle: false)
+        
+        characterNode = character
+        hpBarInner = hpbarinner
+        hpBarOuter = hpbarouter
+        self.playerName = playerName
+        
+        addChild(cameraNode)
+        camera = cameraNode
+        camera?.position = characterNode.position
+        
+//        configureJoysticks()
+        initBuildingsMainIsland()
+        addSongs()
     }
     
     func didEnd(_ contact: SKPhysicsContact) {
@@ -101,258 +92,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.hiddenTriggered = false
             }
         }
-    }
-    
-    var joystickSubstrateImageEnabled = true {
-        didSet {
-            let image = UIImage(named: "jSubstrate")
-            moveJoystick.baseImage = image
-            
-            setJoystickSubstrateImageBtn.text = "\(joystickSubstrateImageEnabled ? "Remove" : "Set") substrate image"
-        }
-    }
-    
-    override func sceneDidLoad() {
-        physicsWorld.contactDelegate = self
-    }
-    
-    override func didMove(to view: SKView) {
-        super.didMove(to: view)
-        
-        addBackground()
-        addCharacter(CGPoint(x: frame.midX, y: frame.midY))
-        configureJoysticks()
-        addBuildings()
-    }
-    
-    func random(min: CGFloat, max: CGFloat) -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt32.max) * (max - min) + min
-    }
-    
-    func addRandomSparks() {
-        let sparksPosition = CGPoint(x: random(min: -1500, max: -500), y: random(min: -500, max: 500))
-        let sparks = addBuilding(at: sparksPosition, imageName: "sparks")
-        
-        addChild(sparks)
-    }
-    
-    func addRandomChest() {
-        let chestPosition = CGPoint(x: random(min: -1800, max: -1200), y: random(min: 100, max: 200))
-        let chest = addBuilding(at: chestPosition, imageName: "chest_opened")
-        
-        addChild(chest)
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        if gameCenter.battleView {
-            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
-            self.view?.presentScene(BattleScene(size: UIScreen.main.bounds.size,character: character), transition: transition)
-        }
-    }
-    
-    func configureJoysticks() {
-        addChild(cameraNode)
-        camera = cameraNode
-        
-        cameraNode.addChild(moveJoystick)
-        moveJoystick.position = CGPoint(x: -300, y: -100)
-        
-        let footstepSound = SKAudioNode(fileNamed: "footsteps.mp3")
-        
-        moveJoystick.on(.begin) { [unowned self] _ in
-            startWalkingAnimation(characterNode: characterNode)
-            addChild(footstepSound)
-        }
-        
-        moveJoystick.on(.move) { [unowned self] joystick in
-            guard let characterNode = self.characterNode else {
-                return
-            }
-            
-            guard let hpBarInner = self.hpBarInner else {
-                return
-            }
-            
-            guard let hpBarOuter = self.hpBarOuter else {
-                return
-            }
-            
-            guard let playerName = self.playerName else {
-                return
-            }
-            
-            let pVelocity = joystick.velocity
-            let speed = CGFloat(0.12)
-            
-            let dx = pVelocity.x * speed
-            let dy = pVelocity.y * speed
-            
-            characterNode.position.x += dx
-            characterNode.position.y += dy
-            
-            hpBarInner.position.x = characterNode.position.x
-            hpBarInner.position.y = characterNode.position.y + 54
-            
-            hpBarOuter.position.x = characterNode.position.x - 5
-            hpBarOuter.position.y = characterNode.position.y + 50
-            
-            playerName.position.x = characterNode.position.x
-            playerName.position.y = characterNode.position.y + 70
-            
-            self.cameraNode.position = characterNode.position
-        }
-        
-        moveJoystick.on(.end) { [unowned self] _ in
-            stopWalkingAnimation(characterNode: characterNode)
-            footstepSound.removeFromParent()
-        }
-        
-        joystickStickImageEnabled = true
-        joystickSubstrateImageEnabled = true
-        
-        view?.isMultipleTouchEnabled = true
-    }
-    
-    func addBackground() {
-        self.backgroundColor = .clear
-        let background = SKSpriteNode(imageNamed: "mainIsland")
-        background.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        background.zPosition = -1
-        addChild(background)
-    }
-    
-    func addCharacter(_ position: CGPoint) {
-        guard let characterImage = UIImage(named: "charaIdle") else {
-            return
-        }
-        
-        let texture = SKTexture(image: characterImage)
-        let character = SKSpriteNode(texture: texture)
-        character.physicsBody = SKPhysicsBody(texture: texture, size: character.size)
-        character.physicsBody?.affectedByGravity = false
-        character.position = CGPoint(x: -1500, y: 0)
-        character.physicsBody?.allowsRotation = false
-        character.setScale(0.3)
-        character.physicsBody?.categoryBitMask = CollisionCategory.building.rawValue
-        character.physicsBody?.collisionBitMask = CollisionCategory.building.rawValue
-        character.physicsBody?.contactTestBitMask = CollisionCategory.building.rawValue
-        character.physicsBody?.isDynamic = true
-        
-        guard let hpBarOuterImage = UIImage(named: "hpbarouter") else {
-            return
-        }
-        guard let hpBarInnerTexture = UIImage(named: "hpbarinner") else {
-            return
-        }
-        
-        let hpbartextureinner = SKTexture(image: hpBarInnerTexture)
-        let hpbarinner = SKSpriteNode(texture: hpbartextureinner)
-        hpbarinner.position = CGPoint(x: -1500, y: 54)
-        self.hpBarInner = hpbarinner
-        
-        let hpbartextureouter = SKTexture(image: hpBarOuterImage)
-        let hpbarouter = SKSpriteNode(texture: hpbartextureouter)
-        hpbarouter.position = CGPoint(x: -1505, y: 50)
-        self.hpBarOuter = hpbarouter
-        
-        let playerName = SKLabelNode(text: gameCenter.localPlayer.displayName)
-        playerName.position = CGPoint(x: -1500, y: 70)
-        playerName.fontColor = .white
-        playerName.fontSize = 18
-        playerName.fontName = "AveriaSerifLibre-Regular"
-        self.playerName = playerName
-        
-        addChild(hpbarinner)
-        addChild(hpbarouter)
-        addChild(playerName)
-        
-        addChild(character)
-        characterNode = character
-        
-        startIdleAnimation(characterNode: characterNode)
-    }
-        
-    func addBuildings() {
-        //top
-        addChild(addBuilding(at: CGPoint(x: -1700, y: 300), imageName: "statueBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -1500, y: 300), imageName: "battleBuilding"))
-        addChild(addBuilding(at: CGPoint(x: -1300, y: 250), imageName: "npcBattle"))
-        
-        //left
-        let river = addBuildingWithoutPhysics(at: CGPoint(x: -3300, y: 1000), imageName: "river1")
-        river.setScale(0.5)
-        addChild(river)
-        startRiverAnimation(riverNode: river)
-        let riverSound = SKAudioNode(fileNamed: "river.mp3")
-        if let riverSoundNode = riverSound.avAudioNode as? AVAudioPlayerNode {
-            riverSoundNode.volume = 0.2
-        }
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            let riverDistance = hypot(river.position.x - self.characterNode.position.x, river.position.y - self.characterNode.position.y)
-            if riverDistance < 1700 {
-                if riverSound.parent == nil {
-                    self.addChild(riverSound)
-                }
-            } else {
-                riverSound.removeFromParent()
-            }
-        }
-    
-
-        
-        addChild(addBuilding(at: CGPoint(x: -2000, y: 300), imageName: "npcFish", isRectangle: true))
-        
-        let horse = addBuilding(at: CGPoint(x: -2200, y: -100), imageName: "horse_00000")
-        horse.setScale(0.35)
-        addChild(horse)
-        startHorseAnimation(horseNode: horse)
-        
-        addChild(addBuilding(at: CGPoint(x: -2100, y: -150), imageName: "apple"))
-        
-        //middle
-        addChild(addBuilding(at: CGPoint(x: -1750, y: -100), imageName: "questBuilding"))
-        
-        let blacksmith = addBuilding(at: CGPoint(x: -1500, y: -100), imageName: "blacksmith_00000", isRectangle: true)
-        blacksmith.setScale(0.35)
-        addChild(blacksmith)
-        startBlacksmithAnimation(blacksmithNode: blacksmith)
-        
-        addChild(addBuilding(at: CGPoint(x: -1200, y: -100), imageName: "dinerBuilding"))
-        
-        //bottom
-        addChild(addBuilding(at: CGPoint(x: -1700, y: -500), imageName: "npcHouseOne"))
-        addChild(addBuilding(at: CGPoint(x: -1500, y: -500), imageName: "npcHouseTwo"))
-        addChild(addBuilding(at: CGPoint(x: -1300, y: -500), imageName: "npcHouseThree"))
-        addChild(addBuilding(at: CGPoint(x: -1150, y: -550), imageName: "npcHouse"))
-        
-        //right
-        addChild(addBuilding(at: CGPoint(x: -800, y: 100), imageName: "npcFlower", isRectangle: true))
-        let cat = addBuilding(at: CGPoint(x: -600, y: 100), imageName: "cat")
-        addChild(cat)
-        cat.setScale(0.7)
-        startCatAnimation(catNode: cat)
-        
-        //down right
-        let boss = addBuilding(at: CGPoint(x: 3000, y: -700), imageName: "bossAttack_00000")
-        boss.setScale(0.4)
-        addChild(boss)
-        startBossAnimation(bossNode: boss)
-        
-        let waitSpark = SKAction.wait(forDuration: 36000)
-        let addRandomEventSpark = SKAction.run { [weak self] in
-            self?.addRandomSparks()
-        }
-        let sequenceSpark = SKAction.sequence([addRandomEventSpark, waitSpark])
-        let repeatActionSpark = SKAction.repeatForever(sequenceSpark)
-        self.run(repeatActionSpark)
-        
-        let waitChest = SKAction.wait(forDuration: 3600)
-        let addRandomEventChest = SKAction.run { [weak self] in
-            self?.addRandomChest()
-        }
-        let sequenceChest = SKAction.sequence([addRandomEventChest, waitChest])
-        let repeatActionChest = SKAction.repeatForever(sequenceChest)
-        self.run(repeatActionChest)
     }
     
 
@@ -388,6 +127,131 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    override func update(_ currentTime: TimeInterval) {
+        if gameCenter.battleView {
+            let transition = SKTransition.flipHorizontal(withDuration: 1.0)
+            self.view?.presentScene(BattleScene(size: UIScreen.main.bounds.size,character: character), transition: transition)
+        }
+    }
+    
+    func initBuildingsMainIsland() {
+        //top
+        addChild(addBuilding(at: CGPoint(x: -2200, y: 800), imageName: "statueBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -2000, y: 800), imageName: "battleBuilding"))
+        addChild(addBuilding(at: CGPoint(x: -1800, y: 750), imageName: "npcBattle"))
+        
+        //left
+        let river = addBuildingWithoutPhysics(at: CGPoint(x: -2800, y: 500), imageName: "river1")
+        addChild(river)
+        startRiverAnimation(riverNode: river)
+        let riverSound = SKAudioNode(fileNamed: "river.mp3")
+        if let riverSoundNode = riverSound.avAudioNode as? AVAudioPlayerNode {
+            riverSoundNode.volume = 0.2
+        }
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            let riverDistance = hypot(river.position.x - self.characterNode.position.x, river.position.y - self.characterNode.position.y)
+            if riverDistance < 1500 {
+                if riverSound.parent == nil {
+                    self.addChild(riverSound)
+                }
+            } else {
+                riverSound.removeFromParent()
+            }
+        }
+        
+        addChild(addBuilding(at: CGPoint(x: -2500, y: 800), imageName: "npcFish", isRectangle: true))
+        
+        let horse = addBuilding(at: CGPoint(x: -2600, y: 400), imageName: "horse_00000")
+        horse.setScale(0.35)
+        addChild(horse)
+        startHorseAnimation(horseNode: horse)
+        
+        addChild(addBuilding(at: CGPoint(x: -2500, y: 350), imageName: "apple"))
+        
+        //middle
+        addChild(addBuilding(at: CGPoint(x: -2250, y: 400), imageName: "questBuilding"))
+        
+        let blacksmith = addBuilding(at: CGPoint(x: -2000, y: 400), imageName: "blacksmith_00000", isRectangle: true)
+        blacksmith.setScale(0.35)
+        addChild(blacksmith)
+        startBlacksmithAnimation(blacksmithNode: blacksmith)
+        
+        addChild(addBuilding(at: CGPoint(x: -1700, y: 400), imageName: "dinerBuilding"))
+        
+        //bottom
+        addChild(addBuilding(at: CGPoint(x: -2200, y: 0), imageName: "npcHouseOne"))
+        addChild(addBuilding(at: CGPoint(x: -2000, y: 0), imageName: "npcHouseTwo"))
+        addChild(addBuilding(at: CGPoint(x: -1800, y: 0), imageName: "npcHouseThree"))
+        addChild(addBuilding(at: CGPoint(x: -1650, y: 50), imageName: "npcHouse"))
+        
+        //right
+        addChild(addBuilding(at: CGPoint(x: -1200, y: 600), imageName: "npcFlower", isRectangle: true))
+        let cat = addBuilding(at: CGPoint(x: -1000, y: 600), imageName: "cat")
+        addChild(cat)
+        cat.setScale(0.7)
+        startCatAnimation(catNode: cat)
+        
+        //down right
+        let boss = addBuilding(at: CGPoint(x: 0, y: -200), imageName: "bossAttack_00000")
+        boss.setScale(0.4)
+        addChild(boss)
+        startBossAnimation(bossNode: boss)
+        
+        let waitSpark = SKAction.wait(forDuration: 36000)
+        let addRandomEventSpark = SKAction.run { [weak self] in
+            addRandomSparks(addChild: self!.addChild)
+        }
+        let sequenceSpark = SKAction.sequence([addRandomEventSpark, waitSpark])
+        let repeatActionSpark = SKAction.repeatForever(sequenceSpark)
+        self.run(repeatActionSpark)
+        
+        let waitChest = SKAction.wait(forDuration: 3600)
+        let addRandomEventChest = SKAction.run { [weak self] in
+            addRandomChest(addChild: self!.addChild)
+        }
+        let sequenceChest = SKAction.sequence([addRandomEventChest, waitChest])
+        let repeatActionChest = SKAction.repeatForever(sequenceChest)
+        self.run(repeatActionChest)
+    }
+    
+    func configureJoysticks() {
+        
+        cameraNode.addChild(moveJoystick)
+        moveJoystick.position = CGPoint(x: -300, y: -100)
+        
+        let footstepSound = SKAudioNode(fileNamed: "footsteps.mp3")
+        
+        moveJoystick.on(.begin) { [unowned self] _ in
+            startWalkingAnimation(characterNode: characterNode)
+            addChild(footstepSound)
+        }
+        
+        moveJoystick.on(.move) { [unowned self] joystick in
+            let pVelocity = joystick.velocity
+            let speed = CGFloat(0.12)
+            
+            let dx = pVelocity.x * speed
+            let dy = pVelocity.y * speed
+            
+            moveNode(node: characterNode, dx: dx, dy: dy)
+            moveNode(node: hpBarInner, dx: dx, dy: dy)
+            moveNode(node: hpBarOuter, dx: dx, dy: dy)
+            moveNode(label: playerName, dx: dx, dy: dy)
+            
+            self.cameraNode.position = characterNode.position
+        }
+        
+        moveJoystick.on(.end) { [unowned self] _ in
+            stopWalkingAnimation(characterNode: characterNode)
+            footstepSound.removeFromParent()
+        }
+        
+        joystickStickImageEnabled = true
+        joystickSubstrateImageEnabled = true
+        
+        view?.isMultipleTouchEnabled = true
+    }
+    
     func createPath(from start: CGPoint, to destination: CGPoint) -> CGMutablePath {
         let pathToMove = CGMutablePath()
         pathToMove.move(to: start)
@@ -402,7 +266,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             keyWindow.rootViewController?.present(hostingController, animated: true, completion: nil)
         }
     }
-    
     
 }
 

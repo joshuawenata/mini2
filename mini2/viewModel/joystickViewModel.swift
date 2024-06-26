@@ -7,6 +7,7 @@
 
 import Foundation
 import SpriteKit
+import SwiftUI
 
 extension BattleScene {
     
@@ -41,21 +42,14 @@ extension BattleScene {
             let dx = pVelocity.x * speed
             let dy = pVelocity.y * speed
             
-            moveNode(node: characterNode, label: nil, dx: dx, dy: dy)
-            
-            moveNode(node: swordNode, label: nil, dx: dx, dy: dy)
-            
-            moveNode(node: meleeAreaNode, label: nil, dx: dx, dy: dy)
-            
-            moveNode(node: rangeAreaNode, label: nil, dx: dx, dy: dy)
-            
-            moveNode(node: slashNode, label: nil, dx: dx, dy: dy)
-            
-            moveNode(node: hpBarOuter, label: nil, dx: dx, dy: dy)
-            
-            moveNode(node: hpBarInner, label: nil, dx: dx, dy: dy)
-            
-            moveNode(node: nil, label: playerName, dx: dx, dy: dy)
+            moveNode(node: characterNode, dx: dx, dy: dy)
+            moveNode(node: swordNode, dx: dx, dy: dy)
+            moveNode(node: meleeAreaNode, dx: dx, dy: dy)
+            moveNode(node: rangeAreaNode, dx: dx, dy: dy)
+            moveNode(node: slashNode, dx: dx, dy: dy)
+            moveNode(node: hpBarOuter, dx: dx, dy: dy)
+            moveNode(node: hpBarInner, dx: dx, dy: dy)
+            moveNode(label: playerName, dx: dx, dy: dy)
             
             self.cameraNode.position = characterNode.position
         }
@@ -66,18 +60,8 @@ extension BattleScene {
         }
     }
     
-    func moveNode(node: SKSpriteNode?, label: SKLabelNode?, dx: CGFloat, dy: CGFloat) {
-        if label != nil || node == nil {
-            label?.position.y += dy
-            label?.position.x += dx
-        } else {
-            node?.position.x += dx
-            node?.position.y += dy
-        }
-    }
-    
     func rotateJoystickConfig() {
-        let swordSound = SKAudioNode(fileNamed: "swoosh1.mp3")
+//        let swordSound = SKAudioNode(fileNamed: "swoosh1.mp3")
         
         rotateJoystick.on(.begin) { [unowned self] _ in
             guard let meleeAreaNode = self.meleeAreaNode else {
@@ -93,8 +77,6 @@ extension BattleScene {
             
             slashNode.position.x = meleeAreaNode.position.x
             slashNode.position.y = meleeAreaNode.position.y
-            
-            
         }
         
         rotateJoystick.on(.move) { [unowned self] joystick in
@@ -146,6 +128,7 @@ extension BattleScene {
             swordNode.run(repeatRotation)
             if isHitMelee {
                 hpEnemy -= 10
+                startGetHitAnimation(characterNode: self.dummyRobot)
             }
             
             if let url = Bundle.main.url(forResource: "swoosh2", withExtension: "wav") {
@@ -235,6 +218,7 @@ extension BattleScene {
                 print("Mengurangi Health!")
                 hpEnemy -= 10
                 isHitProjectile = false
+                startGetHitAnimation(characterNode: self.dummyRobot)
             }
             
             if let url = Bundle.main.url(forResource: "fireball", withExtension: "wav") {
@@ -292,3 +276,4 @@ extension BattleScene {
         return projectile
     }
 }
+

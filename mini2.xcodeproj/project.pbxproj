@@ -23,7 +23,6 @@
 		8BC9BCB72C2A97D6002403ED /* joystickViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCB62C2A97D6002403ED /* joystickViewModel.swift */; };
 		8BC9BCB92C2A9825002403ED /* itemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCB82C2A9825002403ED /* itemViewModel.swift */; };
 		8BC9BCBB2C2AA402002403ED /* projectileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCBA2C2AA402002403ED /* projectileViewModel.swift */; };
-		8BC9BCBD2C2AC3C1002403ED /* backgroundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCBC2C2AC3C1002403ED /* backgroundViewModel.swift */; };
 		962D988E2C19655E00E38C85 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988D2C19655E00E38C85 /* ShopView.swift */; };
 		962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988F2C19690A00E38C85 /* LeaderboardView.swift */; };
 		969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */; };
@@ -74,6 +73,11 @@
 		A66137602C287D2700B6AC3D /* FoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375F2C287D2700B6AC3D /* FoundView.swift */; };
 		A68EE3932C29CCF200C74EE7 /* bossViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */; };
 		A68EE3952C2B1F3900C74EE7 /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = A68EE3942C2B1F3900C74EE7 /* intro.mp4 */; };
+		A68EE3972C2C098B00C74EE7 /* chestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE3962C2C098B00C74EE7 /* chestViewModel.swift */; };
+		A68EE39B2C2C0D0A00C74EE7 /* soundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE39A2C2C0D0A00C74EE7 /* soundViewModel.swift */; };
+		A68EE39D2C2C117600C74EE7 /* botViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE39C2C2C117600C74EE7 /* botViewModel.swift */; };
+		A68EE39F2C2C246300C74EE7 /* mapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE39E2C2C246300C74EE7 /* mapViewModel.swift */; };
+		A68EE3A12C2C2A3700C74EE7 /* nodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE3A02C2C2A3700C74EE7 /* nodeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,7 +114,6 @@
 		8BC9BCB62C2A97D6002403ED /* joystickViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = joystickViewModel.swift; sourceTree = "<group>"; };
 		8BC9BCB82C2A9825002403ED /* itemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = itemViewModel.swift; sourceTree = "<group>"; };
 		8BC9BCBA2C2AA402002403ED /* projectileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = projectileViewModel.swift; sourceTree = "<group>"; };
-		8BC9BCBC2C2AC3C1002403ED /* backgroundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = backgroundViewModel.swift; sourceTree = "<group>"; };
 		962D988D2C19655E00E38C85 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		962D988F2C19690A00E38C85 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AveriaSerifLibre-Regular.ttf"; sourceTree = "<group>"; };
@@ -165,6 +168,11 @@
 		A661375F2C287D2700B6AC3D /* FoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundView.swift; sourceTree = "<group>"; };
 		A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bossViewModel.swift; sourceTree = "<group>"; };
 		A68EE3942C2B1F3900C74EE7 /* intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro.mp4; sourceTree = "<group>"; };
+		A68EE3962C2C098B00C74EE7 /* chestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chestViewModel.swift; sourceTree = "<group>"; };
+		A68EE39A2C2C0D0A00C74EE7 /* soundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = soundViewModel.swift; sourceTree = "<group>"; };
+		A68EE39C2C2C117600C74EE7 /* botViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = botViewModel.swift; sourceTree = "<group>"; };
+		A68EE39E2C2C246300C74EE7 /* mapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mapViewModel.swift; sourceTree = "<group>"; };
+		A68EE3A02C2C2A3700C74EE7 /* nodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nodeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,7 +288,11 @@
 				8BC9BCB62C2A97D6002403ED /* joystickViewModel.swift */,
 				8BC9BCB82C2A9825002403ED /* itemViewModel.swift */,
 				8BC9BCBA2C2AA402002403ED /* projectileViewModel.swift */,
-				8BC9BCBC2C2AC3C1002403ED /* backgroundViewModel.swift */,
+				A68EE3962C2C098B00C74EE7 /* chestViewModel.swift */,
+				A68EE39A2C2C0D0A00C74EE7 /* soundViewModel.swift */,
+				A68EE39C2C2C117600C74EE7 /* botViewModel.swift */,
+				A68EE39E2C2C246300C74EE7 /* mapViewModel.swift */,
+				A68EE3A02C2C2A3700C74EE7 /* nodeViewModel.swift */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -321,9 +333,9 @@
 		A660D2822C0ECB6400D3A74F /* mini2 */ = {
 			isa = PBXGroup;
 			children = (
+				8B8FF0662C1950CE00BE749B /* mini2.entitlements */,
 				969C3DDF2C29F1CC007117C4 /* sounds */,
 				A626195F2C19514700FF75F1 /* model */,
-				8B8FF0662C1950CE00BE749B /* mini2.entitlements */,
 				8B8FF05F2C19442300BE749B /* MultiplayerConnectivity */,
 				A660D2C62C13203400D3A74F /* Info.plist */,
 				A660D2C02C131F7D00D3A74F /* helper */,
@@ -542,6 +554,10 @@
 				2B35999E2C283A2C00EDBA3C /* WeaponModel.swift in Sources */,
 				A661375C2C27FFE600B6AC3D /* QuestFinishedView.swift in Sources */,
 				2B3598DF2C11C10600EDBA3C /* AnalogJoystick.swift in Sources */,
+				A68EE3972C2C098B00C74EE7 /* chestViewModel.swift in Sources */,
+				A68EE39B2C2C0D0A00C74EE7 /* soundViewModel.swift in Sources */,
+				A68EE3A12C2C2A3700C74EE7 /* nodeViewModel.swift in Sources */,
+				A68EE39F2C2C246300C74EE7 /* mapViewModel.swift in Sources */,
 				8BC9BCB52C2A33A4002403ED /* hpBarViewModel.swift in Sources */,
 				A62619692C19802D00FF75F1 /* Character.swift in Sources */,
 				A626196B2C19814D00FF75F1 /* SparksView.swift in Sources */,
@@ -555,7 +571,6 @@
 				2B3599A02C283A3600EDBA3C /* SkillModel.swift in Sources */,
 				A62619732C19A01D00FF75F1 /* basicAttackViewModel.swift in Sources */,
 				962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */,
-				8BC9BCBD2C2AC3C1002403ED /* backgroundViewModel.swift in Sources */,
 				A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */,
 				8BC9BCB92C2A9825002403ED /* itemViewModel.swift in Sources */,
 				8B8FF06B2C19596F00BE749B /* (null) in Sources */,
@@ -568,6 +583,7 @@
 				A660D2842C0ECB6400D3A74F /* mini2App.swift in Sources */,
 				A66137522C23E13700B6AC3D /* QuestView.swift in Sources */,
 				962D988E2C19655E00E38C85 /* ShopView.swift in Sources */,
+				A68EE39D2C2C117600C74EE7 /* botViewModel.swift in Sources */,
 				A62619672C19690A00FF75F1 /* OptionView.swift in Sources */,
 				8BC9BCB32C258B79002403ED /* characterViewModel.swift in Sources */,
 				8BC9BCBB2C2AA402002403ED /* projectileViewModel.swift in Sources */,
@@ -737,7 +753,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = 5T75SV584X;
+				DEVELOPMENT_TEAM = T7SD288Q5G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -752,7 +768,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethe;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -769,7 +785,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = 5T75SV584X;
+				DEVELOPMENT_TEAM = T7SD288Q5G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -784,7 +800,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethe;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
