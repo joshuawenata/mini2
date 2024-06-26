@@ -13,6 +13,7 @@ struct PhysicsCategory {
 }
 
 class BattleScene: SKScene, SKPhysicsContactDelegate {
+    @ObservedObject var audioManager = AudioManager()
     var characterNode: SKSpriteNode!
     var hpBarInner: SKSpriteNode!
     var hpBarOuter: SKSpriteNode!
@@ -99,44 +100,35 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         let bodyA = contact.bodyA
         let bodyB = contact.bodyB
         
+        let hit = SKAudioNode(fileNamed: "impact1.wav")
+        hit.autoplayLooped = false
+        let removeAction = SKAction.sequence([
+            SKAction.play(),
+            SKAction.wait(forDuration: 1.0),
+            SKAction.removeFromParent()
+        ])
+        
         // Check for melee hit
         if (bodyA.categoryBitMask == PhysicsCategory.meleeArea && bodyB.categoryBitMask == PhysicsCategory.enemy) ||
-           (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.meleeArea) {
+            (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.meleeArea) {
             print("Is Hit!!!")
             print("current HP: \(hpEnemy)")
             isHitMelee = true
+            
+            addChild(hit)
+            hit.run(removeAction)
         }
         
         // Check for projectile hit
         if (bodyA.categoryBitMask == PhysicsCategory.projectile && bodyB.categoryBitMask == PhysicsCategory.enemy) ||
-           (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.projectile) {
+            (bodyA.categoryBitMask == PhysicsCategory.enemy && bodyB.categoryBitMask == PhysicsCategory.projectile) {
             print("Is FIRE!!!")
             print("current HP: \(hpEnemy)")
             projectileNode?.removeFromParent()
             isHitProjectile = true
-        }
-        
-        // Check for melee hit
-        if (bodyA.categoryBitMask == PhysicsCategory.meleeArea && bodyB.categoryBitMask == PhysicsCategory.otherPlayer) ||
-           (bodyA.categoryBitMask == PhysicsCategory.otherPlayer && bodyB.categoryBitMask == PhysicsCategory.meleeArea) {
-            print("Is Hit!!!")
-            print("current HP: \(hpEnemy)")
-        }
-        
-        // Check for projectile hit
-        if (bodyA.categoryBitMask == PhysicsCategory.projectile && bodyB.categoryBitMask == PhysicsCategory.otherPlayer) ||
-           (bodyA.categoryBitMask == PhysicsCategory.otherPlayer && bodyB.categoryBitMask == PhysicsCategory.projectile) {
-            print("Is FIRE!!!")
-            print("current HP: \(hpEnemy)")
-            projectileNode?.removeFromParent()
-            anotherProjectileNode?.removeFromParent()
-        }
-        
-        // If neither, not a hit
-        if !(isHitMelee || isHitProjectile) {
-            print("Is NOT Hit!!!")
-            isHitMelee = false
-            isHitProjectile = false
+            
+            addChild(hit)
+            hit.run(removeAction)
         }
     }
     
@@ -148,7 +140,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         addCharacterBattle(CGPoint(x: frame.midX, y: frame.midY),category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.localPlayer.displayName, version: "self")
         
         addDummyRobot(CGPoint(x: 200, y: 0), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
-
+        
         swordNode = addItem(CGPoint(x: -60, y: 0), imageName: "defaultSword")
         
         meleeAreaNode = addItem(CGPoint(x: -60, y: 0), imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
@@ -164,6 +156,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
     }
     
+
     func configureAttackProperties(mele: SKSpriteNode?, range: SKSpriteNode?, slash: SKSpriteNode?, sword: SKSpriteNode?) {
         mele?.isHidden = true
         mele?.zPosition = -1
@@ -176,6 +169,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         sword?.zRotation = -20
         sword?.position.x = -40
         
+
         slash?.setScale(0.5)
         slash?.position.x = 0
     }
@@ -199,6 +193,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             self.playerName = playerName
         }
         
+
         
         startIdleAnimationBattle(characterNode: characterNode)
     }
@@ -315,10 +310,10 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func calculateProjectilePosition(degree: CGPoint, from applePosition: CGPoint, projectile: SKSpriteNode) -> CGPoint {
-
+        
         let x = Float(applePosition.x) + Float(degree.x)
         let y = Float(applePosition.y) + Float(degree.y)
-
+        
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
 }

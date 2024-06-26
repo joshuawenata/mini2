@@ -16,6 +16,9 @@ struct QuestFinishedView: View {
     var id: Int
     var items = Array(0...9)
     
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -59,6 +62,12 @@ struct QuestFinishedView: View {
                             }
                         })
                         .padding(.top, 20)
+                        .simultaneousGesture(TapGesture().onEnded {
+                            if let url = Bundle.main.url(forResource: "interaction", withExtension: "wav") {
+                                audioManager.loadAudioFiles(urls: [url])
+                                audioManager.play()
+                            }
+                        })
                     }
                 }
                 .padding(.horizontal, 20)
@@ -70,7 +79,10 @@ struct QuestFinishedView: View {
             if let quest = quest {
                 quest.completed = true
             }
-        }
+            if let url = Bundle.main.url(forResource: "quest_complete", withExtension: "wav") {
+                audioManager.loadAudioFiles(urls: [url])
+                audioManager.play()
+            }}
         .navigationBarBackButtonHidden(true)
     }
     

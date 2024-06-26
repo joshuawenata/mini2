@@ -9,6 +9,10 @@ import SwiftUI
 
 struct LeaderboardView: View {
     @Environment(\.presentationMode) var presentationMode
+    
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     var body: some View {
         ZStack {
             Image("greenbg")
@@ -34,6 +38,8 @@ struct LeaderboardView: View {
                     Spacer()
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
+                        audioManager.loadAudioFiles(urls: audioFiles)
+                        audioManager.play()
                     }) {
                         Image("cancel")
                             .resizable()
@@ -157,9 +163,13 @@ struct LeaderboardView: View {
         }
         .padding(.leading, 50)
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            if let url2 = Bundle.main.url(forResource: "exit", withExtension: "wav") {
+                audioFiles = [url2]
+            }
+        }
     }
 }
-
-#Preview {
-    LeaderboardView()
-}
+//#Preview {
+//    LeaderboardView()
+//}

@@ -12,6 +12,9 @@ struct InGameView: View {
     @Environment (\.presentationMode) var presentationMode
     @Query var quest: [Quest]
     
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     var isQuestCompleted: [Bool] {
         let questIDs = [1, 2, 3, 4, 5, 6]
         return questIDs.map { id in
@@ -22,20 +25,26 @@ struct InGameView: View {
         NavigationStack {
             ZStack {
                 if gameCenter.jungleView {
-                    SpriteView(scene: GameScene(size: UIScreen.main.bounds.size, character:character)).ignoresSafeArea()
+                    SpriteView(scene: BattleScene(size: UIScreen.main.bounds.size, character:character)).ignoresSafeArea()
                 }
-
+                
                 VStack {
                     VStack {
                         HStack {
                             Spacer()
-
+                            
                             if !gameCenter.battleView {
-                                NavigationLink(destination: LeaderboardView(), label: {
+                                NavigationLink(destination: LeaderboardView()) {
                                     Image("leaderboard")
                                         .resizable()
                                         .frame(width: 40, height: 40)
                                         .foregroundColor(.black)
+                                }
+                                .simultaneousGesture(TapGesture().onEnded {
+                                    
+                                    audioManager.loadAudioFiles(urls: audioFiles)
+                                    audioManager.play()
+                                    
                                 })
                                 
                                 NavigationLink(destination: CharacterView(character: $character), label: {
@@ -44,6 +53,10 @@ struct InGameView: View {
                                         .frame(width: 40, height: 40)
                                         .padding(.leading, 20)
                                 })
+                                .simultaneousGesture(TapGesture().onEnded {
+                                    audioManager.loadAudioFiles(urls: audioFiles)
+                                    audioManager.play()
+                                })
                                 
                                 NavigationLink(destination: BackpackView(character: $character), label: {
                                     Image("inventory")
@@ -51,12 +64,20 @@ struct InGameView: View {
                                         .frame(width: 40, height: 40)
                                         .padding(.leading, 20)
                                 })
+                                .simultaneousGesture(TapGesture().onEnded {
+                                    audioManager.loadAudioFiles(urls: audioFiles)
+                                    audioManager.play()
+                                })
                                 
                                 NavigationLink(destination: OptionView(), label: {
                                     Image("option")
                                         .resizable()
                                         .frame(width: 40, height: 40)
                                         .padding(.leading, 20)
+                                })
+                                .simultaneousGesture(TapGesture().onEnded {
+                                    audioManager.loadAudioFiles(urls: audioFiles)
+                                    audioManager.play()
                                 })
                             }
                         }
@@ -73,6 +94,10 @@ struct InGameView: View {
                         .frame(width: 105, height: 35)
                         .padding(.leading, 200)
                 })
+                .simultaneousGesture(TapGesture().onEnded {
+                    audioManager.loadAudioFiles(urls: audioFiles)
+                    audioManager.play()
+                })
                 .hidden(
                     VariableManager.shared.interactionButtonHidden ||
                     (VariableManager.shared.touchBuilding == "horse" && isQuestCompleted[0]) ||
@@ -85,10 +110,16 @@ struct InGameView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            if let url1 = Bundle.main.url(forResource: "interaction", withExtension: "wav") {
+                audioFiles = [url1]
+            }
+        }
     }
 }
 
 @ViewBuilder
+
 private func destinationView(character: Binding<Character>) -> some View {
         switch VariableManager.shared.touchBuilding {
             case "blacksmith":
@@ -116,26 +147,26 @@ private func destinationView(character: Binding<Character>) -> some View {
         }
     }
 
-    private func imageButton() -> String {
-        switch VariableManager.shared.touchBuilding {
-            case "shopBuilding", "dinerBuilding", "npcFish", "npcFlower":
-                return "buybutton"
-            case "questBuilding", "horse":
-                return "interactbutton"
-            case "apple":
-                return "collectbutton"
-            case "cat":
-                return "catchbutton"
-            case "npcHouse":
-                return "chatbutton"
-            case "chest_opened":
-                return "openbutton"
-            case "sparks":
-                return "questionmarkbutton"
-            default:
-                return "interactbutton"
-        }
+private func imageButton() -> String {
+    switch VariableManager.shared.touchBuilding {
+    case "shopBuilding", "dinerBuilding", "npcFish", "npcFlower":
+        return "buybutton"
+    case "questBuilding", "horse":
+        return "interactbutton"
+    case "apple":
+        return "collectbutton"
+    case "cat":
+        return "catchbutton"
+    case "npcHouse":
+        return "chatbutton"
+    case "chest_opened":
+        return "openbutton"
+    case "sparks":
+        return "questionmarkbutton"
+    default:
+        return "interactbutton"
     }
+}
 
 
 extension View {
@@ -146,7 +177,7 @@ extension View {
 
 struct HiddenModifier: ViewModifier {
     var isHidden: Bool
-
+    
     func body(content: Content) -> some View {
         content.opacity(isHidden ? 0 : 1)
     }

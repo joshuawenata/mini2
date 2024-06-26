@@ -12,6 +12,9 @@ struct CharacterView: View {
     @Environment(\.modelContext) private var modelWatch
     @Binding var character: Character
     
+    @StateObject private var audioManager = AudioManager()
+    @State private var audioFiles: [URL] = []
+    
     var body: some View {
         ZStack {
             Image("greenbg")
@@ -45,6 +48,12 @@ struct CharacterView: View {
                             .scaledToFit()
                             .padding(.horizontal, 20)
                             .scaledToFit()
+                    })
+                    .simultaneousGesture(TapGesture().onEnded {
+                        if let url = Bundle.main.url(forResource: "exit", withExtension: "wav") {
+                            audioManager.loadAudioFiles(urls: [url])
+                            audioManager.play()
+                        }
                     })
                 }
                 .padding(.horizontal, 15)
