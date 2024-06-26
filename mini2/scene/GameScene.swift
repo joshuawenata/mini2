@@ -4,7 +4,9 @@ import SwiftUI
 import SwiftData
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-//    @ObservedObject var audioManager = AudioManager()
+    //    @ObservedObject var audioManager = AudioManager()
+    //    let villageSongNode = SKSpriteNode(color: .red, size: CGSize(width: 200, height: 200))
+    //    let riverSound = SKSpriteNode(color: .red, size: CGSize(width: 200, height: 200))
     
     var characterNode: SKSpriteNode!
     var playerName: SKLabelNode!
@@ -18,7 +20,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let blacksmithNode = SKSpriteNode(color: .clear, size: CGSize(width: 200, height: 200))
     let battleNode = SKSpriteNode(color: .clear, size: CGSize(width: 300, height: 300))
-    let interactionThresholdDistance: CGFloat = 200
+    //    let interactionThresholdDistance: CGFloat = 200
     
     var character: Character
     
@@ -27,7 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.character = character
         super.init(size: size)
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
@@ -50,47 +52,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         switch nodeName {
-            case "battleBuilding":
-                gameCenter.startMatchmaking()
-            case "blacksmith_00000", "blacksmith_00001", "blacksmith_00002", "blacksmith_00003", "blacksmith_00004", "blacksmith_00005", "blacksmith_00006", "blacksmith_00007", "blacksmith_00008", "blacksmith_00009", "blacksmith_00010", "blacksmith_00011", "blacksmith_00012", "blacksmith_00013", "blacksmith_00014", "blacksmith_00015", "blacksmith_00016", "blacksmith_00017", "blacksmith_00018", "blacksmith_00019", "blacksmith_00020", "blacksmith_00021", "blacksmith_00022", "blacksmith_00023", "blacksmith_00024", "blacksmith_00025", "blacksmith_00026", "blacksmith_00027", "blacksmith_00028", "blacksmith_00029":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "blacksmith"
-            case "dinerBuilding":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "dinerBuilding"
-            case "questBuilding":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "questBuilding"
-            case "horse_00000", "horse_0001", "horse_0002", "horse_0003", "horse_0004", "horse_0005", "horse_0006", "horse_0007", "horse_0008", "horse_0009", "horse_0010", "horse_0011", "horse_0012", "horse_0013", "horse_0014", "horse_0015", "horse_0016", "horse_0017", "horse_0018", "horse_0019", "horse_0020", "horse_0021", "horse_0022", "horse_0023", "horse_0024", "horse_0025", "horse_0026", "horse_0027", "horse_0028", "horse_0029":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "horse"
-            case "npcFish":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "npcFish"
-            case "npcFlower":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "npcFlower"
-            case "apple":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "apple"
-            case "cat":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "cat"
-            case "npcHouse":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "npcHouse"
-            case "sparks":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "sparks"
-            case "chest_opened":
-                VariableManager.shared.interactionButtonHidden = false
-                VariableManager.shared.touchBuilding = "chest_opened"
-            default:
-                break
+        case "battleBuilding":
+            gameCenter.startMatchmaking()
+        case "blacksmith_00000", "blacksmith_00001", "blacksmith_00002", "blacksmith_00003", "blacksmith_00004", "blacksmith_00005", "blacksmith_00006", "blacksmith_00007", "blacksmith_00008", "blacksmith_00009", "blacksmith_00010", "blacksmith_00011", "blacksmith_00012", "blacksmith_00013", "blacksmith_00014", "blacksmith_00015", "blacksmith_00016", "blacksmith_00017", "blacksmith_00018", "blacksmith_00019", "blacksmith_00020", "blacksmith_00021", "blacksmith_00022", "blacksmith_00023", "blacksmith_00024", "blacksmith_00025", "blacksmith_00026", "blacksmith_00027", "blacksmith_00028", "blacksmith_00029":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "blacksmith"
+        case "dinerBuilding":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "dinerBuilding"
+        case "questBuilding":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "questBuilding"
+        case "horse_00000", "horse_0001", "horse_0002", "horse_0003", "horse_0004", "horse_0005", "horse_0006", "horse_0007", "horse_0008", "horse_0009", "horse_0010", "horse_0011", "horse_0012", "horse_0013", "horse_0014", "horse_0015", "horse_0016", "horse_0017", "horse_0018", "horse_0019", "horse_0020", "horse_0021", "horse_0022", "horse_0023", "horse_0024", "horse_0025", "horse_0026", "horse_0027", "horse_0028", "horse_0029":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "horse"
+        case "npcFish":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "npcFish"
+        case "npcFlower":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "npcFlower"
+        case "apple":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "apple"
+        case "cat":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "cat"
+        case "npcHouse":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "npcHouse"
+        case "sparks":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "sparks"
+        case "chest_opened":
+            VariableManager.shared.interactionButtonHidden = false
+            VariableManager.shared.touchBuilding = "chest_opened"
+        default:
+            break
         }
         
     }
-
+    
     func didEnd(_ contact: SKPhysicsContact) {
         if(!hiddenTriggered){
             self.hiddenTriggered = true
@@ -121,6 +123,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addCharacter(CGPoint(x: frame.midX, y: frame.midY))
         configureJoysticks()
         addBuildings()
+        addSongs()
     }
     
     func random(min: CGFloat, max: CGFloat) -> CGFloat {
@@ -155,8 +158,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode.addChild(moveJoystick)
         moveJoystick.position = CGPoint(x: -300, y: -100)
         
+        let footstepSound = SKAudioNode(fileNamed: "footsteps.mp3")
+        
         moveJoystick.on(.begin) { [unowned self] _ in
             startWalkingAnimation(characterNode: characterNode)
+            addChild(footstepSound)
         }
         
         moveJoystick.on(.move) { [unowned self] joystick in
@@ -187,10 +193,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             hpBarInner.position.x = characterNode.position.x
             hpBarInner.position.y = characterNode.position.y + 54
-        
+            
             hpBarOuter.position.x = characterNode.position.x - 5
             hpBarOuter.position.y = characterNode.position.y + 50
-        
+            
             playerName.position.x = characterNode.position.x
             playerName.position.y = characterNode.position.y + 70
             
@@ -199,6 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         moveJoystick.on(.end) { [unowned self] _ in
             stopWalkingAnimation(characterNode: characterNode)
+            footstepSound.removeFromParent()
         }
         
         joystickStickImageEnabled = true
@@ -262,9 +269,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(character)
         characterNode = character
-                
+        
         startIdleAnimation(characterNode: characterNode)
     }
+    
+        func addSongs() {
+            let villageSongNode = SKSpriteNode(color: .red, size: CGSize(width: 200, height: 200))
+    
+    
+        }
     
     func addBuildings() {
         //top
@@ -277,6 +290,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         river.setScale(0.5)
         addChild(river)
         startRiverAnimation(riverNode: river)
+        let riverSound = SKAudioNode(fileNamed: "river.mp3")
+        if let riverSoundNode = riverSound.avAudioNode as? AVAudioPlayerNode {
+            riverSoundNode.volume = 0.2
+        }
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            let riverDistance = hypot(river.position.x - self.characterNode.position.x, river.position.y - self.characterNode.position.y)
+            if riverDistance < 1500 {
+                if riverSound.parent == nil {
+                    self.addChild(riverSound)
+                }
+            } else {
+                riverSound.removeFromParent()
+            }
+        }
+    
+
         
         addChild(addBuilding(at: CGPoint(x: -2000, y: 300), imageName: "npcFish", isRectangle: true))
         

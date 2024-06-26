@@ -145,9 +145,7 @@ private func destinationView(character: Binding<Character>) -> some View {
             default:
                 EmptyView()
         }
->>>>>>> main
     }
-}
 
 private func imageButton() -> String {
     switch VariableManager.shared.touchBuilding {

@@ -49,7 +49,7 @@ struct ShopView: View {
             skillJoystickImage: "water_joystick"
         ),
         SkillModel(
-            skillName: "Pistol",
+            skillName: "9mm",
             skillDamage: 30,
             skillCoolDown: 5,
             skillPrice: 700,
