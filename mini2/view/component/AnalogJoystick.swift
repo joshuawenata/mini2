@@ -149,11 +149,11 @@ open class TLAnalogJoystickComponent: SKSpriteNode {
         
         self.diameter = diameter
         self.image = image
-
+        
         addObserver(self, forKeyPath: "color", options: NSKeyValueObservingOptions.old, context: &kvoContext)
         redrawTexture()
     }
-
+    
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -172,7 +172,7 @@ open class TLAnalogJoystickComponent: SKSpriteNode {
     private func redrawTexture() {
         let scale = UIScreen.main.scale
         let needSize = CGSize(width: diameter, height: diameter)
-
+        
         UIGraphicsBeginImageContextWithOptions(needSize, false, scale)
         let rectPath = UIBezierPath(ovalIn: CGRect(origin: .zero, size: needSize))
         rectPath.addClip()
@@ -186,7 +186,7 @@ open class TLAnalogJoystickComponent: SKSpriteNode {
         
         let textureImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-
+        
         texture = SKTexture(image: textureImage)
     }
 }
@@ -207,11 +207,11 @@ open class TLAnalogJoystick: SKNode {
                 return
             }
             
-            #if swift(>=4.2)
-                let loopMode = RunLoop.Mode.common
-            #else
-                let loopMode = RunLoopMode.commonModes
-            #endif
+#if swift(>=4.2)
+            let loopMode = RunLoop.Mode.common
+#else
+            let loopMode = RunLoopMode.commonModes
+#endif
             
             if tracking {
                 displayLink.add(to: .current, forMode: loopMode)
@@ -243,7 +243,7 @@ open class TLAnalogJoystick: SKNode {
         
         set {
             isUserInteractionEnabled = !newValue
-
+            
             if newValue {
                 stop()
             }
@@ -324,7 +324,7 @@ open class TLAnalogJoystick: SKNode {
             handle.image = newValue
         }
     }
-
+    
     init(withBase base: TLAnalogJoystickComponent, handle: TLAnalogJoystickComponent) {
         self.base = base
         self.handle = handle
@@ -334,7 +334,7 @@ open class TLAnalogJoystick: SKNode {
         disabled = false
         displayLink = CADisplayLink(target: self, selector: #selector(listen))
         handle.zPosition = base.zPosition + 1
-
+        
         addChild(base)
         addChild(handle)
     }
@@ -360,7 +360,7 @@ open class TLAnalogJoystick: SKNode {
     
     private func runEvent(_ type: TLAnalogJoystickEventType) {
         let handlers = getEventHandlers(forType: type)
-
+        
         handlers.forEach { _, handler in
             handler(self)
         }
@@ -399,7 +399,7 @@ open class TLAnalogJoystick: SKNode {
     //MARK: - Overrides
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
-
+        
         guard handle == atPoint(touch.location(in: self)) else {
             return
         }
@@ -416,12 +416,12 @@ open class TLAnalogJoystick: SKNode {
         let location = touch.location(in: self)
         let baseRadius = base.radius
         let distance = sqrt(pow(location.x, 2) + pow(location.y, 2))
-        let    distanceDiff = distance - baseRadius
+        let distanceDiff = distance - baseRadius
         
         if distanceDiff > 0 {
             let handlePosition = CGPoint(x: location.x / distance * baseRadius, y: location.y / distance * baseRadius)
             handle.position = handlePosition
-
+            
             if isMoveable {
                 position.x += location.x - handlePosition.x
                 position.y += location.y - handlePosition.y
@@ -438,7 +438,7 @@ open class TLAnalogJoystick: SKNode {
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         tracking = false
     }
-
+    
     open override var description: String {
         return "TLAnalogJoystick (position: \(position), velocity: \(velocity), angular: \(angular)"
     }

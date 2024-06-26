@@ -19,6 +19,11 @@
 		8B8FF0732C1A950E00BE749B /* MultipeerConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FF0722C1A950E00BE749B /* MultipeerConnectivityManager.swift */; };
 		8BC9BCB12C25502B002403ED /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCB02C25502B002403ED /* GameModel.swift */; };
 		8BC9BCB32C258B79002403ED /* characterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCB22C258B79002403ED /* characterViewModel.swift */; };
+		8BC9BCB52C2A33A4002403ED /* hpBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCB42C2A33A4002403ED /* hpBarViewModel.swift */; };
+		8BC9BCB72C2A97D6002403ED /* joystickViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCB62C2A97D6002403ED /* joystickViewModel.swift */; };
+		8BC9BCB92C2A9825002403ED /* itemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCB82C2A9825002403ED /* itemViewModel.swift */; };
+		8BC9BCBB2C2AA402002403ED /* projectileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCBA2C2AA402002403ED /* projectileViewModel.swift */; };
+		8BC9BCBD2C2AC3C1002403ED /* backgroundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC9BCBC2C2AC3C1002403ED /* backgroundViewModel.swift */; };
 		962D988E2C19655E00E38C85 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988D2C19655E00E38C85 /* ShopView.swift */; };
 		962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962D988F2C19690A00E38C85 /* LeaderboardView.swift */; };
 		969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */; };
@@ -82,6 +87,11 @@
 		8B8FF0722C1A950E00BE749B /* MultipeerConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerConnectivityManager.swift; sourceTree = "<group>"; };
 		8BC9BCB02C25502B002403ED /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GameModel.swift; path = mini2/Model/GameModel.swift; sourceTree = SOURCE_ROOT; };
 		8BC9BCB22C258B79002403ED /* characterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = characterViewModel.swift; sourceTree = "<group>"; };
+		8BC9BCB42C2A33A4002403ED /* hpBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hpBarViewModel.swift; sourceTree = "<group>"; };
+		8BC9BCB62C2A97D6002403ED /* joystickViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = joystickViewModel.swift; sourceTree = "<group>"; };
+		8BC9BCB82C2A9825002403ED /* itemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = itemViewModel.swift; sourceTree = "<group>"; };
+		8BC9BCBA2C2AA402002403ED /* projectileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = projectileViewModel.swift; sourceTree = "<group>"; };
+		8BC9BCBC2C2AC3C1002403ED /* backgroundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = backgroundViewModel.swift; sourceTree = "<group>"; };
 		962D988D2C19655E00E38C85 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		962D988F2C19690A00E38C85 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		962D98912C196B0F00E38C85 /* AveriaSerifLibre-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AveriaSerifLibre-Regular.ttf"; sourceTree = "<group>"; };
@@ -203,6 +213,11 @@
 				8BC9BCB22C258B79002403ED /* characterViewModel.swift */,
 				A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */,
 				A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */,
+				8BC9BCB42C2A33A4002403ED /* hpBarViewModel.swift */,
+				8BC9BCB62C2A97D6002403ED /* joystickViewModel.swift */,
+				8BC9BCB82C2A9825002403ED /* itemViewModel.swift */,
+				8BC9BCBA2C2AA402002403ED /* projectileViewModel.swift */,
+				8BC9BCBC2C2AC3C1002403ED /* backgroundViewModel.swift */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -443,9 +458,11 @@
 				2B35999E2C283A2C00EDBA3C /* WeaponModel.swift in Sources */,
 				A661375C2C27FFE600B6AC3D /* QuestFinishedView.swift in Sources */,
 				2B3598DF2C11C10600EDBA3C /* AnalogJoystick.swift in Sources */,
+				8BC9BCB52C2A33A4002403ED /* hpBarViewModel.swift in Sources */,
 				A62619692C19802D00FF75F1 /* Character.swift in Sources */,
 				A626196B2C19814D00FF75F1 /* SparksView.swift in Sources */,
 				A626196D2C199EBE00FF75F1 /* movementViewModel.swift in Sources */,
+				8BC9BCB72C2A97D6002403ED /* joystickViewModel.swift in Sources */,
 				A661374C2C229D3A00B6AC3D /* BattleScene.swift in Sources */,
 				A68EE3932C29CCF200C74EE7 /* bossViewModel.swift in Sources */,
 				A661375E2C284CB100B6AC3D /* skillAttackViewModel.swift in Sources */,
@@ -454,7 +471,9 @@
 				2B3599A02C283A3600EDBA3C /* SkillModel.swift in Sources */,
 				A62619732C19A01D00FF75F1 /* basicAttackViewModel.swift in Sources */,
 				962D98902C19690A00E38C85 /* LeaderboardView.swift in Sources */,
+				8BC9BCBD2C2AC3C1002403ED /* backgroundViewModel.swift in Sources */,
 				A660D2862C0ECB6400D3A74F /* ContentView.swift in Sources */,
+				8BC9BCB92C2A9825002403ED /* itemViewModel.swift in Sources */,
 				8B8FF06B2C19596F00BE749B /* (null) in Sources */,
 				A661374E2C23CDAB00B6AC3D /* VictoryView.swift in Sources */,
 				969C3DDC2C23EF8D007117C4 /* VariableManager.swift in Sources */,
@@ -467,6 +486,7 @@
 				962D988E2C19655E00E38C85 /* ShopView.swift in Sources */,
 				A62619672C19690A00FF75F1 /* OptionView.swift in Sources */,
 				8BC9BCB32C258B79002403ED /* characterViewModel.swift in Sources */,
+				8BC9BCBB2C2AA402002403ED /* projectileViewModel.swift in Sources */,
 				A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */,
 				8B8FF0732C1A950E00BE749B /* MultipeerConnectivityManager.swift in Sources */,
 			);
