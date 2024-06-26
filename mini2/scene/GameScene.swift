@@ -37,6 +37,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         didSet {
             let image = UIImage(named: "jSubstrate")
             moveJoystick.baseImage = image
+            moveJoystick.baseImage = image
             
             setJoystickSubstrateImageBtn.text = "\(joystickSubstrateImageEnabled ? "Remove" : "Set") substrate image"
         }
@@ -74,7 +75,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         hpBarOuter = hpbarouter
         self.playerName = playerName
         
-        configureJoysticks()
+        addChild(cameraNode)
+        camera = cameraNode
+        camera?.position = characterNode.position
+        
+//        configureJoysticks()
         initBuildingsMainIsland()
         addSongs()
     }
@@ -209,9 +214,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func configureJoysticks() {
-        addChild(cameraNode)
-        camera = cameraNode
-        camera?.position = characterNode.position
         
         cameraNode.addChild(moveJoystick)
         moveJoystick.position = CGPoint(x: -300, y: -100)
