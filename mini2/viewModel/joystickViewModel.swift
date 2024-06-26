@@ -77,8 +77,6 @@ extension BattleScene {
             
             slashNode.position.x = meleeAreaNode.position.x
             slashNode.position.y = meleeAreaNode.position.y
-            
-            
         }
         
         rotateJoystick.on(.move) { [unowned self] joystick in
@@ -130,6 +128,7 @@ extension BattleScene {
             swordNode.run(repeatRotation)
             if isHitMelee {
                 hpEnemy -= 10
+                startGetHitAnimation(characterNode: self.dummyRobot)
             }
             
             if let url = Bundle.main.url(forResource: "swoosh1", withExtension: "mp3") {
@@ -219,6 +218,7 @@ extension BattleScene {
                 print("Mengurangi Health!")
                 hpEnemy -= 10
                 isHitProjectile = false
+                startGetHitAnimation(characterNode: self.dummyRobot)
             }
             
 //            if let url = Bundle.main.url(forResource: "fireball", withExtension: "wav") {
