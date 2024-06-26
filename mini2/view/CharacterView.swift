@@ -21,25 +21,39 @@ struct CharacterView: View {
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
-            
-            VStack(alignment: .leading) {
-                
-                HStack {
+            ZStack{
+                VStack(alignment: .leading) {
                     
-                    Text("Character")
-                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .scaledToFit()
-                    NavigationLink(destination: SparksView(character: $character), label: {
-                        Text("Sparks")
-                            .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                    HStack {
+                        
+                        Text("Character")
+                            .font(.custom("AveriaSerifLibre-Regular", size: 35))
                             .fontWeight(.bold)
                             .foregroundColor(.white)
-                            .padding(.horizontal, 20)
-                            .opacity(0.5)
                             .scaledToFit()
-                    })
+                        NavigationLink(destination: SparksView(character: $character), label: {
+                            Text("Sparks")
+                                .font(.custom("AveriaSerifLibre-Regular", size: 25))
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 20)
+                                .padding(.top, 4)
+                                .opacity(0.5)
+                                .scaledToFit()
+                        })
+                        Spacer()
+                        NavigationLink(destination: InGameView(character: $character), label: {
+                            Image("cancel")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .scaledToFit()
+                                .padding(.horizontal, 20)
+                                .scaledToFit()
+                        })
+                    }
+                    .padding(.horizontal, 60)
+                    .padding(.top, 5)
+                    
                     Spacer()
                     NavigationLink(destination: InGameView(character: $character), label: {
                         Image("cancel")
@@ -63,79 +77,99 @@ struct CharacterView: View {
                 
                 HStack {
                     
-                    VStack(alignment: .leading) {
+                    HStack {
                         
-                        Text("Status")
-                            .font(.custom("AveriaSerifLibre-Regular", size: 40))
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.horizontal)
-                            .frame(height: 50)
-                        
-                        HStack {
-                            HStack {
-                                Image("dmg")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                Text("\((character.characterBaseAttack)+(character.EquipedWeapon.weaponAttack))")
-                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                            }
-                            .padding(.horizontal)
+                        VStack(alignment: .leading) {
                             
-                            HStack {
-                                Image(systemName: "heart.fill")
-                                    .font(.system(size: 30))
-                                    .foregroundColor(.white)
-                                Text("\(character.characterBaseHP)")
-                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                            }
-                            .padding(.horizontal)
-                        }
-                        .padding(.vertical)
-                        
-                        Text("Clothing")
-                            .font(.custom("AveriaSerifLibre-Regular", size: 40))
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.horizontal)
-                        
-                        Image("clothing")
-                            .resizable()
-                            .frame(width: 250, height: 50)
-                            .padding(.horizontal)
-                            .padding(.bottom, 20)
-                    }
-                    .padding(.bottom, -10)
-                    ZStack {
-                        VStack {
-                            
-                            Image("charaIdle")
-                                .resizable()
-                                .frame(width: 150, height: 200)
-                                .padding(.horizontal, 150)
-                                .opacity(0)
-                            
-                            Text("|||Exalted|||")
-                                .font(.custom("AveriaSerifLibre-Regular", size: 40))
+                            Text("Status")
+                                .font(.custom("AveriaSerifLibre-Regular", size: 30))
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
                                 .frame(height: 50)
                             
+                            HStack {
+                                HStack {
+                                    Image("dmg")
+                                        .resizable()
+                                        .frame(width: 37, height: 37)
+                                        .padding(.bottom, 4)
+                                    Text("\((character.characterBaseAttack)+(character.EquipedWeapon.weaponAttack))")
+                                        .font(.custom("AveriaSerifLibre-Regular", size: 25))
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                }
+                                .padding(.horizontal)
+                                
+                                HStack {
+                                    Image(systemName: "heart.fill")
+                                        .font(.system(size: 25))
+                                        .foregroundColor(.white)
+                                    Text("\(character.characterBaseHP)")
+                                        .font(.custom("AveriaSerifLibre-Regular", size: 25))
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                }
+                                .padding(.horizontal)
+                            }
+                            .padding(.top, -5)
+                            .padding(.bottom, 30)
+                            
+                            Text("Clothing")
+                                .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal)
+                                .offset(y: -3)
+                            
+                            Image("clothing")
+                                .resizable()
+                                .frame(width: 250, height: 50)
+                                .padding(.horizontal)
+                                .padding(.bottom, 30)
                         }
-                        Image("femboy")
-                            .offset(y: -45)
+                        .padding(.bottom, 10)
+                        .padding(.leading, 50)
+                        ZStack {
+                            Image("femboy")
+                                .resizable()
+                                .scaledToFit()
+                                .offset(y: -75)
+                                .frame(maxWidth: 352)
+                            
+                            VStack {
+                                
+                                Image("charaIdle")
+                                    .resizable()
+                                    .frame(width: 150, height: 200)
+                                    .padding(.horizontal, 150)
+                                    .opacity(0)
+                                
+                                Text("|||Exalted|||")
+                                    .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal)
+                                    .frame(height: 50)
+                                    .offset(y: -25)
+                                
+                            }
+                        }
+                        
+                        
+                        
                     }
                     
-                    
                 }
+                .padding(.horizontal, 50)
+                .padding(.leading, 30)
                 
+                Image("line")
+                    .offset(x: -150, y: -48)
+                Image("line")
+                    .offset(x: -150, y: 77)
             }
-            .padding(.horizontal, 50)
+            .padding(.bottom, 5)
             
         }
         .navigationBarBackButtonHidden(true)

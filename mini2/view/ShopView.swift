@@ -34,7 +34,7 @@ struct ShopView: View {
             weaponName: "Axe",
             weaponPrice: 300,
             weaponAttack: 25,
-            weaponImage: "Axe",
+            weaponImage: "axe",
             weaponJoystickImage: "axe_joystick"
         ),
     ]
@@ -77,6 +77,8 @@ struct ShopView: View {
                     .frame(width: 600, height: 100)
                     .foregroundColor(Color(red: 0.137, green: 0.43137254901960786, blue: 0.1607843137254902))
                     .frame(maxHeight: 100)
+                    .shadow(radius: 2, y: 2)
+                
                 RoundedRectangle(cornerRadius: 15)
                     .frame(width: 550, height: 45)
                     .foregroundColor(Color(red: 0.16862745098039217, green: 0.5411764705882353, blue: 0.19607843137254902))
@@ -94,7 +96,7 @@ struct ShopView: View {
                         .offset(x: -5)
                     Text(weapon.weaponName)
                         .foregroundStyle(.white)
-                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 25))
                         .padding(10)
                     Spacer()
                     Image("sword")
@@ -103,12 +105,12 @@ struct ShopView: View {
                         .padding(.leading)
                     Text("+\(weapon.weaponAttack)")
                         .foregroundStyle(.white)
-                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 25))
                     Text("\(weapon.weaponPrice)")
                         .padding()
                         .foregroundStyle(.white)
                         .offset(x: 20)
-                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 25))
                     Image("coin")
                         .resizable()
                         .frame(maxWidth: 40, maxHeight: 40)
@@ -143,6 +145,7 @@ struct ShopView: View {
                     .frame(width: 600, height: 100)
                     .foregroundColor(Color(red: 0.137, green: 0.43137254901960786, blue: 0.1607843137254902))
                     .frame(maxHeight: 100)
+                    .shadow(radius: 2, y: 2)
                 RoundedRectangle(cornerRadius: 15)
                     .frame(width: 550, height: 45)
                     .foregroundColor(Color(red: 0.16862745098039217, green: 0.5411764705882353, blue: 0.19607843137254902))
@@ -160,7 +163,7 @@ struct ShopView: View {
                         .offset(x: -5)
                     Text(skill.skillName)
                         .foregroundStyle(.white)
-                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 25))
                         .padding(10)
                     Spacer()
                     Image("sword")
@@ -169,12 +172,12 @@ struct ShopView: View {
                         .padding(.leading)
                     Text("+\(skill.skillDamage)")
                         .foregroundStyle(.white)
-                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 25))
                     Text("\(skill.skillPrice)")
                         .padding()
                         .foregroundStyle(.white)
                         .offset(x: 20)
-                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 25))
                     Image("coin")
                         .resizable()
                         .frame(maxWidth: 40, maxHeight: 40)
@@ -200,7 +203,7 @@ struct ShopView: View {
     
     var body: some View {
         ZStack {
-            Image("greenbg")
+            Image("greenbg 1")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
@@ -208,7 +211,7 @@ struct ShopView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("Shop")
-                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 35))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .scaledToFit()
@@ -219,7 +222,7 @@ struct ShopView: View {
                         .padding()
                         .foregroundStyle(.white)
                         .offset(x: 20)
-                        .font(.custom("AveriaSerifLibre-Regular", size: 30))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 25))
                     Image("coin")
                         .resizable()
                         .frame(maxWidth: 40, maxHeight: 40)
@@ -256,7 +259,7 @@ struct ShopView: View {
                 .scrollIndicators(.never)
                 .padding(.horizontal, 60)
             }
-            .padding(.horizontal, 20)
+            .padding(.leading, 55)
         }
         .alert("You Have No Money!", isPresented: $haveNoMoney, actions: {
             Button("OK", role: .cancel) { }

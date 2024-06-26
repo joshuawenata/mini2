@@ -26,7 +26,7 @@ struct QuestView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("Quest")
-                        .font(.custom("AveriaSerifLibre-Regular", size: 40))
+                        .font(.custom("AveriaSerifLibre-Regular", size: 35))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .scaledToFit()
@@ -110,6 +110,17 @@ struct QuestView: View {
     }
 }
 
-#Preview {
-    QuestView()
+struct QuestView_Previews: PreviewProvider {
+    struct QuestViewPreviewWrapper: View {
+        @State private var character = Character()
+
+        var body: some View {
+            QuestView()
+        }
+    }
+
+    static var previews: some View {
+        QuestViewPreviewWrapper()
+            .previewInterfaceOrientation(.landscapeRight)
+    }
 }
