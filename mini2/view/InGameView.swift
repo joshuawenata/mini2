@@ -15,17 +15,18 @@ struct InGameView: View {
     @StateObject private var audioManager = AudioManager()
     @State private var audioFiles: [URL] = []
     
-    var isQuestCompleted: [Bool] {
-        let questIDs = [1, 2, 3, 4, 5, 6]
-        return questIDs.map { id in
-            quest.first(where: { $0.id == id })?.completed ?? false
-        }
-    }    
+//    var isQuestCompleted: [Bool] {
+//        let questIDs = [1, 2, 3, 4, 5, 6]
+//        return questIDs.map { id in
+//            quest.first(where: { $0.id == id })?.completed ?? false
+//        }
+//    }    
+    
     var body: some View {
         NavigationStack {
             ZStack {
                 if gameCenter.jungleView {
-                    SpriteView(scene: BattleScene(size: UIScreen.main.bounds.size, character:character)).ignoresSafeArea()
+                    SpriteView(scene: GameScene(size: UIScreen.main.bounds.size, character:character)).ignoresSafeArea()
                 }
                 
                 VStack {
@@ -98,15 +99,15 @@ struct InGameView: View {
                     audioManager.loadAudioFiles(urls: audioFiles)
                     audioManager.play()
                 })
-                .hidden(
-                    VariableManager.shared.interactionButtonHidden ||
-                    (VariableManager.shared.touchBuilding == "horse" && isQuestCompleted[0]) ||
-                    (VariableManager.shared.touchBuilding == "apple" && isQuestCompleted[1]) ||
-                    (VariableManager.shared.touchBuilding == "cat" && isQuestCompleted[2]) ||
-                    (VariableManager.shared.touchBuilding == "npcFish" && isQuestCompleted[3]) ||
-                    (VariableManager.shared.touchBuilding == "npcFlower" && isQuestCompleted[4]) ||
-                    (VariableManager.shared.touchBuilding == "npcHouse" && isQuestCompleted[5])
-                )
+//                .hidden(
+//                    VariableManager.shared.interactionButtonHidden ||
+//                    (VariableManager.shared.touchBuilding == "horse" && isQuestCompleted[0]) ||
+//                    (VariableManager.shared.touchBuilding == "apple" && isQuestCompleted[1]) ||
+//                    (VariableManager.shared.touchBuilding == "cat" && isQuestCompleted[2]) ||
+//                    (VariableManager.shared.touchBuilding == "npcFish" && isQuestCompleted[3]) ||
+//                    (VariableManager.shared.touchBuilding == "npcFlower" && isQuestCompleted[4]) ||
+//                    (VariableManager.shared.touchBuilding == "npcHouse" && isQuestCompleted[5])
+//                )
             }
         }
         .navigationBarBackButtonHidden(true)
