@@ -123,7 +123,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addCharacter(CGPoint(x: frame.midX, y: frame.midY))
         configureJoysticks()
         addBuildings()
-        addSongs()
     }
     
     func random(min: CGFloat, max: CGFloat) -> CGFloat {
@@ -272,13 +271,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         startIdleAnimation(characterNode: characterNode)
     }
-    
-        func addSongs() {
-            let villageSongNode = SKSpriteNode(color: .red, size: CGSize(width: 200, height: 200))
-    
-    
-        }
-    
+        
     func addBuildings() {
         //top
         addChild(addBuilding(at: CGPoint(x: -1700, y: 300), imageName: "statueBuilding"))
@@ -296,7 +289,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             let riverDistance = hypot(river.position.x - self.characterNode.position.x, river.position.y - self.characterNode.position.y)
-            if riverDistance < 1500 {
+            if riverDistance < 1700 {
                 if riverSound.parent == nil {
                     self.addChild(riverSound)
                 }

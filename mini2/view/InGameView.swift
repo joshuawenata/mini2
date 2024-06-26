@@ -25,7 +25,7 @@ struct InGameView: View {
         NavigationStack {
             ZStack {
                 if gameCenter.jungleView {
-                    SpriteView(scene: BattleScene(size: UIScreen.main.bounds.size, character:character)).ignoresSafeArea()
+                    SpriteView(scene: GameScene(size: UIScreen.main.bounds.size, character:character)).ignoresSafeArea()
                 }
                 
                 VStack {
