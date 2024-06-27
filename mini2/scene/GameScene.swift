@@ -52,6 +52,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         fatalError("init(coder:) is not supported")
     }
     
+    override func sceneDidLoad() {
+        physicsWorld.contactDelegate = self
+    }
+    
     func didBegin(_ contact: SKPhysicsContact) {
         guard let nodeName = contact.bodyA.node?.name ?? contact.bodyB.node?.name else {
             return
@@ -60,15 +64,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         touchBuilding(nodeName: nodeName, gameCenter: gameCenter)
     }
     
-    override func sceneDidLoad() {
-        physicsWorld.contactDelegate = self
-    }
-    
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
         addBackgroundMainIsland(size: size, addChild: addChild)
-        let (character, hpbarinner, hpbarouter, playerName) = addCharacter(CGPoint(x: -2000, y: 600), addChild: self.addChild, category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.localPlayer.displayName, isBattle: false)
+        let (character, hpbarinner, hpbarouter, playerName, swordNode, meleeAreaNode, rangeAreaNode, slashNode) = addCharacter(CGPoint(x: -2000, y: 600), addChild: self.addChild, category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.localPlayer.displayName, isBattle: false)
         
         characterNode = character
         hpBarInner = hpbarinner
@@ -79,7 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         camera = cameraNode
         camera?.position = characterNode.position
         
-//        configureJoysticks()
+        configureJoysticks()
         initBuildingsMainIsland()
         addSongs()
     }
