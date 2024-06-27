@@ -68,11 +68,25 @@ func playerNameLabel(addChild: (SKNode) -> Void, name: String, position: CGPoint
     return playerName
 }
 
-func addCharacter(_ position: CGPoint, addChild: (SKNode) -> Void, category: UInt32, contact: UInt32, collision: UInt32, name: String, isBattle: Bool) -> (SKSpriteNode, SKSpriteNode, SKSpriteNode, SKLabelNode) {
-    let character = createCharacter(position, addChild: addChild, category: category, contact: contact, collision: collision, isBattle: isBattle)
+func addCharacter(_ position: CGPoint, addChild: (SKNode) -> Void, category: UInt32, contact: UInt32, collision: UInt32, name: String, isBattle: Bool) -> (SKSpriteNode, SKSpriteNode, SKSpriteNode, SKLabelNode, SKSpriteNode, SKSpriteNode, SKSpriteNode, SKSpriteNode) {
     
+    let character = createCharacter(position, addChild: addChild, category: category, contact: contact, collision: collision, isBattle: isBattle)
     let (hpbarinner, hpbarouter) = hpBarCharacter(addChild: addChild, position: position)
     let playerName = playerNameLabel(addChild: addChild, name: name, position: CGPoint(x: character.position.x, y: character.position.y + 70))
-
-    return (character, hpbarinner, hpbarouter, playerName)
+    let swordNode = addItem(CGPoint(x: position.x-40, y: position.y), addChild: addChild, imageName: "defaultSword")
+    let meleeAreaNode = addItem(CGPoint(x: position.x-60, y: position.y), addChild: addChild, imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
+    let rangeAreaNode = addItem(CGPoint(x: position.x-60, y: position.y), addChild: addChild, imageName: "rangeArea",isPhysicsBody: false, category: PhysicsCategory.rangeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
+    let slashNode = addItem(CGPoint(x: position.x-60, y: position.y), addChild: addChild, imageName: "slash_00000")
+    meleeAreaNode.isHidden = true
+    meleeAreaNode.zPosition = -1
+    rangeAreaNode.isHidden = true
+    rangeAreaNode.zPosition = -1
+    slashNode.isHidden = true
+    swordNode.zRotation = -20
+    slashNode.setScale(0.5)
+    if(!isBattle) {
+        swordNode.isHidden = true
+    }
+    
+    return (character, hpbarinner, hpbarouter, playerName, swordNode, meleeAreaNode, rangeAreaNode, slashNode)
 }

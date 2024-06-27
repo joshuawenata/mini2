@@ -242,12 +242,8 @@ extension BattleScene {
         skillJoystick.position = CGPoint(x: 200, y: -25)
         
         moveJoystickConfig()
-        
         rotateJoystickConfig()
-        
         skillJoystickConfig()
-        
-        
         
         joystickStickImageEnabled = true
         joystickSubstrateImageEnabled = true

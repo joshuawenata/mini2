@@ -10,7 +10,7 @@ struct InGameView: View {
     @Binding var character: Character
 
     @Environment (\.presentationMode) var presentationMode
-    @Query var quest: [Quest]
+//    @Query var quest: [Quest]
     
     @StateObject private var audioManager = AudioManager()
     @State private var audioFiles: [URL] = []

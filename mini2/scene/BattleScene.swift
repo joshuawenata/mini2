@@ -138,25 +138,20 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         addBackgroundBattleIsland(size: size, addChild: addChild)
         
-        let (character, hpbarinner, hpbarouter, playerName) = addCharacter(CGPoint(x: frame.midX, y: frame.midY), addChild: addChild, category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.localPlayer.displayName, isBattle: true)
+        let (character, hpbarinner, hpbarouter, playerName, swordNode, meleeAreaNode, rangeAreaNode, slashNode) = addCharacter(CGPoint(x: frame.midX, y: frame.midY), addChild: addChild, category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.localPlayer.displayName, isBattle: true)
+        
+        cameraNode.position = character.position
         
         characterNode = character
         hpBarInner = hpbarinner
         hpBarOuter = hpbarouter
         self.playerName = playerName
+        self.swordNode = swordNode
+        self.meleeAreaNode = meleeAreaNode
+        self.rangeAreaNode = rangeAreaNode
+        self.slashNode = slashNode
         
         addDummyRobot(CGPoint(x: 200, y: 0), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
-        
-        swordNode = addItem(CGPoint(x: -60, y: 0), imageName: "defaultSword")
-        
-        meleeAreaNode = addItem(CGPoint(x: -60, y: 0), imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
-        
-        rangeAreaNode = addItem(CGPoint(x: -60, y: 0), imageName: "rangeArea",isPhysicsBody: false, category: PhysicsCategory.rangeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
-        
-        slashNode = addItem(CGPoint(x: -60, y: 0), imageName: "slash_00000")
-        
-        configureAttackProperties(mele: meleeAreaNode, range: rangeAreaNode, slash: slashNode, sword: swordNode)
-        
         configureJoysticks()
         
         physicsWorld.contactDelegate = self
@@ -168,24 +163,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         addChild(battleBGM)
     }
     
-    
-    func configureAttackProperties(mele: SKSpriteNode?, range: SKSpriteNode?, slash: SKSpriteNode?, sword: SKSpriteNode?) {
-        mele?.isHidden = true
-        mele?.zPosition = -1
-        
-        range?.isHidden = true
-        range?.zPosition = -1
-        
-        slash?.isHidden = true
-        
-        sword?.zRotation = -20
-        sword?.position.x = -40
-        
-        
-        slash?.setScale(0.5)
-        slash?.position.x = 0
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         return
     }
@@ -194,7 +171,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         if hpEnemy <= 0 && !ghostAdded {
             ghostAdded = true
             
-            let ghostNode = addItem(CGPoint(x: 200, y: 0), imageName: "death_00000")
+            let ghostNode = addItem(CGPoint(x: 200, y: 0), addChild: addChild, imageName: "death_00000")
             startGhostAnimation(ghostNode: ghostNode)
             
             let fadeOutAction = SKAction.fadeOut(withDuration: 1.0)
@@ -230,22 +207,16 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
                 }
                 
             } else {
-                let (character, hpbarinner, hpbarouter, playerName) = addCharacter(gameCenter.dataModel!.player, addChild: addChild, category: PhysicsCategory.otherPlayer, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.dataModel!.name, isBattle: true)
+                let (character, hpbarinner, hpbarouter, playerName, swordNode, meleeAreaNode, rangeAreaNode, slashNode) = addCharacter(gameCenter.dataModel!.player, addChild: addChild, category: PhysicsCategory.otherPlayer, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.dataModel!.name, isBattle: true)
                 
                 anotherPlayer = character
                 anotherPlayerHpBarInner = hpbarinner
                 anotherPlayerHpBarOuter = hpbarouter
                 self.anotherPlayerNameLabel = playerName
-                
-                anotherPlayerSword = addItem(CGPoint(), imageName: "defaultSword")
-                
-                anotherPlayerMeleeArea = addItem(CGPoint(), imageName: "meleeArea",isPhysicsBody: true, category: PhysicsCategory.meleeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
-                
-                anotherPlayerRange = addItem(CGPoint(), imageName: "rangeArea",isPhysicsBody: false, category: PhysicsCategory.rangeArea, contact: PhysicsCategory.enemy, collision: PhysicsCategory.none)
-                
-                anotherPlayerSlash = addItem(CGPoint(), imageName: "slash_00000")
-                
-                configureAttackProperties(mele: anotherPlayerMeleeArea, range: anotherPlayerRange, slash: anotherPlayerSlash, sword: anotherPlayerSword)
+                anotherPlayerSword = swordNode
+                anotherPlayerMeleeArea = meleeAreaNode
+                anotherPlayerRange = rangeAreaNode
+                anotherPlayerSlash = slashNode
             }
         }
     }
