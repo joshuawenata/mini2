@@ -99,15 +99,15 @@ struct InGameView: View {
                     audioManager.loadAudioFiles(urls: audioFiles)
                     audioManager.play()
                 })
-//                .hidden(
-//                    VariableManager.shared.interactionButtonHidden ||
+                .hidden(
+                    VariableManager.shared.interactionButtonHidden
+                )
 //                    (VariableManager.shared.touchBuilding == "horse" && isQuestCompleted[0]) ||
 //                    (VariableManager.shared.touchBuilding == "apple" && isQuestCompleted[1]) ||
 //                    (VariableManager.shared.touchBuilding == "cat" && isQuestCompleted[2]) ||
 //                    (VariableManager.shared.touchBuilding == "npcFish" && isQuestCompleted[3]) ||
 //                    (VariableManager.shared.touchBuilding == "npcFlower" && isQuestCompleted[4]) ||
 //                    (VariableManager.shared.touchBuilding == "npcHouse" && isQuestCompleted[5])
-//                )
             }
         }
         .navigationBarBackButtonHidden(true)

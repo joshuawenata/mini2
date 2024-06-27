@@ -32,7 +32,7 @@ extension BattleScene {
                 return
             }
             
-            guard let playerName = self.playerName else {
+            guard let playerName = self.currentPlayerName else {
                 return
             }
             
@@ -43,10 +43,10 @@ extension BattleScene {
             let dy = pVelocity.y * speed
             
             moveNode(node: characterNode, dx: dx, dy: dy)
-            moveNode(node: swordNode, dx: dx, dy: dy)
-            moveNode(node: meleeAreaNode, dx: dx, dy: dy)
-            moveNode(node: rangeAreaNode, dx: dx, dy: dy)
-            moveNode(node: slashNode, dx: dx, dy: dy)
+            moveNode(node: currentSwordNode, dx: dx, dy: dy)
+            moveNode(node: currentMeleeAreaNode, dx: dx, dy: dy)
+            moveNode(node: currentRangeAreaNode, dx: dx, dy: dy)
+            moveNode(node: currentSlashNode, dx: dx, dy: dy)
             moveNode(node: hpBarOuter, dx: dx, dy: dy)
             moveNode(node: hpBarInner, dx: dx, dy: dy)
             moveNode(label: playerName, dx: dx, dy: dy)
@@ -64,10 +64,10 @@ extension BattleScene {
 //        let swordSound = SKAudioNode(fileNamed: "swoosh1.mp3")
         
         rotateJoystick.on(.begin) { [unowned self] _ in
-            guard let meleeAreaNode = self.meleeAreaNode else {
+            guard let meleeAreaNode = self.currentMeleeAreaNode else {
                 return
             }
-            guard let slashNode = self.slashNode else {
+            guard let slashNode = self.currentSlashNode else {
                 return
             }
             meleeAreaNode.isHidden = false
@@ -80,10 +80,10 @@ extension BattleScene {
         }
         
         rotateJoystick.on(.move) { [unowned self] joystick in
-            guard let meleeAreaNode = self.meleeAreaNode else {
+            guard let meleeAreaNode = self.currentMeleeAreaNode else {
                 return
             }
-            guard let slashNode = self.slashNode else {
+            guard let slashNode = self.currentSlashNode else {
                 return
             }
             
@@ -97,13 +97,13 @@ extension BattleScene {
         
         rotateJoystick.on(.end) { [unowned self] _ in
             startAttackAnimationBattle(characterNode: characterNode)
-            guard let swordNode = self.swordNode else {
+            guard let swordNode = self.currentSwordNode else {
                 return
             }
-            guard let meleeAreaNode = self.meleeAreaNode else {
+            guard let meleeAreaNode = self.currentMeleeAreaNode else {
                 return
             }
-            guard let slashNode = self.slashNode else {
+            guard let slashNode = self.currentSlashNode else {
                 return
             }
             slashNode.position.x -= xOffset
@@ -112,7 +112,7 @@ extension BattleScene {
             startSlashAnimation(slashNode: slashNode)
             meleeAreaNode.isHidden = true
             meleeAreaNode.position.x -= 60
-            self.meleeAreaNode?.zRotation = 0
+            self.currentMeleeAreaNode?.zRotation = 0
             
             if(first){
                 swordNode.position.y -= 25
@@ -147,7 +147,7 @@ extension BattleScene {
 //        ])
         
         skillJoystick.on(.begin) { [unowned self] _ in
-            guard let rangeAreaNode = self.rangeAreaNode else {
+            guard let rangeAreaNode = self.currentRangeAreaNode else {
                 return
             }
             
@@ -162,7 +162,7 @@ extension BattleScene {
             guard let characterNode = self.characterNode else {
                 return
             }
-            guard let rangeAreaNode = self.rangeAreaNode else {
+            guard let rangeAreaNode = self.currentRangeAreaNode else {
                 return
             }
             
@@ -177,7 +177,7 @@ extension BattleScene {
         
         skillJoystick.on(.end) { [unowned self] joystick in
             guard let characterNode = self.characterNode else { return }
-            guard let rangeAreaNode = self.rangeAreaNode else { return }
+            guard let rangeAreaNode = self.currentRangeAreaNode else { return }
             
             rangeAreaNode.isHidden = true
             rangeAreaNode.position.x -= 60
@@ -271,5 +271,6 @@ extension BattleScene {
         
         return projectile
     }
+
 }
 
