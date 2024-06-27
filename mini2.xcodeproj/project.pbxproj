@@ -71,12 +71,13 @@
 		A661375E2C284CB100B6AC3D /* skillAttackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */; };
 		A66137602C287D2700B6AC3D /* FoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A661375F2C287D2700B6AC3D /* FoundView.swift */; };
 		A68EE3932C29CCF200C74EE7 /* bossViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */; };
-		A68EE3952C2B1F3900C74EE7 /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = A68EE3942C2B1F3900C74EE7 /* intro.mp4 */; };
 		A68EE3972C2C098B00C74EE7 /* chestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE3962C2C098B00C74EE7 /* chestViewModel.swift */; };
 		A68EE39B2C2C0D0A00C74EE7 /* soundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE39A2C2C0D0A00C74EE7 /* soundViewModel.swift */; };
 		A68EE39D2C2C117600C74EE7 /* botViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE39C2C2C117600C74EE7 /* botViewModel.swift */; };
 		A68EE39F2C2C246300C74EE7 /* mapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE39E2C2C246300C74EE7 /* mapViewModel.swift */; };
 		A68EE3A12C2C2A3700C74EE7 /* nodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE3A02C2C2A3700C74EE7 /* nodeViewModel.swift */; };
+		A68EE3A32C2D36A600C74EE7 /* sendDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68EE3A22C2D36A600C74EE7 /* sendDataViewModel.swift */; };
+		A68EE3A52C2D4BE000C74EE7 /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = A68EE3A42C2D4BE000C74EE7 /* intro.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,12 +166,13 @@
 		A661375D2C284CB100B6AC3D /* skillAttackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skillAttackViewModel.swift; sourceTree = "<group>"; };
 		A661375F2C287D2700B6AC3D /* FoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundView.swift; sourceTree = "<group>"; };
 		A68EE3922C29CCF200C74EE7 /* bossViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bossViewModel.swift; sourceTree = "<group>"; };
-		A68EE3942C2B1F3900C74EE7 /* intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro.mp4; sourceTree = "<group>"; };
 		A68EE3962C2C098B00C74EE7 /* chestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chestViewModel.swift; sourceTree = "<group>"; };
 		A68EE39A2C2C0D0A00C74EE7 /* soundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = soundViewModel.swift; sourceTree = "<group>"; };
 		A68EE39C2C2C117600C74EE7 /* botViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = botViewModel.swift; sourceTree = "<group>"; };
 		A68EE39E2C2C246300C74EE7 /* mapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mapViewModel.swift; sourceTree = "<group>"; };
 		A68EE3A02C2C2A3700C74EE7 /* nodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nodeViewModel.swift; sourceTree = "<group>"; };
+		A68EE3A22C2D36A600C74EE7 /* sendDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sendDataViewModel.swift; sourceTree = "<group>"; };
+		A68EE3A42C2D4BE000C74EE7 /* intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +292,7 @@
 				A68EE39C2C2C117600C74EE7 /* botViewModel.swift */,
 				A68EE39E2C2C246300C74EE7 /* mapViewModel.swift */,
 				A68EE3A02C2C2A3700C74EE7 /* nodeViewModel.swift */,
+				A68EE3A22C2D36A600C74EE7 /* sendDataViewModel.swift */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -342,7 +345,7 @@
 				A660D2832C0ECB6400D3A74F /* mini2App.swift */,
 				2B3598E72C11CD8D00EDBA3C /* view */,
 				A660D2872C0ECB6500D3A74F /* Assets.xcassets */,
-				A68EE3942C2B1F3900C74EE7 /* intro.mp4 */,
+				A68EE3A42C2D4BE000C74EE7 /* intro.mp4 */,
 				A660D2892C0ECB6500D3A74F /* Preview Content */,
 			);
 			path = mini2;
@@ -507,7 +510,7 @@
 				969C3DFD2C2A92EE007117C4 /* fast_riser.wav in Resources */,
 				969C3DE42C29F1F2007117C4 /* lose.wav in Resources */,
 				969C3DE92C29F642007117C4 /* interaction.wav in Resources */,
-				A68EE3952C2B1F3900C74EE7 /* intro.mp4 in Resources */,
+				A68EE3A52C2D4BE000C74EE7 /* intro.mp4 in Resources */,
 				969C3D892C1985F3007117C4 /* AveriaSerifLibre-Regular.ttf in Resources */,
 				969C3DF42C29F70C007117C4 /* song_battle.wav in Resources */,
 				969C3DEF2C29F6D5007117C4 /* fireball.wav in Resources */,
@@ -548,6 +551,7 @@
 				969C3DDE2C29DFB5007117C4 /* Sound.swift in Sources */,
 				2B3598DD2C11C01D00EDBA3C /* GameScene.swift in Sources */,
 				2B35999E2C283A2C00EDBA3C /* WeaponModel.swift in Sources */,
+				A68EE3A32C2D36A600C74EE7 /* sendDataViewModel.swift in Sources */,
 				A661375C2C27FFE600B6AC3D /* QuestFinishedView.swift in Sources */,
 				2B3598DF2C11C10600EDBA3C /* AnalogJoystick.swift in Sources */,
 				A68EE3972C2C098B00C74EE7 /* chestViewModel.swift in Sources */,
