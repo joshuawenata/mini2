@@ -187,6 +187,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         // Send game model to the server
         gameCenter.sendGameModel(gameModel)
+        isOtherHit = false
         
         // Early exit if there's no data model from the server
         guard var dataModel = gameCenter.dataModel else { return }
@@ -213,13 +214,11 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         if dataModel.isotherHit {
             // Create a new projectile if it doesn't exist
-            if anotherProjectileNode == nil {
-                anotherProjectileNode = addProjectile()
-                anotherProjectileNode.position = dataModel.player
-                startSkillAnimation(projectileNode: anotherProjectileNode, imageSet: ["fire_1", "fire_2", "fire_3", "fire_4", "fire_5"], timePerFrame: 0.1)
-                anotherProjectileNode = projectileMove(angle: dataModel.angleProjectile, projectile: anotherProjectileNode)
-                startGetHitAnimation(characterNode: characterNode)
-            }
+            anotherProjectileNode = addProjectile()
+            anotherProjectileNode.position = dataModel.player
+            startSkillAnimation(projectileNode: anotherProjectileNode, imageSet: ["fire_1", "fire_2", "fire_3", "fire_4", "fire_5"], timePerFrame: 0.1)
+            anotherProjectileNode = projectileMove(angle: dataModel.angleProjectile, projectile: anotherProjectileNode)
+            startGetHitAnimation(characterNode: characterNode)
             
             // Add the projectile node to the scene if not already added
             if anotherProjectileNode.parent == nil {
@@ -233,7 +232,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
                     node.removeFromParent()
                     node.position = dataModel.player
                 }
-                self.anotherProjectileNode = nil // Reset projectile node reference
             }
     
         }

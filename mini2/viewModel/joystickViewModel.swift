@@ -20,7 +20,6 @@ extension BattleScene {
         }
         
         moveJoystick.on(.move) { [unowned self] joystick in
-            self.isOtherHit = false
             guard let characterNode = self.characterNode else {
                 return
             }
