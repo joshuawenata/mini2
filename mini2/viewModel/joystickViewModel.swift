@@ -131,7 +131,7 @@ extension BattleScene {
                 startGetHitAnimation(characterNode: self.dummyRobot)
             }
             
-            if let url = Bundle.main.url(forResource: "swoosh1", withExtension: "mp3") {
+            if let url = Bundle.main.url(forResource: "swoosh2", withExtension: "wav") {
                 audioManager.loadAudioFiles(urls: [url])
                 audioManager.play()
             }
@@ -221,10 +221,10 @@ extension BattleScene {
                 startGetHitAnimation(characterNode: self.dummyRobot)
             }
             
-//            if let url = Bundle.main.url(forResource: "fireball", withExtension: "wav") {
-//                audioManager.loadAudioFiles(urls: [url])
-//                audioManager.play()
-//            }
+            if let url = Bundle.main.url(forResource: "fireball", withExtension: "wav") {
+                audioManager.loadAudioFiles(urls: [url])
+                audioManager.play()
+            }
         }
     }
     

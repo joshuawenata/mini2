@@ -45,6 +45,7 @@
 		969C3DFD2C2A92EE007117C4 /* fast_riser.wav in Resources */ = {isa = PBXBuildFile; fileRef = 969C3DFC2C2A92EE007117C4 /* fast_riser.wav */; };
 		969C3DFF2C2A9306007117C4 /* bleep2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 969C3DFE2C2A9306007117C4 /* bleep2.wav */; };
 		969C3E012C2AAAFC007117C4 /* river.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 969C3E002C2AAAFC007117C4 /* river.mp3 */; };
+		969C3E032C2BFEA9007117C4 /* swoosh2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 969C3E022C2BFEA9007117C4 /* swoosh2.wav */; };
 		A62619572C16BC2B00FF75F1 /* CharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619562C16BC2B00FF75F1 /* CharacterView.swift */; };
 		A62619592C17F96400FF75F1 /* BackpackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62619582C17F96400FF75F1 /* BackpackView.swift */; };
 		A626195C2C188AC900FF75F1 /* buildingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A626195B2C188AC900FF75F1 /* buildingViewModel.swift */; };
@@ -136,6 +137,7 @@
 		969C3DFC2C2A92EE007117C4 /* fast_riser.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fast_riser.wav; sourceTree = "<group>"; };
 		969C3DFE2C2A9306007117C4 /* bleep2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bleep2.wav; sourceTree = "<group>"; };
 		969C3E002C2AAAFC007117C4 /* river.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = river.mp3; sourceTree = "<group>"; };
+		969C3E022C2BFEA9007117C4 /* swoosh2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = swoosh2.wav; sourceTree = "<group>"; };
 		A62619562C16BC2B00FF75F1 /* CharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterView.swift; sourceTree = "<group>"; };
 		A62619582C17F96400FF75F1 /* BackpackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackpackView.swift; sourceTree = "<group>"; };
 		A626195B2C188AC900FF75F1 /* buildingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = buildingViewModel.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				969C3DFA2C2A7827007117C4 /* swoosh1.mp3 */,
 				969C3DFC2C2A92EE007117C4 /* fast_riser.wav */,
 				969C3E002C2AAAFC007117C4 /* river.mp3 */,
+				969C3E022C2BFEA9007117C4 /* swoosh2.wav */,
 			);
 			path = sounds;
 			sourceTree = "<group>";
@@ -497,6 +500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				969C3E032C2BFEA9007117C4 /* swoosh2.wav in Resources */,
 				969C3DEB2C29F660007117C4 /* footsteps.mp3 in Resources */,
 				969C3DF92C2A695F007117C4 /* bleep.wav in Resources */,
 				969C3DF52C29F70C007117C4 /* song_main.wav in Resources */,
@@ -753,7 +757,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = T7SD288Q5G;
+				DEVELOPMENT_TEAM = 5T75SV584X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -768,7 +772,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethel;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -785,7 +789,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mini2/Preview Content\"";
-				DEVELOPMENT_TEAM = T7SD288Q5G;
+				DEVELOPMENT_TEAM = 5T75SV584X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mini2/Info.plist;
@@ -800,7 +804,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethel;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftUI.fallOfAethe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
