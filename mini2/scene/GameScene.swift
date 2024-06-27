@@ -78,8 +78,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(cameraNode)
         camera = cameraNode
         camera?.position = characterNode.position
+
+        let MainBGM = SKAudioNode(fileNamed: "song_main.wav")
+        addChild(MainBGM)
         
-//        configureJoysticks()
+        configureJoysticks()
         initBuildingsMainIsland()
         addSongs()
     }
