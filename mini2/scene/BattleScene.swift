@@ -1,5 +1,4 @@
 import SpriteKit
-import AVFAudio
 import SwiftUI
 import SwiftData
 
@@ -15,20 +14,17 @@ struct PhysicsCategory {
 
 class BattleScene: SKScene, SKPhysicsContactDelegate {
     @ObservedObject var audioManager = AudioManager()
-    
-    var dummyRobot: SKSpriteNode?
-    
-    //current player
     var characterNode: SKSpriteNode!
     var hpBarInner: SKSpriteNode!
     var hpBarOuter: SKSpriteNode!
+    var dummyRobot: SKSpriteNode?
+    var first = true
     var currentSwordNode: SKSpriteNode!
     var currentMeleeAreaNode: SKSpriteNode!
     var currentRangeAreaNode: SKSpriteNode!
     var currentSlashNode: SKSpriteNode!
     var projectileNode: SKSpriteNode!
-    
-    var first = true
+    var anotherProjectileNode: SKSpriteNode!
     let moveJoystick = TLAnalogJoystick(withDiameter: 200)
     let rotateJoystick = TLAnalogJoystick(withDiameter: 200)
     let skillJoystick = TLAnalogJoystick(withDiameter: 120)
@@ -51,7 +47,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var angle = CGFloat()
     
     // COMPONENT FOR OTHER PLAYER
-    var anotherPlayerInitialized = false
     var anotherPlayer: SKSpriteNode!
     var anotherPlayerNameLabel: SKLabelNode!
     var anotherPlayerHpBarInner: SKSpriteNode!
@@ -62,7 +57,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var anotherPlayerProjectileNode: SKSpriteNode!
     var anotherPlayerSwordNode: SKSpriteNode!
     var anotherPlayerRange: SKSpriteNode!
-    var anotherProjectileNode: SKSpriteNode!
     
     //    @Environment(\.modelContext) private var modelWatch
     //    @Query private var character: [Character]
@@ -142,17 +136,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         super.didMove(to: view)
         
         addBackgroundBattleIsland(size: size, addChild: addChild)
-        configureJoysticks()
         
-        initPlayer()
-        
-        addDummyRobot(CGPoint(x: 200, y: 0), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
-        addDummyRobot(CGPoint(x: 400, y: 0), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
-
-        physicsWorld.contactDelegate = self
-    }
-    
-    func initPlayer(){
         let (character, hpbarinner, hpbarouter, playerName, swordNode, meleeAreaNode, rangeAreaNode, slashNode) = addCharacter(CGPoint(x: frame.midX, y: frame.midY), addChild: addChild, category: PhysicsCategory.character, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.localPlayer.displayName, isBattle: true)
         
         cameraNode.position = character.position
@@ -160,16 +144,16 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         characterNode = character
         hpBarInner = hpbarinner
         hpBarOuter = hpbarouter
-        currentPlayerName = playerName
-        currentSwordNode = swordNode
-        currentMeleeAreaNode = meleeAreaNode
-        currentRangeAreaNode = rangeAreaNode
-        currentSlashNode = slashNode
-        let battleBGM = SKAudioNode(fileNamed: "song_battle.wav")
-        if let battleBGMNode = battleBGM.avAudioNode as? AVAudioPlayerNode {
-            battleBGMNode.volume = 0.5
-        }
-        addChild(battleBGM)
+        self.currentPlayerName = playerName
+        self.currentSwordNode = swordNode
+        self.currentMeleeAreaNode = meleeAreaNode
+        self.currentRangeAreaNode = rangeAreaNode
+        self.currentSlashNode = slashNode
+        
+        addDummyRobot(CGPoint(x: 200, y: 0), category: PhysicsCategory.enemy, contact: PhysicsCategory.meleeArea | PhysicsCategory.projectile)
+        configureJoysticks()
+        
+        physicsWorld.contactDelegate = self
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -177,8 +161,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        super.update(currentTime)
-        
         if hpEnemy <= 0 && !ghostAdded {
             ghostAdded = true
             
@@ -191,55 +173,42 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        gameModel = GameModel(player: characterNode.position, name: gameCenter.localPlayer.displayName, hpBar: [hpBarInner.position, hpBarOuter.position], labelName: currentPlayerName.position, sword: currentSwordNode.position, melee: currentMeleeAreaNode.position, slash: currentSlashNode.position, rangeArea: currentRangeAreaNode.position, angleProjectile: self.angle, isotherHit: isOtherHit)
+        gameModel = GameModel(player: characterNode.position, name: gameCenter.localPlayer.displayName, hpBar: [hpBarInner.position, hpBarOuter.position], labelName: currentPlayerName.position, sword: currentSwordNode.position, melee: currentMeleeAreaNode.position, slash: currentSlashNode.position, rangeArea: currentRangeAreaNode.position, angleProjectile: self.angle,  isotherHit: isOtherHit)
         
         gameCenter.sendGameModel(gameModel)
         
-        if let receivedDataModel = gameCenter.dataModel {
-            updateAnotherPlayer(with: receivedDataModel)
+        if gameCenter.dataModel != nil {
+            if anotherPlayer != nil {
+                anotherPlayer.position = gameCenter.dataModel!.player
+                anotherPlayerNameLabel.position = gameCenter.dataModel!.labelName
+                anotherPlayerHpBarInner.position = gameCenter.dataModel!.hpBar[0]
+                anotherPlayerHpBarOuter.position = gameCenter.dataModel!.hpBar[1]
+                anotherPlayerSword.position = gameCenter.dataModel!.sword
+                anotherPlayerSlash.position = gameCenter.dataModel!.slash
+                anotherPlayerMeleeArea.position = gameCenter.dataModel!.melee
+                anotherPlayerRange.position = gameCenter.dataModel!.rangeArea
+                
+                anotherProjectileNode = addProjectile()
+                anotherProjectileNode.position = gameCenter.dataModel!.player
+                
+                if gameCenter.dataModel!.isotherHit {
+                    startSkillAnimation(projectileNode: anotherProjectileNode, imageSet: ["fire_1", "fire_2", "fire_3", "fire_4", "fire_5"], timePerFrame: 0.1)            
+                    anotherProjectileNode = projectileMove(angle: gameCenter.dataModel!.angleProjectile, projectile: anotherProjectileNode)
+                    addChild(anotherProjectileNode)
+                }
+            } else {
+                let (character, hpbarinner, hpbarouter, playerName, swordNode, meleeAreaNode, rangeAreaNode, slashNode) = addCharacter(gameCenter.dataModel!.player, addChild: addChild, category: PhysicsCategory.otherPlayer, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.dataModel!.name, isBattle: true)
+                
+                anotherPlayer = character
+                anotherPlayerHpBarInner = hpbarinner
+                anotherPlayerHpBarOuter = hpbarouter
+                self.anotherPlayerNameLabel = playerName
+                anotherPlayerSword = swordNode
+                anotherPlayerMeleeArea = meleeAreaNode
+                anotherPlayerRange = rangeAreaNode
+                anotherPlayerSlash = slashNode
+            }
         }
-    }
-    
-    func updateAnotherPlayer(with model: GameModel) {
-        if anotherPlayer == nil {
-            initializeAnotherPlayer(with: model)
-        }
-        anotherPlayer.position = model.player
-        anotherPlayerNameLabel.position = model.labelName
-        anotherPlayerHpBarInner.position = model.hpBar[0]
-        anotherPlayerHpBarOuter.position = model.hpBar[1]
-        anotherPlayerSword.position = model.sword
-        anotherPlayerSlash.position = model.slash
-        anotherPlayerMeleeArea.position = model.melee
-        anotherPlayerRange.position = model.rangeArea
-
-        if model.isotherHit {
-            sendProjectileToAnotherPlayer()
-            sendSlashToAnotherPlayer()
-        }
-    }
-
-    func initializeAnotherPlayer(with model: GameModel) {
-        let (character, hpbarinner, hpbarouter, playerName, swordNode, meleeAreaNode, rangeAreaNode, slashNode) = addCharacter(
-            model.player,
-            addChild: addChild,
-            category: PhysicsCategory.otherPlayer,
-            contact: PhysicsCategory.none,
-            collision: PhysicsCategory.none,
-            name: model.name,
-            isBattle: true
-        )
-
-        anotherPlayer = character
-        anotherPlayerHpBarInner = hpbarinner
-        anotherPlayerHpBarOuter = hpbarouter
-        anotherPlayerNameLabel = playerName
-        anotherPlayerSword = swordNode
-        anotherPlayerMeleeArea = meleeAreaNode
-        anotherPlayerRange = rangeAreaNode
-        anotherPlayerSlash = slashNode
-
-        anotherPlayerInitialized = true
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
