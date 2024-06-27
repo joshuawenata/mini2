@@ -16,10 +16,6 @@ extension BattleScene {
         let projectile = SKSpriteNode(texture: texture)
         projectile.setScale(0.2)
         
-        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width / 2)
-        projectile.physicsBody?.affectedByGravity = false
-        projectile.physicsBody?.linearDamping = 0
-        
         return projectile
     }
 }

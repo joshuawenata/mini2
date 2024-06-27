@@ -20,6 +20,7 @@ extension BattleScene {
         }
         
         moveJoystick.on(.move) { [unowned self] joystick in
+            self.isOtherHit = false
             guard let characterNode = self.characterNode else {
                 return
             }
@@ -61,7 +62,7 @@ extension BattleScene {
     }
     
     func rotateJoystickConfig() {
-//        let swordSound = SKAudioNode(fileNamed: "swoosh1.mp3")
+        //        let swordSound = SKAudioNode(fileNamed: "swoosh1.mp3")
         
         rotateJoystick.on(.begin) { [unowned self] _ in
             guard let meleeAreaNode = self.currentMeleeAreaNode else {
@@ -139,23 +140,19 @@ extension BattleScene {
     }
     
     func skillJoystickConfig() {
-//        let fireballSound = SKAudioNode(fileNamed: "fireball.wav")
-//        let removeAction = SKAction.sequence([
-//            SKAction.play(),
-//            SKAction.wait(forDuration: 1.0),
-//            SKAction.removeFromParent()
-//        ])
+        var skillCooldownActive = false
         
         skillJoystick.on(.begin) { [unowned self] _ in
             guard let rangeAreaNode = self.currentRangeAreaNode else {
                 return
             }
-            
+            if skillCooldownActive {
+                return
+            }
             rangeAreaNode.isHidden = false
             rangeAreaNode.position.x += 60
             rangeAreaNode.setScale(0.5)
             rangeAreaNode.anchorPoint = CGPoint(x: 1.0, y: 0.5)
-            self.isOtherHit = true
         }
         
         skillJoystick.on(.move) { [unowned self] joystick in
@@ -166,18 +163,26 @@ extension BattleScene {
                 return
             }
             
+            if skillCooldownActive {
+                return
+            }
+            
             let margin: CGFloat = 70.0
             self.xOffset = cos(joystick.angular - 1.57) * margin
             self.yOffset = sin(joystick.angular - 1.57) * margin
             rangeAreaNode.position.x = characterNode.position.x - xOffset
             rangeAreaNode.position.y = characterNode.position.y - yOffset
-            rangeAreaNode.zRotation = joystick.angular-1.57
-            self.isOtherHit = false
+            rangeAreaNode.zRotation = joystick.angular - 1.57
         }
         
         skillJoystick.on(.end) { [unowned self] joystick in
             guard let characterNode = self.characterNode else { return }
             guard let rangeAreaNode = self.currentRangeAreaNode else { return }
+            if skillCooldownActive {
+                return
+            }
+            
+            self.isOtherHit = true
             
             rangeAreaNode.isHidden = true
             rangeAreaNode.position.x -= 60
@@ -205,14 +210,8 @@ extension BattleScene {
             
             projectile = projectileMove(angle: self.angle, projectile: projectile)
             
-            self.isOtherHit = false
-            
             addChild(projectile)
             projectileNode = projectile
-            
-            if !self.isOtherHit {
-                anotherProjectileNode.removeFromParent()
-            }
             
             if isHitProjectile {
                 print("Mengurangi Health!")
@@ -224,6 +223,11 @@ extension BattleScene {
             if let url = Bundle.main.url(forResource: "fireball", withExtension: "wav") {
                 audioManager.loadAudioFiles(urls: [url])
                 audioManager.play()
+            }
+            
+            skillCooldownActive = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                skillCooldownActive = false
             }
         }
     }
@@ -265,12 +269,16 @@ extension BattleScene {
         let updatePosition = SKAction.run {
             projectile.removeFromParent()
         }
-        let sequence = SKAction.sequence([moveAction, updatePosition])
+        let removeAction = SKAction.sequence([
+            SKAction.wait(forDuration: 3.0),
+            SKAction.removeFromParent()
+        ])
+        let sequence = SKAction.sequence([moveAction, updatePosition, removeAction])
         
         projectile.run(sequence)
         
         return projectile
     }
-
+    
 }
 

@@ -1,5 +1,6 @@
 import SpriteKit
 import SwiftUI
+import AVFAudio
 import SwiftData
 
 struct PhysicsCategory {
@@ -38,7 +39,8 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     var currentPlayerName: SKLabelNode!
     let setJoystickStickImageBtn = SKLabelNode()
     let setJoystickSubstrateImageBtn = SKLabelNode()
-    var isOtherHit = false
+    var isOtherHit: Bool = false
+    var lastUpdateTime: TimeInterval?
     
     let cameraNode = SKCameraNode()
     
@@ -64,6 +66,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     
     init(size: CGSize, character: Character) {
         self.character = character
+        self.gameModel = GameModel(player: CGPoint.zero, name: "", hpBar: [], labelName: CGPoint.zero, sword: CGPoint.zero, melee: CGPoint.zero, slash: CGPoint.zero, rangeArea: CGPoint.zero, angleProjectile: 0, isotherHit: false)
         super.init(size: size)
     }
     
@@ -130,6 +133,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             addChild(hit)
             hit.run(removeAction)
         }
+        
     }
     
     override func didMove(to view: SKView) {
@@ -154,6 +158,11 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         configureJoysticks()
         
         physicsWorld.contactDelegate = self
+        let battleBGM = SKAudioNode(fileNamed: "song_battle.wav")
+        if let battleBGMNode = battleBGM.avAudioNode as? AVAudioPlayerNode {
+            battleBGMNode.volume = 0.5
+        }
+        addChild(battleBGM)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -161,6 +170,98 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        lastUpdateTime = currentTime
+        
+        self.gameModel = GameModel(
+            player: characterNode.position,
+            name: gameCenter.localPlayer.displayName,
+            hpBar: [hpBarInner.position, hpBarOuter.position],
+            labelName: currentPlayerName.position,
+            sword: currentSwordNode.position,
+            melee: currentMeleeAreaNode.position,
+            slash: currentSlashNode.position,
+            rangeArea: currentRangeAreaNode.position,
+            angleProjectile: self.angle,
+            isotherHit: isOtherHit
+        )
+        
+        // Send game model to the server
+        gameCenter.sendGameModel(gameModel)
+        
+        // Early exit if there's no data model from the server
+        guard var dataModel = gameCenter.dataModel else { return }
+        
+        // Update the other player's data
+        if anotherPlayer != nil {
+            updateOtherPlayer(dataModel)
+        } else {
+            createOtherPlayer(dataModel)
+        }
+        
+        handleEnemyHitAndGhost()
+    }
+    
+    func updateOtherPlayer(_ dataModel: GameModel) {
+        anotherPlayer.position = dataModel.player
+        anotherPlayerNameLabel.position = dataModel.labelName
+        anotherPlayerHpBarInner.position = dataModel.hpBar[0]
+        anotherPlayerHpBarOuter.position = dataModel.hpBar[1]
+        anotherPlayerSword.position = dataModel.sword
+        anotherPlayerSlash.position = dataModel.slash
+        anotherPlayerMeleeArea.position = dataModel.melee
+        anotherPlayerRange.position = dataModel.rangeArea
+        
+        if dataModel.isotherHit {
+            // Create a new projectile if it doesn't exist
+            if anotherProjectileNode == nil {
+                anotherProjectileNode = addProjectile()
+                anotherProjectileNode.position = dataModel.player
+                startSkillAnimation(projectileNode: anotherProjectileNode, imageSet: ["fire_1", "fire_2", "fire_3", "fire_4", "fire_5"], timePerFrame: 0.1)
+                anotherProjectileNode = projectileMove(angle: dataModel.angleProjectile, projectile: anotherProjectileNode)
+                startGetHitAnimation(characterNode: characterNode)
+            }
+            
+            // Add the projectile node to the scene if not already added
+            if anotherProjectileNode.parent == nil {
+                addChild(anotherProjectileNode)
+            }
+            
+            // Schedule to reset the state after a cooldown period
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                // Reset flags and remove projectile from parent
+                if let node = self.anotherProjectileNode {
+                    node.removeFromParent()
+                    node.position = dataModel.player
+                }
+                self.anotherProjectileNode = nil // Reset projectile node reference
+            }
+    
+        }
+        
+    }
+    
+    func createOtherPlayer(_ dataModel: GameModel) {
+        let (character, hpbarinner, hpbarouter, playerName, swordNode, meleeAreaNode, rangeAreaNode, slashNode) = addCharacter(
+            dataModel.player,
+            addChild: addChild,
+            category: PhysicsCategory.otherPlayer,
+            contact: PhysicsCategory.none,
+            collision: PhysicsCategory.none,
+            name: dataModel.name,
+            isBattle: true
+        )
+        
+        anotherPlayer = character
+        anotherPlayerHpBarInner = hpbarinner
+        anotherPlayerHpBarOuter = hpbarouter
+        self.anotherPlayerNameLabel = playerName
+        anotherPlayerSword = swordNode
+        anotherPlayerMeleeArea = meleeAreaNode
+        anotherPlayerRange = rangeAreaNode
+        anotherPlayerSlash = slashNode
+    }
+    
+    func handleEnemyHitAndGhost() {
         if hpEnemy <= 0 && !ghostAdded {
             ghostAdded = true
             
@@ -170,43 +271,6 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
             let fadeOutAction = SKAction.fadeOut(withDuration: 1.0)
             dummyRobot?.run(fadeOutAction) {
                 self.dummyRobot?.removeFromParent()
-            }
-        }
-        
-        gameModel = GameModel(player: characterNode.position, name: gameCenter.localPlayer.displayName, hpBar: [hpBarInner.position, hpBarOuter.position], labelName: currentPlayerName.position, sword: currentSwordNode.position, melee: currentMeleeAreaNode.position, slash: currentSlashNode.position, rangeArea: currentRangeAreaNode.position, angleProjectile: self.angle,  isotherHit: isOtherHit)
-        
-        gameCenter.sendGameModel(gameModel)
-        
-        if gameCenter.dataModel != nil {
-            if anotherPlayer != nil {
-                anotherPlayer.position = gameCenter.dataModel!.player
-                anotherPlayerNameLabel.position = gameCenter.dataModel!.labelName
-                anotherPlayerHpBarInner.position = gameCenter.dataModel!.hpBar[0]
-                anotherPlayerHpBarOuter.position = gameCenter.dataModel!.hpBar[1]
-                anotherPlayerSword.position = gameCenter.dataModel!.sword
-                anotherPlayerSlash.position = gameCenter.dataModel!.slash
-                anotherPlayerMeleeArea.position = gameCenter.dataModel!.melee
-                anotherPlayerRange.position = gameCenter.dataModel!.rangeArea
-                
-                anotherProjectileNode = addProjectile()
-                anotherProjectileNode.position = gameCenter.dataModel!.player
-                
-                if gameCenter.dataModel!.isotherHit {
-                    startSkillAnimation(projectileNode: anotherProjectileNode, imageSet: ["fire_1", "fire_2", "fire_3", "fire_4", "fire_5"], timePerFrame: 0.1)            
-                    anotherProjectileNode = projectileMove(angle: gameCenter.dataModel!.angleProjectile, projectile: anotherProjectileNode)
-                    addChild(anotherProjectileNode)
-                }
-            } else {
-                let (character, hpbarinner, hpbarouter, playerName, swordNode, meleeAreaNode, rangeAreaNode, slashNode) = addCharacter(gameCenter.dataModel!.player, addChild: addChild, category: PhysicsCategory.otherPlayer, contact: PhysicsCategory.none, collision: PhysicsCategory.none, name: gameCenter.dataModel!.name, isBattle: true)
-                
-                anotherPlayer = character
-                anotherPlayerHpBarInner = hpbarinner
-                anotherPlayerHpBarOuter = hpbarouter
-                self.anotherPlayerNameLabel = playerName
-                anotherPlayerSword = swordNode
-                anotherPlayerMeleeArea = meleeAreaNode
-                anotherPlayerRange = rangeAreaNode
-                anotherPlayerSlash = slashNode
             }
         }
     }
