@@ -1,4 +1,5 @@
 import SpriteKit
+import AVFAudio
 import SwiftUI
 import SwiftData
 
@@ -154,6 +155,12 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         configureJoysticks()
         
         physicsWorld.contactDelegate = self
+        
+        let battleBGM = SKAudioNode(fileNamed: "song_battle.wav")
+        if let battleBGMNode = battleBGM.avAudioNode as? AVAudioPlayerNode {
+            battleBGMNode.volume = 0.5
+        }
+        addChild(battleBGM)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

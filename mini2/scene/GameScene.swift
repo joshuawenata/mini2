@@ -78,6 +78,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(cameraNode)
         camera = cameraNode
         camera?.position = characterNode.position
+
+        let MainBGM = SKAudioNode(fileNamed: "song_main.wav")
+        addChild(MainBGM)
         
         configureJoysticks()
         initBuildingsMainIsland()
@@ -94,6 +97,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self)
